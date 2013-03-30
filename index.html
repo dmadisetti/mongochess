@@ -1,0 +1,1064 @@
+
+    
+<!-- Java Library -->                                                                                               
+<script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.9/jquery-ui.min.js"></script>
+
+<!-- Script -->
+<script language="JavaScript" type="text/javascript">
+    
+
+
+$(document).ready(function(){
+var square = new Array(8);
+var movable = [];
+for (var i = 0; i < 8; i++) {
+  square[i] = new Array(8);
+};
+var col = 0;
+var row = 0;    
+for( col = 0 ; col < 8 ; col++ ){
+  for( row = 0 ; row < 8 ; row++ ){
+    square[col][row] = $(".board > div").eq((row * 8)+(col));
+  };      
+};
+
+human = "w";
+computer = "b";
+
+    $(square[0][7]).html(piece("castle",human));
+    $(square[1][7]).html(piece("knight",human));
+    $(square[2][7]).html(piece("bishop",human));
+    $(square[3][7]).html(piece("queen",human));
+    $(square[4][7]).html(piece("king",human));
+    $(square[5][7]).html(piece("bishop",human));
+    $(square[6][7]).html(piece("knight",human));
+    $(square[7][7]).html(piece("castle",human));
+    $(square[0][0]).html(piece("queen",computer));
+    $(square[6][5]).html(piece("pawn",human));
+    $(".castle").addClass("first");
+    $(".pawn").addClass("first");
+    $(".king").addClass("first");
+    
+
+
+/*
+*
+*   The Castle
+*
+*/
+
+
+
+    $(".board").delegate("img.castle." + human,"mousedown",function(){
+      checks = true;
+	 $(this).css("z-index","1000");
+      self = human;
+      opp = computer;
+      use = this;
+	 attacks();
+      movable = castle();
+	 checks = false;
+      drags(movable);
+    });
+    
+    function castle (){
+      movable = [];
+      movable = longmove(movable,castleUp);
+      movable = longmove(movable,castleDown);
+      movable = longmove(movable,castleLeft);
+      movable = longmove(movable,castleRight);
+      return movable;
+    }
+    
+    function castleRight (col,row){
+      pos = [];
+      pos[0] = ++col;
+      pos[1] = row;
+      return pos;
+    }
+    function castleLeft (col,row){
+      pos = [];
+      pos[0] = --col;
+      pos[1] = row;
+      return pos;
+    }
+    function castleDown (col,row){
+      pos = [];
+      pos[0] = col;
+      pos[1] = ++row;
+      return pos;
+    }
+    function castleUp (col,row){
+      pos = [];
+      pos[0] = col;
+      pos[1] = --row;
+      return pos;
+    }
+    
+/*
+*
+*   The Bishop
+*
+*/    
+    
+    $(".board").delegate("img.bishop." + human,"mousedown",function(){
+     checks = true 
+	$(this).css("z-index","1000");
+      self = human;
+      opp = computer;
+      use = this;
+      attacks();
+      movable = bishop();
+      checks = false;
+      drags(movable);
+    });
+    
+    function bishop (){
+      movable = [];
+      movable = longmove(movable,bishopUpperRight);
+      movable = longmove(movable,bishopUpperLeft);
+      movable = longmove(movable,bishopLowerLeft);
+      movable = longmove(movable,bishopLowerRight);
+      return movable;
+    }
+    
+    function bishopUpperRight (col,row){
+      pos = [];
+      pos[0] = ++col;
+      pos[1] = --row;
+      return pos;
+    }
+    function bishopUpperLeft (col,row){
+      pos = [];
+      pos[0] = --col;
+      pos[1] = --row;
+      return pos;
+    }
+    function bishopLowerLeft (col,row){
+      pos = [];
+      pos[0] = --col;
+      pos[1] = ++row;
+      return pos;
+    }
+    function bishopLowerRight (col,row){
+      pos = [];
+      pos[0] = ++col;
+      pos[1] = ++row;
+      return pos;
+    }
+
+/*
+*
+*   The Queen
+*
+*/
+    $(".board").delegate("img.queen." + computer,"mousedown",function(){
+     checks = true; 
+	$(this).css("z-index","1000");
+      self = computer;
+      opp = human;
+      use = this;
+	 attacks();      
+      movable = queen();
+	 checks = false;
+      drags(movable);
+    });
+    
+    $(".board").delegate("img.queen." + human,"mousedown",function(){
+     checks = true; 
+	opp = computer;
+      self = human;      
+      use = this;
+	attacks();
+      movable = queen();
+	checks = false;
+      drags(movable);
+    });
+    
+    function queen (){
+      movable = [];
+      movable = longmove(movable,bishopUpperRight);
+      movable = longmove(movable,bishopUpperLeft);
+      movable = longmove(movable,bishopLowerLeft);
+      movable = longmove(movable,bishopLowerRight);
+      movable = longmove(movable,castleUp);
+      movable = longmove(movable,castleDown);
+      movable = longmove(movable,castleLeft);
+      movable = longmove(movable,castleRight);
+      return movable;
+    }
+    
+/*
+*
+*   The Knight
+*
+*/
+
+    $(".board").delegate("img.knight." + human,"mousedown",function(){
+      $(this).css("z-index","1000");
+      checks = true;
+	 opp = computer;
+      self = human;      
+      use = this;
+	 attacks();
+      movable = knight();
+	checks = false;
+      drags(movable);
+    });
+
+    function knight (){      
+      movable = [];
+      movable = shortmove(movable,knightLeftTop);
+      movable = shortmove(movable,knightLeftBottom);
+      movable = shortmove(movable,knightRightBottom);
+      movable = shortmove(movable,knightRightTop);
+      movable = shortmove(movable,knightBottomRight);
+      movable = shortmove(movable,knightBottomLeft);
+      movable = shortmove(movable,knightTopRight);
+      movable = shortmove(movable,knightTopLeft);
+      return movable;
+    }
+    
+    function knightLeftTop (col,row){
+      pos = [];
+      pos[0] = col-=2;
+      pos[1] = --row;
+      return pos;
+    }
+    function knightLeftBottom (col,row){
+      pos = [];
+      pos[0] = col-=2;
+      pos[1] = ++row;
+      return pos;
+    }
+    function knightRightBottom (col,row){
+      pos = [];
+      pos[0] = col+=2;
+      pos[1] = ++row;
+      return pos;
+    }
+    function knightRightTop (col,row){
+      pos = [];
+      pos[0] = col+=2;
+      pos[1] = --row;
+      return pos;
+    }    
+    function knightBottomRight (col,row){
+      pos = [];
+      pos[0] = ++col;
+      pos[1] = row+=2;
+      return pos;
+    }
+    function knightBottomLeft (col,row){
+      pos = [];
+      pos[0] = --col;
+      pos[1] = row+=2;
+      return pos;
+    }
+    function knightTopRight (col,row){
+      pos = [];
+      pos[0] = ++col;
+      pos[1] = row-=2;
+      return pos;
+    }
+    function knightTopLeft (col,row){
+      pos = [];
+      pos[0] = --col;
+      pos[1] = row-=2;
+      return pos;
+    }
+    
+/*
+*
+*   The King
+*
+*/
+
+    $(".board").delegate("img.king." + human,"mousedown",function(){
+     checks = true 
+	$(this).css("z-index","1000");
+      opp = computer;
+      self = human;      
+      use = this;
+      kingmoves = [];
+	 attacks();
+      kingmoves = king();
+	 checks = false;
+      drags(kingmoves[1]);
+      castledrag(kingmoves[0][0],kingmoves[0][1],kingmoves[0][2]);
+    });
+
+    function king (){      
+      movable = [];
+      movable = shortmove(movable,kingLeft);
+      movable = shortmove(movable,kingRight);
+      movable = shortmove(movable,kingBottom);
+      movable = shortmove(movable,kingTop);
+      movable = shortmove(movable,kingBottomRight);
+      movable = shortmove(movable,kingBottomLeft);
+      movable = shortmove(movable,kingTopRight);
+      movable = shortmove(movable,kingTopLeft);
+      kingmoves[0] = castling();
+      kingmoves[1] = movable
+      return kingmoves;
+    }
+    
+    function kingLeft (col,row){
+      pos = [];
+      pos[0] = --col;
+      pos[1] = row;
+      return pos;
+    }
+    function kingBottom (col,row){
+      pos = [];
+      pos[0] = col;
+      pos[1] = ++row;
+      return pos;
+    }
+    function kingRight (col,row){
+      pos = [];
+      pos[0] = ++col;
+      pos[1] = row;
+      return pos;
+    }
+    function kingTop (col,row){
+      pos = [];
+      pos[0] = col;
+      pos[1] = --row;
+      return pos;
+    }    
+    function kingBottomRight (col,row){
+      pos = [];
+      pos[0] = ++col;
+      pos[1] = ++row;
+      return pos;
+    }
+    function kingBottomLeft (col,row){
+      pos = [];
+      pos[0] = --col;
+      pos[1] = ++row;
+      return pos;
+    }
+    function kingTopRight (col,row){
+      pos = [];
+      pos[0] = ++col;
+      pos[1] = --row;
+      return pos;
+    }    
+    function kingTopLeft (col,row){
+      pos = [];
+      pos[0] = --col;
+      pos[1] = --row;
+      return pos;
+    }
+
+/*
+*
+*   The Pawn
+*
+*/
+
+    $(".board").delegate("img.pawn." + human,"mousedown",function(){
+     checks = true; 
+	$(this).css("z-index","1000");
+      opp = computer;
+      self = human;      
+      use = this;
+      pawnmoves = [];
+	attacks();
+      pawnmoves = pawn();
+	 checks = false;
+      doubleJumpDrag(pawnmoves[0]);
+      drags(pawnmoves[1]);
+      enPassentdrag(pawnmoves[2][0],pawnmoves[2][1]);
+    });
+
+    function pawn (){
+      movable = [];
+      enpassentmove = [];
+      if (self == "w"){
+        movable = pawnmove(movable,kingTop);
+        movable = pawneat(movable,kingTopLeft);
+        movable = pawneat(movable,kingTopRight);
+        pawnmoves[0] = doubleJump(kingTop);      
+        pawnmoves[1] = movable;
+        pawnmoves[2] = enPassent(kingLeft,kingTopLeft);
+        if (pawnmoves[2].length < 1){
+          pawnmoves[2] = enPassent(kingRight,kingTopRight);
+        }
+      }else{
+        movable = pawnmove(movable,kingBottom);
+        movable = pawneat(movable,kingBottomLeft);
+        movable = pawneat(movable,kingBottomRight);
+        pawnmoves[0] = doubleJump(kingBottom);      
+        pawnmoves[1] = movable;
+        pawnmoves[2] = enPassent(kingLeft,kingBottomLeft);                  
+        if (pawnmoves[2].length < 1){
+          pawnmoves[2] = enPassent(kingRight,kingBottomRight);
+        }
+      }
+      return pawnmoves;
+    }    
+      
+/*
+*
+*   Moves
+*
+*/    
+
+
+// Long Moves        
+    function longmove (movable,funct){
+      i = (movable.length);
+      index = $(use).parent().index(".board > div");
+      row = Math.floor(index/8);
+      col = index % 8;
+      next = true;
+      while(next){
+        pos = funct(col,row);
+        col = pos[0];
+        row = pos[1];
+        if ( (square[col] !== undefined) && (square[col][row] !== undefined )){
+          move = square[col][row];
+          if ($(move).children().hasClass(self)){
+            next = false;
+          }else{
+            if ($(move).children().hasClass(opp)){
+              if(checkcheck() == "yes"){
+		    movable[i] =  move;};
+              i++;
+              next = false;
+            }else{
+              if(checkcheck() == "yes"){
+		    movable[i] =  move;};
+              i++;
+            }
+          }
+        }else{
+          next = false;
+        }      
+      }
+      return movable;
+    }
+
+
+//Short Moves              
+    function shortmove(movable,funct){
+      i = (movable.length);
+      index = $(use).parent().index(".board > div");
+      row = Math.floor(index/8);
+      col = index % 8;
+      pos = funct(col,row);
+      col = pos[0];
+      row = pos[1];
+      if ( (square[col] !== undefined) && (square[col][row] !== undefined) ){
+         move = square[col][row];
+         if (!($(move).children().hasClass(self))){
+              if(checkcheck() == "yes"){
+		    movable[i] =  move;};
+         }
+      }
+      return movable;
+    }
+
+
+//Castling    
+    function castling(){
+      oldcastle = [];
+      newcastle = [];
+      kingpos = [];
+      castlemoves = [];
+      index = $(use).parent().index(".board > div");
+      row = Math.floor(index/8);
+      col = index % 8;
+      r = 0;
+      next = true;
+      while(next){
+        if ( (square[--col] !== undefined) && (square[col][row] !== undefined )){
+          move = square[col][row];
+          if ($(move).children().hasClass("castle") &&
+              $(move).children().hasClass("first") &&
+              $(".king." + self).hasClass("first") &&
+              !($(".king." + self).parent().hasClass("attacked"))){
+            oldcastle[r] = move;
+            kingpos[r] = square[col+=2][row];
+            newcastle[r] = square[++col][row];
+            r++;
+            next = false;
+            }else{
+              if ((move).children().length > 0 || (move).hasClass("attacked")){
+                next = false;  
+              }            
+            }
+        }else{
+          next = false;
+        }
+      }
+      index = $(use).parent().index(".board > div");
+      row = Math.floor(index/8);
+      col = index % 8;
+      next = true;
+      while(next){
+        if ( (square[++col] !== undefined) && (square[col][row] !== undefined )){
+          move = square[col][row];
+          if ($(move).children().hasClass("castle") &&
+              !($(move).hasClass("attacked")) &&
+              $(move).children().hasClass("first") &&
+              $(".king." + self).hasClass("first") &&
+              !($(".king." + self).parent().hasClass("attacked"))){
+            oldcastle[r] = move;
+            kingpos[r] = square[--col][row];
+            newcastle[r] = square[--col][row];
+            next = false;
+            }else{
+              if ((move).children().length > 0 || (move).hasClass("attacked")){
+                next = false;  
+              }
+            }   
+        }else{
+          next = false;
+        }
+      }
+      castlemoves[0] = kingpos;
+      castlemoves[1] = oldcastle;
+      castlemoves[2] = newcastle;
+      return castlemoves;
+    }
+
+function checkcheck(){
+  if (checks){
+    datCanMove = false;
+    classholder = $(use).attr('class');
+    selfholder = self;
+    oppholder = opp;
+    moveholder = move;
+    $(use).removeClass(classholder);
+    if ($(move).children().length > 0){
+     classholder2 = $(move).children().attr('class');
+     $(move).children().removeClass(classholder2);    
+    } 
+    $(move).html(phantom()).addClass(classholder);
+    if (self == computer){
+      addattacks("attacking");
+	addattacks("attacked");
+      if (!humanCheck){
+        datCanMove = true;
+      }
+    }else{
+      addattacks("attacked");
+	addattacks("attacking");
+      if (!compCheck){
+        datCanMove = true;
+      }
+    }
+    self = selfholder;
+    opp = oppholder;
+    move = moveholder;
+    $(move).remove(".phantom");
+      if ($(move).children().length > 0){
+      classholder2 = $(move).children().attr('class');
+      $(move).children().addClass(classholder2);
+    }
+    $(use).addClass(classholder);
+    if (datCanMove){
+    	return "yes";
+    }else{return "no";}
+  }else{return "yes";}
+}
+
+//Pawn Moves   
+    function pawneat (movable,funct){
+      i = (movable.length);
+      index = $(use).parent().index(".board > div");
+      row = Math.floor(index/8);
+      col = index % 8;
+      pos = funct(col,row);
+      col = pos[0];
+      row = pos[1];
+      if ( (square[col] !== undefined) && (square[col][row] !== undefined) ){
+         move = square[col][row];
+         if (($(move).children().hasClass(opp))){
+                           if(checkcheck() == "yes"){
+		    movable[i] =  move;
+         }
+         }
+      }
+      return movable;    
+    }
+
+    function pawnmove (movable,funct){
+      i = (movable.length);
+      index = $(use).parent().index(".board > div");
+      row = Math.floor(index/8);
+      col = index % 8;
+      pos = funct(col,row);
+      col = pos[0];
+      row = pos[1];
+      if ( (square[col] !== undefined) && (square[col][row] !== undefined) ){
+         move = square[col][row];
+         if (($(move).children().length < 1)){
+         if(checkcheck() == "yes"){
+		    movable[i] =  move;
+         }
+         }
+      }
+      return movable;
+    }      
+        
+    function doubleJump (funct){
+      index = $(use).parent().index(".board > div");
+      row = Math.floor(index/8);
+      col = index % 8;
+      if ($(use).hasClass("first")){
+        pos = funct(col,row);
+        col = pos[0];
+        row = pos[1];
+        move = square[col][row];
+        if (($(move).children().length < 1)){
+           pos = funct(col,row);
+           col = pos[0];
+           row = pos[1];
+           move = square[col][row];
+           if (($(move).children().length < 1)){
+             if(checkcheck() == "yes"){
+		    return move;
+           }
+           }
+        }        
+      }    
+    }
+    
+    function enPassent(funct1,funct2){
+      index = $(use).parent().index(".board > div");
+      row = Math.floor(index/8);
+      col = index % 8;
+      pos = funct1(col,row);
+      col = pos[0];
+      row = pos[1];
+      if ( (square[col] !== undefined) && (square[col][row] !== undefined) ){
+        if ( $(square[col][row]).children().hasClass("passing") ){
+         enpassentmove[0] = square[col][row];
+         index = $(use).parent().index(".board > div");
+         row = Math.floor(index/8);
+         col = index % 8;
+         pos = funct2(col,row);
+         col = pos[0];
+         row = pos[1];
+         if ( (square[col] !== undefined) && (square[col][row] !== undefined) ){
+           if ($(square[col][row]).children().length < 1){
+                         if(checkcheck() == "yes"){
+		enpassentmove[1] = square[col][row]
+         }    
+		
+           }
+         }
+      }
+      }
+      return enpassentmove;
+    }
+    
+    function pawnCheck (){
+      pawns = $(".pawn");
+        $.each(pawns, function(){
+          if ($(this).parent().index(".board > div") < 8){
+            $('#pawnMessage').show();
+            $('#pawnMessage').animate( {
+              left: '380px',
+              top: '200px',
+              width: '450px',
+              height: '100px',
+              opacity: 1
+            });
+          }
+        });
+    }
+    
+    $("#pawnMessage").delegate("img","mousedown",function(){
+     index = $(this).index("#pawnMessage > img");
+     switch (index){
+       case 0:pawnReplace("queen",human);
+       case 1:pawnReplace("castle",human);
+       case 2:pawnReplace("bishop",human);
+       case 3:pawnReplace("knight",human);
+     };
+     attacks ();
+    })
+    
+    function pawnReplace(value,self){
+        pawns = $(".pawn." + self);
+        $.each(pawns, function(){
+          parent = $(this).parent();
+          if ($(parent).index(".board > div") < 8){
+            $(this).remove();
+            $(parent).html(piece(value,self));
+            $("img." + self).draggable( {
+              containment: '.board',
+              revert: true
+            });
+            $('#pawnMessage').hide();    
+          }
+        });    
+    }    
+
+  $('#pawnMessage').hide();
+  $('#pawnMessage').css( {
+    left: '580px',
+    top: '250px',
+    width: 0,
+    height: 0
+  } );
+  
+    $('#mateMessage').hide();
+  $('#mateMessage').css( {
+    left: '580px',
+    top: '250px',
+    width: 0,
+    height: 0
+  } );                 
+    
+/*
+*
+*   Drags
+*
+*/    
+
+
+//Normal Drags
+    function drags (movable){
+      $(movable).droppable({
+        accept: use,
+        drop: function(){
+          value = $( ".ui-draggable-dragging" ).attr("alt");
+          $( ".ui-draggable-dragging" ).remove();
+          $(this).html(piece(value,self));
+          $(this).children().addClass(self);
+          $("img." + self).draggable( {
+            zIndex: 100, 
+            containment: '.board',
+            revert: true
+          });
+          $( ".ui-droppable" ).removeClass("ui-droppable");
+          $(movable).droppable({accept:false});
+          $(".passing").removeClass("passing");
+          pawnCheck();
+          attacks ();
+        }
+      });
+    }
+
+
+//Castling Drag    
+    function castledrag (kingpos,oldcastle,newcastle){
+      $(kingpos).droppable({
+          accept: use,
+          drop: function(){
+            index = $(this).index(".board > div");
+            col = index % 8;
+            if (col == 2){ index = 0;}else{if ($(kingpos).length < 2){index = 0;}else{index = 1;}}
+            value = $( ".ui-draggable-dragging" ).attr("alt");
+            $(this).html(piece(value,self));
+            $( ".ui-draggable-dragging" ).remove();
+            $(oldcastle[index]).children().remove();
+            $(newcastle[index]).html(piece("castle",self));
+            $(newcastle[index]).children().addClass(self);
+            $(this).children().addClass(self);
+            $("img." + self).draggable( {
+              containment: '.board',
+              revert: true
+            });
+            $( ".ui-droppable" ).removeClass("ui-droppable");
+            $(kingpos).droppable({accept:false});
+            $(".passing").removeClass("passing");
+            attacks ();
+          }           
+      });
+    }
+
+//Double Jump Drag
+    function doubleJumpDrag(jump){
+      $(jump).droppable({
+        accept: use,
+        drop: function(){
+          value = $( ".ui-draggable-dragging" ).attr("alt");
+          $( ".ui-draggable-dragging" ).remove();
+          $(this).html(piece(value,self));
+          $(this).children().addClass(self);
+          $(this).children().addClass("passing");
+          $("img." + self).draggable( {
+            containment: '.board',
+            revert: true
+          });
+          $( ".ui-droppable" ).removeClass("ui-droppable");
+          $(movable).droppable({accept:false});
+          attacks ();
+        }
+      });    
+    }
+    
+//enPassentDrag    
+    function enPassentdrag (pawnRemove,pawnAccept){
+      $(pawnAccept).droppable({
+          accept: use,
+          drop: function(){
+            index = $(this).index(".board > div");
+            col = index % 8;
+            value = $( ".ui-draggable-dragging" ).attr("alt");
+            $(this).html(piece(value,self));
+            $( ".ui-draggable-dragging" ).remove();
+            $(pawnRemove).children().remove();
+            $(this).children().addClass(self);
+            $("img." + self).draggable( {
+              containment: '.board',
+              revert: true
+            });
+            $( ".ui-droppable" ).removeClass("ui-droppable");
+            $(pawnAccept).droppable({accept:false});
+            attacks ();
+          }           
+      });
+    }
+
+/*  Animated Drags
+    
+    $(".board").delegate(square[7][0],"click",function(){
+      value = $( "img.piece" ).attr("alt");      
+      index = $("img.piece").parent().index(".board > div");
+      row1 = Math.floor(index/8);
+      col1 = index % 8;
+      index = $(square[0][0]).index(".board > div");
+      row2 = Math.floor(index/8);
+      col2 = index % 8;
+      left = (col1 - col2)*100;
+      tip = (row1 - row2)*100;      
+      $( "img.piece" ).remove();
+      $(square[0][0]).html(piece(value));
+      $( "img.piece" ).css({position:"relative",top:tip + "%",left:left + "%"});    
+      $('img.piece').animate( {
+        top: '0px',
+        left: '0px'
+      },'slow');
+    })
+*/
+
+
+//Initializes Draggables    
+//    $('img.' + self).draggable( {
+//      containment: '.board',
+//      revert: true
+//    });
+      $('img').draggable( {
+        containment: '.board',
+        revert: true
+      });
+
+/*
+*
+*Attacks and Stuff
+*
+*/
+
+function attacks (){
+  compCheck = false;
+  humanCheck = false;
+  $(".board > div").removeClass("attacking");
+  $(".board > div").removeClass("attacked");
+  self = human;
+  opp = computer;
+  addattacks("attacking"); 
+  self = computer;
+  opp = human;
+  addattacks("attacked");
+  if (humanCheck){alert ("check1");checkMate()};
+  if (compCheck){alert ("check2");checkMate()};
+}
+
+function addattacks (attack){
+  attackz = $("." + self);
+  if (checks){checks = false; checkholding = true};
+  $.each(attackz,function(){
+    check = [];
+    use = this;
+    value = $( this ).attr("alt");
+    check = switches(value);
+    $.each(check,function(){
+        $(this).addClass(attack);
+    })
+  });
+  if ($(".king." + opp).parent().hasClass(attack)){
+    if (attack == "attacking"){humanCheck = true}else{compCheck = true};
+if (checkholding){checks = true};
+  }
+}
+
+function checkMate (){
+  attackz = $("." + self);
+  gameover = true;
+  checks = true;  
+  $.each(attackz,function(){
+    check = [];
+    use = this;
+    value = $( this ).attr("alt");
+    check = switches(value);
+    if (check.length > 1){gameover = false;}
+  });
+  checks = false;
+  if (gameover){CheckMateMessage()}
+}
+
+function CheckMateMessage(){
+if (humanCheck){$("#mateMessage > p").html("You lose.");}else{$("#mateMessage > p").html("You win.");}
+            $('#mateMessage').show();
+            $('#mateMessage').animate( {
+              left: '380px',
+              top: '200px',
+              width: '450px',
+              height: '100px',
+              opacity: 1
+            });
+}
+
+
+
+function switches (value){
+    switch (value){
+      case "pawn": enpassentmove = [];
+                  if (self == "w"){
+                    check = pawneat(check,kingTopLeft);
+                    check = pawneat(check,kingTopRight);
+                    pawnmoves = enPassent(kingLeft,kingTopLeft);
+                    if (pawnmoves.length < 1){
+                        pawnmoves = enPassent(kingRight,kingTopRight);
+                    }
+                    check[check.length] = pawnmoves;
+                  }else{
+                    check = pawneat(check,kingBottomLeft);
+                    check = pawneat(check,kingBottomRight);
+                    pawnmoves = enPassent(kingLeft,kingBottomLeft);                  
+                    if (pawnmoves.length < 1){
+                        pawnmoves = enPassent(kingRight,kingBottomRight);
+                    }
+                    check[check.length] = pawnmoves;
+                  };
+                      return check;
+      case "queen": check = queen();
+                        return check;
+      case "king": kingmoves = [];
+                  check = king();
+                  check = check[1];
+                      return check;
+      case "knight": check = knight();
+                         return check;
+      case "bishop": check = bishop();
+                         return check;
+      case "castle": check = castle();
+                         return check;
+      default: return;
+    }
+}
+
+});
+
+function piece (pieceVar,side){
+  return "<img src=\"pieces/" + side + pieceVar + ".png\"  alt=\""+ pieceVar + "\" class=\"" + pieceVar + " " + side + " piece ui-state-default\" />";
+}
+
+function phantom (){
+  return "<img src=\"pieces/phantom.png\" class=\"phantom\" />";
+}
+
+
+
+</script>
+<!-- CSS -->
+<style type="text/css">
+  body{
+    background-color:#000;  
+  }
+  .board{
+    width:750px;
+    height:750px;
+    margin:auto;
+    margin-top:100px;
+    border: 2px solid white;
+  }
+  .board > div {
+    width:12.5%;
+    height:12.5%;
+    float:left;}
+  .white{
+    background-color:#AFAFD4;
+  }
+  .black{
+    background-color:#21213F;
+  }
+  .board div img{
+    width:100%;
+    height:100%;
+  }
+  #pawnMessage {
+    position: absolute;
+    left: 580px;
+    top: 250px;
+    width: 0;
+    height: 0;
+    z-index: 100;
+    background: #fff;
+    border: 2px solid #333;
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+    -moz-box-shadow: .3em .3em .5em rgba(0, 0, 0, .8);
+    -webkit-box-shadow: .3em .3em .5em rgba(0, 0, 0, .8);
+    box-shadow: .3em .3em .5em rgba(0, 0, 0, .8);
+    padding: 20px;
+  }
+  
+    #mateMessage {
+    position: absolute;
+    left: 580px;
+    top: 250px;
+    width: 0;
+    height: 0;
+    z-index: 100;
+    background: #fff;
+    border: 2px solid #333;
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+    -moz-box-shadow: .3em .3em .5em rgba(0, 0, 0, .8);
+    -webkit-box-shadow: .3em .3em .5em rgba(0, 0, 0, .8);
+    box-shadow: .3em .3em .5em rgba(0, 0, 0, .8);
+    padding: 20px;
+  }
+  
+  #pawnMessage > img{
+    height:100px;
+    width:100px;
+    float:left;
+  }
+  .attacking{
+  background-color:#0000FF;
+  }
+  .attacked{
+  background-color:#FF0000;
+  }
+  
+  .attacked.attacking{
+  background-color:#FF00FF;
+  }   
+</style>
+  <div id="pawnMessage">
+    <img src="pieces/wqueen.png" />
+    <img src="pieces/wcastle.png" />
+    <img src="pieces/wbishop.png" />
+    <img src="pieces/wknight.png" />
+  </div>
+  
+  <div id="mateMessage">
+    <h1>Checkmate</h1>
+    <p></p>
+  </div>
+<div class="board">
+<div class="white"></div><div class="black"></div><div class="white"></div><div class="black"></div><div class="white"></div><div class="black"></div><div class="white"></div><div class="black"></div><div class="black"></div><div class="white"></div><div class="black"></div><div class="white"></div><div class="black"></div><div class="white"></div><div class="black"></div><div class="white"></div><div class="white"></div><div class="black"></div><div class="white"></div><div class="black"></div><div class="white"></div><div class="black"></div><div class="white"></div><div class="black"></div><div class="black"></div><div class="white"></div><div class="black"></div><div class="white"></div><div class="black"></div><div class="white"></div><div class="black"></div><div class="white"></div><div class="white"></div><div class="black"></div><div class="white"></div><div class="black"></div><div class="white"></div><div class="black"></div><div class="white"></div><div class="black"></div><div class="black"></div><div class="white"></div><div class="black"></div><div class="white"></div><div class="black"></div><div class="white"></div><div class="black"></div><div class="white"></div><div class="white"></div><div class="black"></div><div class="white"></div><div class="black"></div><div class="white"></div><div class="black"></div><div class="white"></div><div class="black"></div><div class="black"></div><div class="white"></div><div class="black"></div><div class="white"></div><div class="black"></div><div class="white"></div><div class="black"></div><div class="white"></div>
+</div>
