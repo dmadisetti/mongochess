@@ -5,11 +5,11 @@ var express = require('express')
 ,Db = mongo.Db
 ,con = null;
 
-server = new Server('server', 10094, {auto_reconnect: true});
-var DBCon = new Db('db', server, {safe: false});
+server = new Server('alex.mongohq.com', 10094, {auto_reconnect: true});
+var DBCon = new Db('app13760571', server, {safe: false});
 DBCon.open(function(err, db) {
   if(!err){
-    db.authenticate('user', 'pass', function(err){
+    db.authenticate('heroku', 'Dominica!<3', function(err){
       if(!err) con = db;
     });
   }
