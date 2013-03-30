@@ -1,1 +1,1 @@
-web: bundle exec node hello.js -p $PORT
+web: node hello.js -p $PORT
