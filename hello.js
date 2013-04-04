@@ -16,32 +16,48 @@ DBCon.open(function(err, db) {
 });
 
 var app = express.createServer(express.logger());
+var io = require('socket.io').listen(app);
 
 app.use("/pieces", express.static(__dirname + '/pieces'));
+app.use(express.cookieParser());
+
+app.get('/js.js', function(request, response) {
+  response.header('Content-Type', 'text/javascript');
+  response.send(gameplay.toString());
+});
 
 app.get('/game/:id', function(request, response) {
   var id = request.params.id;
-  if(id == 'favicon.ico')
-    return;
   DBCon.collection('static').findOne({_id:'template'},function(error,template){
-    var doc;
     DBCon.collection('games').findOne({_id:id},function(error,game){
       console.log('Looking for Game...');
       if (game == null){
         console.log('No Game Found...');
-        doc = {_id:id,game:{}};
-        doc.game = template.game;
-        console.log('Creating Game ' + id + '...');
-        DBCon.collection('games').insert(doc);
+        response.send('No Game Found...');
       }else{
         console.log('Found Game...');
-        doc = game;
+        var color,
+        cookie = request.cookies.player,
+        now = new Date().getTime(),
+        hash = CryptoJS.SHA256("New"+ now +"Game"),
+        expdate = new Date ();
+        expdate.setTime (expdate.getTime() + (24 * 60 * 60 * 1000*365));
+        color = cookie == game.white ? "w" : cookie == game.black ? "b" : null;
+
+        turn = game.turn == color ? "turn = true;" : "turn = false"
+
+
+        response.send(mustache.render(template.css+template.body+template.board,{turn:turn,cookie:cookie,hash:hash,expire:expdate,game:game.game,color:color,id:id}));
       }
-      response.send(mustache.render(template.css+template.body+template.board,{game:doc.game}));
     });
   });
-  
 });
+
+
+
+
+
+
 
 var port = process.env.PORT || 5000;
 app.listen(port, function() {
@@ -58,209 +74,224 @@ app.listen(port, function() {
 
 
 
+var gameplay = function gameplay (){
+    var self = this;
+    self.move = function (){
+      self.i = 0;
+      self.movable = [];
+      self.piece = self.square[self.row][self.col];
+      moves = self.pieces[self.piece.piece];
+      for (z=0;z<moves.length;z++){
+        moves[z].kind(moves[z].funct);
+      }
+      return self.movable;
+    }
+    self.verify = function (args){
+        console.log('Made it');
+        self.col = args.before[0];
+        self.row = args.before[1];
+        return (self.move().indexOf(self.square[args.after[0]][args.after[1]]) >= 0);
+    } 
+    self.pieces = {
+    'castle':[
+      {funct:function (col,row){
+        return [++col,row];
+      },
+       kind: longmove
+      },
+      {funct:function (col,row){
+        return [--col,row];
+      },
+       kind: longmove
+      },
+      {funct:function (col,row){
+        return [col,--row];
+      },
+       kind: longmove
+      },
+      {funct:function (col,row){
+        return [col,++row];
+      },
+       kind: longmove
+      }
+    ],
+    'bishop':[
+      {funct:function (col,row){
+        return  [++col,++row];
+      },
+       kind: longmove
+      },
+      {funct:function (col,row){
+        return [--col,++row];
+      },
+       kind: longmove
+      },
+      {funct:function (col,row){
+        return [--col,--row];
+      },
+       kind: longmove
+      },
+      {funct:function (col,row){
+        return [++col,--row];
+      },
+       kind: longmove
+      }
+    ],  
+    'knight':[
+      {funct:function (col,row){
+        pos = [];
+        pos[0] = --col;
+        pos[1] = row-=2;
+        return pos;
+      },
+       kind: shortmove
+      },
+      {funct:function (col,row){
+        pos = [];
+        pos[0] = ++col;
+        pos[1] = row-=2;
+        return pos;
+      },
+       kind: shortmove
+      },
+      {funct:function (col,row){
+        pos = [];
+        pos[0] = --col;
+        pos[1] = row+=2;
+        return pos;
+      },
+       kind: shortmove
+      },
+      {funct:function (col,row){
+        pos = [];
+        pos[0] = ++col;
+        pos[1] = row+=2;
+        return pos;
+      },
+       kind: shortmove
+      },
+      {funct:function (col,row){
+        pos = [];
+        pos[0] = col-=2;
+        pos[1] = --row;
+        return pos;
+      },
+       kind: shortmove
+      },
+      {funct:function (col,row){
+        pos = [];
+        pos[0] = col-=2;
+        pos[1] = ++row;
+        return pos;
+      },
+       kind: shortmove
+      },
+      {funct:function (col,row){
+        pos = [];
+        pos[0] = col+=2;
+        pos[1] = ++row;
+        return pos;
+      },
+       kind: shortmove
+      },
+      {funct:function (col,row){
+        pos = [];
+        pos[0] = col+=2;
+        pos[1] = --row;
+        return pos;
+      },
+       kind: shortmove
+      }
+    ],
+    'queen':[
+      {funct:function (col,row){
+        return [++col,row];
+      },
+       kind: longmove
+      },
+      {funct:function (col,row){
+        return [--col,row];
+      },
+       kind: longmove
+      },
+      {funct:function (col,row){
+        return [col,--row];
+      },
+       kind: longmove
+      },
+      {funct:function (col,row){
+        return [col,++row];
+      },
+       kind: longmove
+      },
+      {funct:function (col,row){
+        return  [++col,++row];
+      },
+       kind: longmove
+      },
+      {funct:function (col,row){
+        return [--col,++row];
+      },
+       kind: longmove
+      },
+      {funct:function (col,row){
+        return [--col,--row];
+      },
+       kind: longmove
+      },
+      {funct:function (col,row){
+        return [++col,--row];
+      },
+       kind: longmove
+      }
+    ],
+    'king':[
+      {funct:function (col,row){
+        return [++col,row];
+      },
+       kind: shortmove
+      },
+      {funct:function (col,row){
+        return [--col,row];
+      },
+       kind: shortmove
+      },
+      {funct:function (col,row){
+        return [col,--row];
+      },
+       kind: shortmove
+      },
+      {funct:function (col,row){
+        return [col,++row];
+      },
+       kind: shortmove
+      },
+      {funct:function (col,row){
+        return  [++col,++row];
+      },
+       kind: shortmove
+      },
+      {funct:function (col,row){
+        return [--col,++row];
+      },
+       kind: shortmove
+      },
+      {funct:function (col,row){
+        return [--col,--row];
+      },
+       kind: shortmove
+      },
+      {funct:function (col,row){
+        return [++col,--row];
+      },
+       kind: shortmove
+      }
+    ]
+  };
 
-    
-
-var pieces = {
-  'castle':[
-    {funct:function (col,row){
-      return [++col,row];
-    },
-     kind: longmove
-    },
-    {funct:function (col,row){
-      return [--col,row];
-    },
-     kind: longmove
-    },
-    {funct:function (col,row){
-      return [col,--row];
-    },
-     kind: longmove
-    },
-    {funct:function (col,row){
-      return [col,++row];
-    },
-     kind: longmove
-    }
-  ],
-  'bishop':[
-    {funct:function (col,row){
-      return  [++col,++row];
-    },
-     kind: longmove
-    },
-    {funct:function (col,row){
-      return [--col,++row];
-    },
-     kind: longmove
-    },
-    {funct:function (col,row){
-      return [--col,--row];
-    },
-     kind: longmove
-    },
-    {funct:function (col,row){
-      return [++col,--row];
-    },
-     kind: longmove
-    }
-  ],  
-  'knight':[
-    {funct:function (col,row){
-      pos = [];
-      pos[0] = --col;
-      pos[1] = row-=2;
-      return pos;
-    },
-     kind: shortmove
-    },
-    {funct:function (col,row){
-      pos = [];
-      pos[0] = ++col;
-      pos[1] = row-=2;
-      return pos;
-    },
-     kind: shortmove
-    },
-    {funct:function (col,row){
-      pos = [];
-      pos[0] = --col;
-      pos[1] = row+=2;
-      return pos;
-    },
-     kind: shortmove
-    },
-    {funct:function (col,row){
-      pos = [];
-      pos[0] = ++col;
-      pos[1] = row+=2;
-      return pos;
-    },
-     kind: shortmove
-    },
-    {funct:function (col,row){
-      pos = [];
-      pos[0] = col-=2;
-      pos[1] = --row;
-      return pos;
-    },
-     kind: shortmove
-    },
-    {funct:function (col,row){
-      pos = [];
-      pos[0] = col-=2;
-      pos[1] = ++row;
-      return pos;
-    },
-     kind: shortmove
-    },
-    {funct:function (col,row){
-      pos = [];
-      pos[0] = col+=2;
-      pos[1] = ++row;
-      return pos;
-    },
-     kind: shortmove
-    },
-    {funct:function (col,row){
-      pos = [];
-      pos[0] = col+=2;
-      pos[1] = --row;
-      return pos;
-    },
-     kind: shortmove
-    }
-  ],
-  'queen':[
-    {funct:function (col,row){
-      return [++col,row];
-    },
-     kind: longmove
-    },
-    {funct:function (col,row){
-      return [--col,row];
-    },
-     kind: longmove
-    },
-    {funct:function (col,row){
-      return [col,--row];
-    },
-     kind: longmove
-    },
-    {funct:function (col,row){
-      return [col,++row];
-    },
-     kind: longmove
-    },
-    {funct:function (col,row){
-      return  [++col,++row];
-    },
-     kind: longmove
-    },
-    {funct:function (col,row){
-      return [--col,++row];
-    },
-     kind: longmove
-    },
-    {funct:function (col,row){
-      return [--col,--row];
-    },
-     kind: longmove
-    },
-    {funct:function (col,row){
-      return [++col,--row];
-    },
-     kind: longmove
-    }
-  ],
-  'king':[
-    {funct:function (col,row){
-      return [++col,row];
-    },
-     kind: shortmove
-    },
-    {funct:function (col,row){
-      return [--col,row];
-    },
-     kind: shortmove
-    },
-    {funct:function (col,row){
-      return [col,--row];
-    },
-     kind: shortmove
-    },
-    {funct:function (col,row){
-      return [col,++row];
-    },
-     kind: shortmove
-    },
-    {funct:function (col,row){
-      return  [++col,++row];
-    },
-     kind: shortmove
-    },
-    {funct:function (col,row){
-      return [--col,++row];
-    },
-     kind: shortmove
-    },
-    {funct:function (col,row){
-      return [--col,--row];
-    },
-     kind: shortmove
-    },
-    {funct:function (col,row){
-      return [++col,--row];
-    },
-     kind: shortmove
-    }
-  ]
-};
 
     function longmove (funct){
-      var self,
-      col = self.col,
+      var col = self.col,
       row = self.row;
 
       while(true){
@@ -278,8 +309,7 @@ var pieces = {
     }
 
     function shortmove(funct){
-      var self,
-      col = self.col,
+      var col = self.col,
       row = self.row;
 
       pos = funct(col,row);
@@ -293,70 +323,203 @@ var pieces = {
          self.movable[self.i++] = self.square[col][row];
       return self.movable;
     }
-
-var gameplay = function (){
-    var self = this;
-    self.move = function (){
-      self.i = 0;
-      self.movable = [];
-      self.piece = self.square[self.col][self.row];
-      moves = pieces[self.piece.name];
-      for (move in moves){
-        move.kind.self = self;
-        self.movable = move.kind(self.movable,move.funct);
-      }
-      return self.movable;
-    }
-    self.verify = function (args,game){
-        return (self.move().indexOf(after) >= 0);
-    }
 }
+var CryptoJS = require('CryptoJS').Crypto;
 
 app.get('/', function(request, response) {
-  var body = '<style>.onoffswitch { position: relative; width: 103px; -webkit-user-select:none; -moz-user-select:none; -ms-user-select: none; } .onoffswitch-checkbox { display: none; } .onoffswitch-label { display: block; overflow: hidden; cursor: pointer; border: 2px solid #999999; border-radius: 20px; } .onoffswitch-inner { width: 200%; margin-left: -100%; -moz-transition: margin 0.3s ease-in 0s; -webkit-transition: margin 0.3s ease-in 0s; -o-transition: margin 0.3s ease-in 0s; transition: margin 0.3s ease-in 0s; } .onoffswitch-inner:before, .onoffswitch-inner:after { float: left; width: 50%; height: 30px; padding: 0; line-height: 30px; font-size: 14px; color: white; font-family: Trebuchet, Arial, sans-serif; font-weight: bold; -moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: border-box; } .onoffswitch-inner:before { content: "PUBLIC"; padding-left: 10px; background-color: #86CCE3; color: #FFFFFF; } .onoffswitch-inner:after { content: "PRIVATE"; padding-right: 10px; background-color: #AEBBE3; color: #676769; text-align: right; } .onoffswitch-switch { width: 13px; margin: 8.5px; background: #FFFFFF; border: 2px solid #999999; border-radius: 20px; position: absolute; top: 0; bottom: 0; right: 69px; -moz-transition: all 0.3s ease-in 0s; -webkit-transition: all 0.3s ease-in 0s; -o-transition: all 0.3s ease-in 0s; transition: all 0.3s ease-in 0s; } .onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-inner { margin-left: 0; } .onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-switch { right: 0px; }</style>';
-  var css = '<button>New Game </button> <div class="onoffswitch"> <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitch" checked> <label class="onoffswitch-label" for="myonoffswitch"> <div class="onoffswitch-inner"></div> <div class="onoffswitch-switch"></div> </label> </div>';
-  response.send(mustache.render(css+body,{}));
-//gen cookie 
-//gen link
-//app.get('/game/:id/:hash', function(request, response) {
-//var hash = require('CryptoJS').SHA256("Message");
-//alert(hash.toString(CryptoJS.enc.Base64));
+  var css = '<style>.onoffswitch { position: relative; width: 103px; -webkit-user-select:none; -moz-user-select:none; -ms-user-select: none; } .onoffswitch-checkbox { display: none; } .onoffswitch-label { display: block; overflow: hidden; cursor: pointer; border: 2px solid #999999; border-radius: 20px; } .onoffswitch-inner { width: 200%; margin-left: -100%; -moz-transition: margin 0.3s ease-in 0s; -webkit-transition: margin 0.3s ease-in 0s; -o-transition: margin 0.3s ease-in 0s; transition: margin 0.3s ease-in 0s; } .onoffswitch-inner:before, .onoffswitch-inner:after { float: left; width: 50%; height: 30px; padding: 0; line-height: 30px; font-size: 14px; color: white; font-family: Trebuchet, Arial, sans-serif; font-weight: bold; -moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: border-box; } label[for=privacy] .onoffswitch-inner:before { content:"PUBLIC"; padding-left: 10px; background-color: #86CCE3; color: #FFFFFF; } label[for=privacy] .onoffswitch-inner:after { content:"PRIVATE"; padding-right: 10px; background-color: #AEBBE3; color: #676769; text-align: right; } label[for=color] .onoffswitch-inner:before { content:"BLACK"; padding-left: 10px; background-color: #000; color: #FFFFFF; } label[for=color] .onoffswitch-inner:after { content:"WHITE"; padding-right: 10px; background-color: #FFF; color: #000; text-align: right; } .onoffswitch-switch { width: 13px; margin: 8.5px; background: #FFFFFF; border: 2px solid #999999; border-radius: 20px; position: absolute; top: 0; bottom: 0; right: 69px; -moz-transition: all 0.3s ease-in 0s; -webkit-transition: all 0.3s ease-in 0s; -o-transition: all 0.3s ease-in 0s; transition: all 0.3s ease-in 0s; } .onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-inner { margin-left: 0; } .onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-switch { right: 0px; }</style>';
+  var cookie = request.cookies.player;
+  var body = '<script src="/socket.io/socket.io.js"></script><script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script><script>  var socket = io.connect("http://localhost:5000");socket.on("created", function(state){ color = state.created ? "success" : "error"; /*popup.addClass(color);*/ alert(color+":"+state.message);});create = function(){ name = document.getElementById("newgame").value; privacy = document.getElementById("privacy").checked ? "public" : "private"; color = document.getElementById("color").checked ? "black" : "white"; socket.emit("create",{color:color,privacy:privacy,id:name,auth:cookie}); }; var cookie = "{{^cookie}}{{hash}}{{/cookie}}{{cookie}}"; document.cookie = "player="+cookie+"; expires={{expire}}; path=/";</script><!-- <script type="text/javascript" src="http://code.jquery.com/jquery-latest.js" /> --> <button class="submit" onclick="Javascript:create()">New Game</button> <div class="onoffswitch"> <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="privacy" checked /> <label class="onoffswitch-label" for="privacy"> <div class="onoffswitch-inner" id="onoffswitch-inner"></div> <div class="onoffswitch-switch"></div> </label> </div> <div class="onoffswitch"> <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="color" checked /> <label class="onoffswitch-label" for="color"> <div class="onoffswitch-inner" id="onoffswitch-inner"></div> <div class="onoffswitch-switch"></div> </label> </div> <input type="text" id="newgame"/>';
+  var now = new Date().getTime();
+  var hash = CryptoJS.SHA256("New"+ now +"Game");
+  var expdate = new Date ();
+  expdate.setTime (expdate.getTime() + (24 * 60 * 60 * 1000*365));
+  response.send(mustache.render(css+body,{cookie:cookie,hash:hash,expire:expdate}));
 })
 
-var empty
-
-app.get('/api/:id/:auth/:acol/:arow/:bcol/:brow/', function(request, response) {
-  params = request.params; //or w/e
-  response.send('Success');
-  return;
-  DBCon.collection('games').findOne({_id:args['id']},function(error,game){
-    var auth = null;
-    var acol = int(params.acol);
-    var arow = int(params.arow);
-    var bcol = int(params.bcol);
-    var brow = int(arg['brow']);
-    var moving = game.game[acol][arow];
-    if (game.white == params.auth && moving.color == 'w')
-      auth = params.auth;
-    else if (game.black == params.auth && moving.color == 'b')
-      auth = args['auth'];
-      
-    if(auth !== null && gameplay.verify(args,game.game)){
-      game.game[bcol][brow] = game.game[acol][arow];
-      game.game[acol][arow] = empty;        
-      DBCon.collection('games').update({_id:args['id']},{$set: {game:game.game}},function (error, client) {
-        if(!error)
-          response.send('Success');  
-        else
-          response.send('Error');
-      });
-      
-    }else
-      response.send('Cheater');
-  });  
+app.get('/game/:id/opp', function(request, response) {
+  var now = new Date().getTime();
+  var hash = CryptoJS.SHA256("New"+ now +"Game");
+  var id = request.params.id;
+  var cookie = request.cookies.player ? request.cookies.player : hash;
+  var update;
+  DBCon.collection('static').findOne({_id:'template'},function(error,template){
+    DBCon.collection('games').findOne({_id:id},function(error,game){
+      console.log('Looking for Game...');
+      if (game == null){
+        console.log('No Game Found...');
+        response.send('No Game Found...');
+      }else{
+        console.log('Found Game...');
+        if (game.white && !game.black){
+          update = {black:cookie};
+        }else if(!game.white && game.black){
+          update = {white:cookie};
+        }else{
+          response.send('Game has already started');
+          return;
+        }
+        var expire = new Date ();
+        expire.setTime (expire.getTime() + (24 * 60 * 60 * 1000*365));
+        DBCon.collection('games').update({_id:id},{$set: update},function (error, client) {
+          if(!error)
+            response.send('<script type="text/javascript">document.cookie = "player='+cookie+'; expires='+expire+'; path=/"; window.location.href="/game/'+id+'";</script>')
+            //response.redirect('/game/'+id);//response.send(mustache.render(template.css+push+template.body+template.board,{game:game.game}));  
+          else
+            response.send('Error');
+        });
+      }
+    });
+  });
 });
 
+/*
+  var socket = io.connect('http://localhost:5000');
 
+  socket.on('update', function(details){
+    socket.emit(getGamestate,'{{id}}');
+    if(turn){
+      turn = false;
+    }else{
+      turn = true;
+      animate(details);
+    }
+  });
 
+  function animate(details){
+      left = (details.before[0] - details.after[0])*100;
+      tip = (details.before[1] - details.after[1])*100;
+      var img = '<img src="' + piece.attr('src') + '" class="w" />';      
+      $('.board div:nth-child('+norm0+') img').remove();
+      update  = $('.board div:nth-child('+norm1+')');
+      update.html(img);
+      img = $('.board div:nth-child('+norm1+') img');
+      img.css({position:"relative",top:tip + "%",left:left + "%"});    
+      img.animate( {
+        top: '0px',
+        left: '0px'
+      },'slow');
+  }
 
+  socket.on('setGamestate', function(game){
+    gameplay.square = game;
+  });
 
+  //app.get('/api/:id/:auth/:acol/:arow/:bcol/:brow/', function(request, response) {
+
+  socket.emit('move',{acol:acol,arow:arow,bcol:bcol,brow:brow,id:id,auth:cookie});
+
+  socket.emit('create',{color:color,privacy:privacy,id:id,auth:cookie})
+
+  });
+*/
+
+io.sockets.on('connection', function (socket) {
+  socket.on('getGamestate',function(id){
+    DBCon.collection('games').findOne({_id:id},function(error,game){
+      console.log('Looking for Game...');
+      if (game == null){
+        console.log('No Game Found...');
+        response.send('No Game Found...');
+      }else{
+        console.log('Found Game...');
+        socket.join(game._id);
+        socket.emit('setGamestate',{game:game.game});
+      }
+    });
+  })
+  socket.on('getTurn',function(id){
+    DBCon.collection('games').findOne({_id:id},function(error,game){
+      console.log('Looking for Game...');
+      if (game == null){
+        console.log('No Game Found...');
+        response.send('No Game Found...');
+      }else{
+        console.log('Found Game...');
+        socket.join(game._id);
+        socket.emit('setTurn',{turn:game.turn});
+      }
+    });
+  })
+
+  socket.on('create',function(params){
+    var id = params.id;
+    if (!id.match("^[a-zA-Z0-9_-]*$") || id == ''){
+      socket.emit({created:false,message:'Invalid Name (Alphanumeric Characters only)'});
+      return;
+    }
+    if(!(params['color'] == 'black' || params['color'] == 'white') || !(params['privacy'] == 'public' || params['privacy'] == 'private')){
+      socket.emit({created:false,message:'Stop trying to hack the API'});
+      return;
+    }
+    DBCon.collection('static').findOne({_id:'template'},function(error,template){
+      var doc;
+      DBCon.collection('games').findOne({_id:id},function(error,game){
+        console.log('Looking for Game...');
+        if (game == null){
+          console.log('No Game Found...');
+          doc = {_id:id,game:{},white:'',black:'',privacy:''};
+          doc.game = template.game;
+          doc.turn = 'w';
+          doc.privacy = params['privacy'];
+          if (params['color'] == 'white'){
+            doc.white = params['auth'];
+          }else if(params['color'] == 'black'){
+            doc.black = params['auth'];
+          }
+          console.log('Creating Game ' + id + '...');
+          DBCon.collection('games').insert(doc);
+          socket.emit('created',{created:true,message:'Game Successfully Created'});
+          if (params['privacy'] == 'public')
+            io.sockets.emit('new',{name:id,color:params['color']});
+        }else{
+          console.log('Found Existing Game...');
+          io.sockets.emit('created',{created:false,message:'Game Already Exists'});
+        }
+      });
+    });
+})
+var empty = { piece: "",color: ""};
+
+  socket.on('move',function(params){
+    DBCon.collection('games').findOne({_id:params.id},function(error,game){
+      var auth = null;
+      var acol = parseInt(params.acol);
+      var arow = parseInt(params.arow);
+      var bcol = parseInt(params.bcol);
+      var brow = parseInt(params.brow);
+      var moving = game.game[arow][acol];
+      var move,omove;
+      if (game.white == params.auth && moving.color == 'w'){
+        auth = params.auth;
+        omove = 'b';
+        move = 'w';
+      }
+      else if (game.black == params.auth && moving.color == 'b'){
+        auth = params.auth;
+        omove = 'w';
+        move = 'b';
+      }
+
+      console.log(auth !== null);
+      console.log(game.turn == move);
+
+      var verifyplay = new gameplay()
+      verifyplay.square = game.game;
+      console.log(verifyplay.verify({before: [acol, arow],after: [bcol, brow]}));
+      if(auth !== null && game.turn == move && verifyplay.verify({before: [acol, arow],after: [bcol, brow]})){
+        game.game[brow][bcol] = game.game[arow][acol];
+        game.game[arow][acol] = empty;
+        DBCon.collection('games').update({_id:params.id},{$set: {game:game.game,turn:omove}},function (error, client) {
+          if(!error)
+            socket.broadcast.to(game._id).emit('update',{before:[acol,arow],after:[bcol,brow]}); 
+          else
+            socket.emit('Error', 'Something went wrong. Refresh and try again.');
+        });
+        
+      }else
+        socket.emit('Boot', true);
+        socket.emit('Error', 'You damn Cheat!');;
+    });  
+  });
+});
