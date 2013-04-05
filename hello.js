@@ -78,19 +78,23 @@ var gameplay = function gameplay (){
     var self = this;
     self.move = function (){
       self.i = 0;
-      self.movable = [];
+      
       self.piece = self.square[self.row][self.col];
       moves = self.pieces[self.piece.piece];
       for (z=0;z<moves.length;z++){
+        self.movable = [];
         moves[z].kind(moves[z].funct);
+        if (self.movable.indexOf(self.after) >= 0)
+          return true;
       }
-      return self.movable;
+      return false;
     }
     self.verify = function (args){
         console.log('Made it');
         self.col = args.before[0];
         self.row = args.before[1];
-        return (self.move().indexOf(self.square[args.after[0]][args.after[1]]) >= 0);
+        self.after = self.square[args.after[0]][args.after[1]];
+        return self.move();
     } 
     self.pieces = {
     'castle':[
