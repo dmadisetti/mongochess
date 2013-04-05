@@ -44,10 +44,10 @@ app.get('/game/:id', function(request, response) {
         expdate.setTime (expdate.getTime() + (24 * 60 * 60 * 1000*365));
         color = cookie == game.white ? "w" : cookie == game.black ? "b" : null;
 
-        turn = game.turn == color ? "turn = true;" : "turn = false"
+        update = color == 'w' ? 'b' : 'w';
 
 
-        response.send(mustache.render(template.css+template.body+template.board,{turn:turn,cookie:cookie,hash:hash,expire:expdate,game:game.game,color:color,id:id}));
+        response.send(mustache.render(template.css+template.body+template.board,{update:update,cookie:cookie,hash:hash,expire:expdate,game:game.game,color:color,id:id}));
       }
     });
   });
