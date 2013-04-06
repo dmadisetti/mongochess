@@ -78,14 +78,13 @@ var gameplay = function gameplay (){
     var self = this;
     self.move = function (){
       console.log('In Move');
-      self.i = 0;
-      
       self.piece = self.square[self.row][self.col];
+      
       moves = self.pieces[self.piece.piece];
       for (z=0;z<moves.length;z++){
         self.movable = [];
         moves[z].kind(moves[z].funct);
-        console.log(self.movable);
+        console.log(self.after +' vs '+ self.movable);
         if (self.movable.indexOf(self.after) >= 0)
           return true;
       }
@@ -96,7 +95,7 @@ var gameplay = function gameplay (){
         console.log('In verify');
         self.col = args.before[0];
         self.row = args.before[1];
-        self.after = self.square[args.after[0]][args.after[1]];
+        self.after = args.after[1] * 8 + args.after[0];
         return self.move();
     } 
     self.pieces = {
@@ -299,7 +298,8 @@ var gameplay = function gameplay (){
 
     function longmove (funct){
       var col = self.col,
-      row = self.row;
+      row = self.row,
+      i = 0;
 
       while(true){
         pos = funct(col,row);
@@ -309,7 +309,7 @@ var gameplay = function gameplay (){
           && (self.square[col][row]) 
           && self.square[col][row].color !== self.piece.color
         )
-          self.movable[self.i++] = self.square[col][row];
+          self.movable[i++] = row * 8 + col;
         else
           return self.movable;     
       }
@@ -327,8 +327,7 @@ var gameplay = function gameplay (){
           && (self.square[col][row]) 
           && self.square[col][row].color !== self.piece.color
       )
-         self.movable[self.i++] = self.square[col][row];
-      return self.movable;
+      return [row * 8 + col];
     }
 }
 var CryptoJS = require('cryptojs').Crypto;
