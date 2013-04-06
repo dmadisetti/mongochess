@@ -292,6 +292,21 @@ var gameplay = function gameplay (){
       },
        kind: shortmove
       }
+    ],
+    'pawn':[
+      {funct:function (col,row){
+        self.piece.color == 'w' ? ++col : --col;
+        self.piece.moved = true;
+        return [col,row];
+      },
+       kind: shortmove
+      },
+      {funct:function (col,row){
+        col += self.piece.moved ? 9 : self.piece.color == 'w' ? 2 : -2;
+        return [col,row];
+      },
+       kind: shortmove
+      }
     ]
   };
 
