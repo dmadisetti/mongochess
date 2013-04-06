@@ -301,8 +301,8 @@ var gameplay = function gameplay (){
 
       while(true){
         pos = funct(col,row);
-        col = pos[0];
-        row = pos[1];
+        col = pos[1];
+        row = pos[0];
         if ((self.square[col]) 
           && (self.square[col][row]) 
           && self.square[col][row].color !== self.piece.color
@@ -319,8 +319,8 @@ var gameplay = function gameplay (){
 
       pos = funct(col,row);
 
-      col = pos[0];
-      row = pos[1];
+      col = pos[1];
+      row = pos[0];
       if ((self.square[col]) 
           && (self.square[col][row]) 
           && self.square[col][row].color !== self.piece.color
