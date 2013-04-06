@@ -87,7 +87,7 @@ var gameplay = function gameplay (){
         if (self.movable.indexOf(self.after) >= 0)
           return true;
       }
-      alert('Finishes');
+      alert('Finished');
       return false;
     }
     self.verify = function (args){
@@ -300,7 +300,7 @@ var gameplay = function gameplay (){
       row = self.row;
 
       while(true){
-        pos = funct(row,col);
+        pos = funct(col,row);
         col = pos[0];
         row = pos[1];
         if ((self.square[col]) 
@@ -317,7 +317,7 @@ var gameplay = function gameplay (){
       var col = self.col,
       row = self.row;
 
-      pos = funct(row,col);
+      pos = funct(col,row);
 
       col = pos[0];
       row = pos[1];
