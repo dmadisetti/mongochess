@@ -306,11 +306,12 @@ var gameplay = function gameplay (){
         col = pos[0];
         row = pos[1];
         if ((self.square[row]) 
-          && (self.square[row][col]) 
-          && self.square[row][col].color !== self.piece.color
-        )
-          self.movable[i++] = row * 8 + col;
-        else
+          && (self.square[row][col] 
+          && self.square[row][col].color !== self.piece.color){ 
+            self.movable[i++] = row * 8 + col;
+            if (self.square[row][col].piece)  
+              return;
+        }else
           return;     
       }
     }
