@@ -299,6 +299,30 @@ var gameplay = function gameplay (){
         return [col,row];
       },
        kind: pawnmove
+      },
+      {funct:function (col,row){
+        if(self.piece.color == 'w'){
+           --row;
+           --col;
+        }else{
+           ++row;
+           ++col;
+        }
+        return [col,row];
+      },
+       kind: pawneat
+      },
+      {funct:function (col,row){
+        if(self.piece.color == 'w'){
+           --row;
+           ++col;
+        }else{
+           ++row;
+           --col;
+        }        
+        return [col,row];
+      },
+       kind: pawneat
       }
     ]
   };
@@ -335,6 +359,23 @@ var gameplay = function gameplay (){
       if ((self.square[row]) 
           && (self.square[row][col]) 
           && self.square[row][col].color !== self.piece.color
+      )
+        self.movable = [row * 8 + col];
+      return;
+    }
+
+    function pawneat(funct){
+      var col = self.col,
+      row = self.row;
+
+      pos = funct(col,row);
+
+      col = pos[0];
+      row = pos[1];
+      if ((self.square[row]) 
+          && (self.square[row][col]) 
+          && self.square[row][col].color !== self.piece.color
+          && self.square[row][col].piece
       )
         self.movable = [row * 8 + col];
       return;
