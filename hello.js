@@ -311,7 +311,7 @@ var gameplay = function gameplay (){
         )
           self.movable[i++] = row * 8 + col;
         else
-          return self.movable;     
+          return;     
       }
     }
 
@@ -327,7 +327,8 @@ var gameplay = function gameplay (){
           && (self.square[col][row]) 
           && self.square[col][row].color !== self.piece.color
       )
-      return [row * 8 + col];
+        self.movable = [row * 8 + col];
+      return;
     }
 }
 var CryptoJS = require('cryptojs').Crypto;
