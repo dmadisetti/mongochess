@@ -298,13 +298,7 @@ var gameplay = function gameplay (){
         self.piece.color == 'w' ? --row : ++row;
         return [col,row];
       },
-       kind: shortmove
-      },
-      {funct:function (col,row){
-        row += self.piece.moved == null ? self.piece.color == 'w' ? -2 : 2 : 9;
-        return [col,row];
-      },
-       kind: shortmove
+       kind: pawnmove
       }
     ]
   };
@@ -343,6 +337,31 @@ var gameplay = function gameplay (){
           && self.square[row][col].color !== self.piece.color
       )
         self.movable = [row * 8 + col];
+      return;
+    }
+
+    function pawnmove(funct){
+      var col = self.col,
+      row = self.row;
+
+      pos = funct(col,row);
+      col = pos[0];
+      row = pos[1];
+      if ((self.square[row]) 
+          && (self.square[row][col]) 
+          && self.square[row][col] == empty
+      ){
+        self.movable[0] = row * 8 + col;
+        pos = funct(col,row);
+        col = pos[0];
+        row = pos[1];
+        if (self.piece.move == null
+          && (self.square[row]) 
+          && (self.square[row][col]) 
+          && self.square[row][col] == empty
+        )
+          self.movable[1] = row * 8 + col;
+      }
       return;
     }
 }
