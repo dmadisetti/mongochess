@@ -296,7 +296,7 @@ var gameplay = function gameplay (){
     'pawn':[
       {funct:function (col,row){
         console.log(col);
-        self.piece.color == 'w' ? ++col : --col;
+        self.piece.color == 'w' ? --col : ++col;
         console.log(col);
         self.piece.moved = true;
         return [col,row];
@@ -305,7 +305,7 @@ var gameplay = function gameplay (){
       },
       {funct:function (col,row){
         console.log(col);
-        col += self.piece.moved ? 9 : self.piece.color == 'w' ? 2 : -2;
+        col += self.piece.moved ? self.piece.color == 'w' ? -2 : 2 : 9;
         console.log(col);
         return [col,row];
       },
