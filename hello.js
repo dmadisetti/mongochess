@@ -295,14 +295,18 @@ var gameplay = function gameplay (){
     ],
     'pawn':[
       {funct:function (col,row){
+        console.log(col);
         self.piece.color == 'w' ? ++col : --col;
+        console.log(col);
         self.piece.moved = true;
         return [col,row];
       },
        kind: shortmove
       },
       {funct:function (col,row){
+        console.log(col);
         col += self.piece.moved ? 9 : self.piece.color == 'w' ? 2 : -2;
+        console.log(col);
         return [col,row];
       },
        kind: shortmove
