@@ -300,7 +300,7 @@ var gameplay = function gameplay (){
       row = self.row;
 
       while(true){
-        pos = funct(col,row);
+        pos = funct(row,col);
         col = pos[0];
         row = pos[1];
         if ((self.square[col]) 
@@ -317,7 +317,7 @@ var gameplay = function gameplay (){
       var col = self.col,
       row = self.row;
 
-      pos = funct(col,row);
+      pos = funct(row,col);
 
       col = pos[0];
       row = pos[1];
