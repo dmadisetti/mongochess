@@ -84,6 +84,7 @@ var gameplay = function gameplay (){
       for (z=0;z<moves.length;z++){
         self.movable = [];
         moves[z].kind(moves[z].funct);
+        alert(self.movable);
         if (self.movable.indexOf(self.after) >= 0)
           return true;
       }
