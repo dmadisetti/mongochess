@@ -355,7 +355,7 @@ var gameplay = function gameplay (){
         pos = funct(col,row);
         col = pos[0];
         row = pos[1];
-        if (self.piece.move == null
+        if (!(self.piece.move)
           && (self.square[row]) 
           && (self.square[row][col]) 
           && !(self.square[row][col].piece)
