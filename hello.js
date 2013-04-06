@@ -349,7 +349,7 @@ var gameplay = function gameplay (){
       row = pos[1];
       if ((self.square[row]) 
           && (self.square[row][col]) 
-          && self.square[row][col] == empty
+          && !(self.square[row][col].piece)
       ){
         self.movable[0] = row * 8 + col;
         pos = funct(col,row);
@@ -358,7 +358,7 @@ var gameplay = function gameplay (){
         if (self.piece.move == null
           && (self.square[row]) 
           && (self.square[row][col]) 
-          && self.square[row][col] == empty
+          && !(self.square[row][col].piece)
         )
           self.movable[1] = row * 8 + col;
       }
