@@ -77,6 +77,7 @@ app.listen(port, function() {
 var gameplay = function gameplay (){
     var self = this;
     self.move = function (){
+      console.log('In Move');
       self.i = 0;
       
       self.piece = self.square[self.row][self.col];
@@ -84,7 +85,7 @@ var gameplay = function gameplay (){
       for (z=0;z<moves.length;z++){
         self.movable = [];
         moves[z].kind(moves[z].funct);
-        alert(self.movable);
+        console.log(self.movable);
         if (self.movable.indexOf(self.after) >= 0)
           return true;
       }
@@ -92,7 +93,7 @@ var gameplay = function gameplay (){
       return false;
     }
     self.verify = function (args){
-        console.log('Made it');
+        console.log('In verify');
         self.col = args.before[0];
         self.row = args.before[1];
         self.after = self.square[args.after[0]][args.after[1]];
