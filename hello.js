@@ -305,7 +305,8 @@ var gameplay = function gameplay (){
       },
       {funct:function (col,row){
         console.log(col);
-        row += self.piece.moved ? self.piece.color == 'w' ? -2 : 2 : 9;
+        row += self.piece.moved == null ? self.piece.color == 'w' ? -2 : 2 : 9;
+        self.piece.moved = true;
         console.log(col);
         return [col,row];
       },
