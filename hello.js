@@ -295,19 +295,13 @@ var gameplay = function gameplay (){
     ],
     'pawn':[
       {funct:function (col,row){
-        console.log(col);
         self.piece.color == 'w' ? --row : ++row;
-        console.log(col);
-        self.piece.moved = true;
         return [col,row];
       },
        kind: shortmove
       },
       {funct:function (col,row){
-        console.log(col);
         row += self.piece.moved == null ? self.piece.color == 'w' ? -2 : 2 : 9;
-        self.piece.moved = true;
-        console.log(col);
         return [col,row];
       },
        kind: shortmove
@@ -536,6 +530,7 @@ var empty = { piece: "",color: ""};
       verifyplay.square = game.game;
       console.log(verifyplay.verify({before: [acol, arow],after: [bcol, brow]}));
       if(auth !== null && game.turn == move && verifyplay.verify({before: [acol, arow],after: [bcol, brow]})){
+        game.game[arow][acol].moved = true;
         game.game[brow][bcol] = game.game[arow][acol];
         game.game[arow][acol] = empty;
         DBCon.collection('games').update({_id:params.id},{$set: {game:game.game,turn:omove}},function (error, client) {
