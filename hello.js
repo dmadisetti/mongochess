@@ -604,6 +604,7 @@ io.sockets.on('connection', function (socket) {
 
       var verifyplay = new gameplay()
       verifyplay.square = game.game;
+      verifyplay.enemies = game.enemies;
 
       if(auth !== null && game.turn == move && verifyplay.verify({before: [acol, arow],after: [bcol, brow]})){
         console.log('Legit Move');
