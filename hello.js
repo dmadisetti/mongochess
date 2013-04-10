@@ -594,26 +594,29 @@ io.sockets.on('connection', function (socket) {
         move = 'b';
       }
 
-      console.log(auth !== null);
-      console.log(game.turn == move);
-
       var verifyplay = new gameplay()
       verifyplay.square = game.game;
-      console.log(verifyplay.verify({before: [acol, arow],after: [bcol, brow]}));
+
       if(auth !== null && game.turn == move && verifyplay.verify({before: [acol, arow],after: [bcol, brow]})){
+        console.log('Legit Move');
         game.game[arow][acol].moved = true;
         game.game[brow][bcol] = game.game[arow][acol];
         game.game[arow][acol] = verifyplay.empty;
         DBCon.collection('games').update({_id:params.id},{$set: {game:game.game,turn:omove}},function (error, client) {
           if(!error){
+            console.log('Legit Move');
             socket.broadcast.to(game._id).emit('update',{before:[acol,arow],after:[bcol,brow]}); 
             socket.emit('moved',{success:true});
-          }else
+          }else{
+            console.log('Something went wrong');
             socket.emit('moved',{success:false});
+          }
         });
         
-      }else
+      }else{
+        console.log('Bad Move');
         socket.emit('moved',{success:false});
+      }
     });  
   });
 });
