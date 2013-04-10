@@ -605,15 +605,15 @@ io.sockets.on('connection', function (socket) {
         game.game[brow][bcol] = game.game[arow][acol];
         game.game[arow][acol] = verifyplay.empty;
         DBCon.collection('games').update({_id:params.id},{$set: {game:game.game,turn:omove}},function (error, client) {
-          if(!error)
+          if(!error){
             socket.broadcast.to(game._id).emit('update',{before:[acol,arow],after:[bcol,brow]}); 
-          else
-            socket.emit('Error', 'Something went wrong. Refresh and try again.');
+            socket.emit('moved',{success:true});
+          }else
+            socket.emit('moved',{success:false});
         });
         
       }else
-        socket.emit('Boot', true);
-        socket.emit('Error', 'You damn Cheat!');;
+        socket.emit('moved',{success:false});
     });  
   });
 });
