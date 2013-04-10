@@ -76,6 +76,8 @@ app.listen(port, function() {
 
 var gameplay = function gameplay (){
     var self = this;
+    self.castle = false;
+    self.promote = false;
     self.move = function (){
       console.log('In Move');
       self.piece = self.square[self.row][self.col];
@@ -96,8 +98,28 @@ var gameplay = function gameplay (){
         self.col = args.before[0];
         self.row = args.before[1];
         self.after = args.after[1] * 8 + args.after[0];
-        return self.move();
-    } 
+        if (self.move()){
+          var squareholder = self.square;
+          self.square[args.after[1]][args.after[0]] = self.square[self.row][self.col];
+          self.square[self.row][self.col] = empty;
+          check = self.check(args.king);
+          self.square = squareholder;
+          return check;
+        }
+        return false;
+    }
+
+    self.check = function (args){
+      self.after = args[1] * 8 + args[0];
+      for (z=0;z<self.enemies.length;z++){
+        self.col = self.enemies[z].col;
+        self.row = self.enemies[z].row;
+        if (move())
+          return true;
+      }
+      return false;
+    }
+
     self.pieces = {
     'castle':[
       {funct:function (col,row){
@@ -291,6 +313,21 @@ var gameplay = function gameplay (){
         return [++col,--row];
       },
        kind: shortmove
+      },
+      {funct: function(squares){
+        for (z=0;z<moves.length;z++){
+          self.movable = [];
+          moves[z].kind(moves[z].funct);
+          for (i=0;i<squares.length;i++){
+            if (self.movable.indexOf(squares[i]) >= 0)
+              squares.pop(i);
+          }
+          if (squares.length == 0)
+            return false;
+        }
+        return true;
+      },
+      kind: castle
       }
     ],
     'pawn':[
@@ -364,6 +401,14 @@ var gameplay = function gameplay (){
       return;
     }
 
+    function castle(funct){
+      // TODO: Well you know..
+      // Check color then possible spots
+      // Check if castle/king move
+
+      // gameplay.castle = true;
+    }
+
     function pawneat(funct){
       var col = self.col,
       row = self.row;
@@ -376,13 +421,16 @@ var gameplay = function gameplay (){
           && (self.square[row][col]) 
           && self.square[row][col].color !== self.piece.color
           && self.square[row][col].piece
-      )
+      ){
+        self.promote = self.square[row][col].piece.color == 'w' ? row == 0 : row == 7;
         self.movable = [row * 8 + col];
+      }
       return;
     }
 
     function pawnmove(funct){
-      var col = self.col,
+      var promote, 
+      col = self.col,
       row = self.row;
 
       pos = funct(col,row);
@@ -392,10 +440,13 @@ var gameplay = function gameplay (){
           && (self.square[row][col]) 
           && !(self.square[row][col].piece)
       ){
+        self.promote = self.square[row][col].piece.color == 'w' ? row == 0 : row == 7;
         self.movable[0] = row * 8 + col;
         pos = funct(col,row);
         col = pos[0];
         row = pos[1];
+
+
         if (!(self.piece.moved)
           && (self.square[row]) 
           && (self.square[row][col]) 
@@ -454,47 +505,6 @@ app.get('/game/:id/opp', function(request, response) {
     });
   });
 });
-
-/*
-  var socket = io.connect('http://localhost:5000');
-
-  socket.on('update', function(details){
-    socket.emit(getGamestate,'{{id}}');
-    if(turn){
-      turn = false;
-    }else{
-      turn = true;
-      animate(details);
-    }
-  });
-
-  function animate(details){
-      left = (details.before[0] - details.after[0])*100;
-      tip = (details.before[1] - details.after[1])*100;
-      var img = '<img src="' + piece.attr('src') + '" class="w" />';      
-      $('.board div:nth-child('+norm0+') img').remove();
-      update  = $('.board div:nth-child('+norm1+')');
-      update.html(img);
-      img = $('.board div:nth-child('+norm1+') img');
-      img.css({position:"relative",top:tip + "%",left:left + "%"});    
-      img.animate( {
-        top: '0px',
-        left: '0px'
-      },'slow');
-  }
-
-  socket.on('setGamestate', function(game){
-    gameplay.square = game;
-  });
-
-  //app.get('/api/:id/:auth/:acol/:arow/:bcol/:brow/', function(request, response) {
-
-  socket.emit('move',{acol:acol,arow:arow,bcol:bcol,brow:brow,id:id,auth:cookie});
-
-  socket.emit('create',{color:color,privacy:privacy,id:id,auth:cookie})
-
-  });
-*/
 
 io.sockets.on('connection', function (socket) {
   socket.on('getGamestate',function(id){
