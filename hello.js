@@ -77,8 +77,6 @@ app.listen(port, function() {
 var gameplay = function gameplay (){
     var self = this;
     self.empty = { piece: "",color: ""};
-    self.castle = false;
-    self.promote = false;
     self.move = function (){
       console.log('In Move');
       self.piece = self.square[self.row][self.col];
@@ -96,30 +94,37 @@ var gameplay = function gameplay (){
     }
     self.verify = function (args){
         console.log('In verify');
+        self.event = 'update';
         self.col = args.before[0];
         self.row = args.before[1];
         self.after = args.after[1] * 8 + args.after[0];
-        /*if (self.move()){
+        if (self.move()){
           var squareholder = self.square;
           self.square[args.after[1]][args.after[0]] = self.square[self.row][self.col];
           self.square[self.row][self.col] = empty;
-          check = self.check(args.king);
+          var king = self.enemies[self.piece.color].king;
+          check = self.check(self.piece.color,king[1],king[0]);
           self.square = squareholder;
-          return check;
+          return !(check);
         }
-        return false;*/
-        return self.move();
+        return false;
     }
 
-    self.check = function (args){
-      self.after = args[1] * 8 + args[0];
+    self.check = function (color,col,row){
+      self.after = col * 8 + row;
       for (z=0;z<self.enemies.length;z++){
-        self.col = self.enemies[z].col;
-        self.row = self.enemies[z].row;
+        self.col = self.enemies[color][z][1];
+        self.row = self.enemies[color][z][0];
         if (move())
           return true;
       }
       return false;
+    }
+
+    self.checkmate = function (args){
+
+      self.check(args);
+
     }
 
     self.pieces = {
@@ -518,7 +523,7 @@ io.sockets.on('connection', function (socket) {
       }else{
         console.log('Found Game...');
         socket.join(game._id);
-        socket.emit('setGamestate',{game:game.game});
+        socket.emit('setGamestate',{game:game.game,enemies:game.enemies});
       }
     });
   })
@@ -556,6 +561,7 @@ io.sockets.on('connection', function (socket) {
           doc.game = template.game;
           doc.turn = 'w';
           doc.privacy = params['privacy'];
+          doc.enemies = template.enemies;
           if (params['color'] == 'white'){
             doc.white = params['auth'];
           }else if(params['color'] == 'black'){
@@ -602,10 +608,21 @@ io.sockets.on('connection', function (socket) {
         game.game[arow][acol].moved = true;
         game.game[brow][bcol] = game.game[arow][acol];
         game.game[arow][acol] = verifyplay.empty;
-        DBCon.collection('games').update({_id:params.id},{$set: {game:game.game,turn:omove}},function (error, client) {
+        game.enemies[move].pieces[game.enemies[move].pieces.indexOf([arow,acol])] = [brow,bcol];
+        if (game.game[brow][bcol].piece == 'king')
+          game.enemies[move].king = [brow,bcol];
+
+        var oindex = game.enemies[omove].pieces.indexOf([brow,bcol]);
+
+        if (oindex)
+          game.enemies[omove].pieces.splice(oindex,1);
+
+        DBCon.collection('games').update({_id:params.id},{$set: {game:game.game,turn:omove,enemies:game.enemies}},function (error, client) {
           if(!error){
-            console.log('Legit Move');
-            socket.broadcast.to(game._id).emit('update',{before:[acol,arow],after:[bcol,brow]}); 
+            console.log('Broadcasting move to others');
+
+            socket.broadcast.to(game._id).emit(verifyplay.event,{before:[acol,arow],after:[bcol,brow]}); 
+            
             socket.emit('moved',{success:true});
           }else{
             console.log('Something went wrong');
@@ -619,4 +636,9 @@ io.sockets.on('connection', function (socket) {
       }
     });  
   });
+
+
+//db.users.find().limit(10).map( function(u) { return u.name; } );
+
+
 });
