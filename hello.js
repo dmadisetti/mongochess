@@ -94,7 +94,7 @@ var gameplay = function gameplay (){
     }
     self.verify = function (args){
         console.log('In verify');
-        self.event = 'update';
+        self.events = 'update';
         self.col = args.before[0];
         self.row = args.before[1];
         self.after = args.after[1] * 8 + args.after[0];
@@ -104,6 +104,7 @@ var gameplay = function gameplay (){
           self.square[self.row][self.col] = self.empty;
           var king = self.enemies[self.piece.color].king;
           check = self.check(self.piece.color,king[1],king[0]);
+          console.log(squareholder);
           self.square = squareholder;
           return !(check);
         }
@@ -624,7 +625,7 @@ io.sockets.on('connection', function (socket) {
           if(!error){
             console.log('Broadcasting move to others');
 
-            socket.broadcast.to(game._id).emit(verifyplay.event,{before:[acol,arow],after:[bcol,brow]}); 
+            socket.broadcast.to(game._id).emit(verifyplay.events,{before:[acol,arow],after:[bcol,brow]}); 
             
             socket.emit('moved',{success:true});
           }else{
