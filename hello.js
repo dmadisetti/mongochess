@@ -16,7 +16,7 @@ DBCon.open(function(err, db) {
 });
 
 var app = express.createServer(express.logger());
-var io = require('socket.io').listen(app);
+var io = require('socket.io').listen(app, { log: false });;
 
 app.use("/pieces", express.static(__dirname + '/pieces'));
 app.use(express.cookieParser());
