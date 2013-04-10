@@ -99,7 +99,7 @@ var gameplay = function gameplay (){
         self.col = args.before[0];
         self.row = args.before[1];
         self.after = args.after[1] * 8 + args.after[0];
-        if (self.move()){
+        /*if (self.move()){
           var squareholder = self.square;
           self.square[args.after[1]][args.after[0]] = self.square[self.row][self.col];
           self.square[self.row][self.col] = empty;
@@ -107,7 +107,8 @@ var gameplay = function gameplay (){
           self.square = squareholder;
           return check;
         }
-        return false;
+        return false;*/
+        return self.move();
     }
 
     self.check = function (args){
