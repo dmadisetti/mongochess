@@ -111,6 +111,7 @@ var gameplay = function gameplay (){
     }
 
     self.check = function (color,col,row){
+      color = color == 'w' ? 'b' : 'w';
       self.after = col * 8 + row;
       for (z=0;z<self.enemies.length;z++){
         self.col = self.enemies[color][z][1];
