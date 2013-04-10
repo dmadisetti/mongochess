@@ -75,8 +75,8 @@ app.listen(port, function() {
 
 
 var gameplay = function gameplay (){
-    var self = this,
-    empty = { piece: "",color: ""};
+    var self = this;
+    self.empty = { piece: "",color: ""};
     self.castle = false;
     self.promote = false;
     self.move = function (){
@@ -602,7 +602,7 @@ io.sockets.on('connection', function (socket) {
       if(auth !== null && game.turn == move && verifyplay.verify({before: [acol, arow],after: [bcol, brow]})){
         game.game[arow][acol].moved = true;
         game.game[brow][bcol] = game.game[arow][acol];
-        game.game[arow][acol] = empty;
+        game.game[arow][acol] = verifyplay.empty;
         DBCon.collection('games').update({_id:params.id},{$set: {game:game.game,turn:omove}},function (error, client) {
           if(!error)
             socket.broadcast.to(game._id).emit('update',{before:[acol,arow],after:[bcol,brow]}); 
