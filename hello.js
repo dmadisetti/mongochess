@@ -75,7 +75,8 @@ app.listen(port, function() {
 
 
 var gameplay = function gameplay (){
-    var self = this;
+    var self = this,
+    empty = { piece: "",color: ""};
     self.castle = false;
     self.promote = false;
     self.move = function (){
@@ -571,7 +572,6 @@ io.sockets.on('connection', function (socket) {
       });
     });
 })
-var empty = { piece: "",color: ""};
 
   socket.on('move',function(params){
     DBCon.collection('games').findOne({_id:params.id},function(error,game){
