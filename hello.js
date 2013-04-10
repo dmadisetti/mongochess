@@ -609,12 +609,16 @@ io.sockets.on('connection', function (socket) {
 
       if(auth !== null && game.turn == move && verifyplay.verify({before: [acol, arow],after: [bcol, brow]})){
         console.log('Legit Move');
+        console.log(game.game);
         game.game[arow][acol].moved = true;
         game.game[brow][bcol] = game.game[arow][acol];
         game.game[arow][acol] = verifyplay.empty;
+        console.log(game.game[arow][acol]);
         game.enemies[move].pieces[game.enemies[move].pieces.indexOf([arow,acol])] = [brow,bcol];
         if (game.game[brow][bcol].piece == 'king')
           game.enemies[move].king = [brow,bcol];
+
+        console.log(game.game);
 
         var oindex = game.enemies[omove].pieces.indexOf([brow,bcol]);
 
