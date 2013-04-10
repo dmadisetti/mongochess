@@ -101,7 +101,7 @@ var gameplay = function gameplay (){
         if (self.move()){
           var squareholder = self.square;
           self.square[args.after[1]][args.after[0]] = self.square[self.row][self.col];
-          self.square[self.row][self.col] = empty;
+          self.square[self.row][self.col] = self.empty;
           var king = self.enemies[self.piece.color].king;
           check = self.check(self.piece.color,king[1],king[0]);
           self.square = squareholder;
