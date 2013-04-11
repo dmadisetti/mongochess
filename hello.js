@@ -630,13 +630,9 @@ io.sockets.on('connection', function (socket) {
 
       if(auth !== null && game.turn == move && verifyplay.verify({before: [acol, arow],after: [bcol, brow]})){
         log += 'Legit Move\n';
-        game.game[arow][acol].moved = true;
-        //console.log(game.game[arow][acol]);
-        console.log(game.game[brow][bcol]);
-        //console.log(game.game[acol][arow]);
-        //console.log(verifyplay.square[arow][acol]);
-        game.game[brow][bcol] = game.game[arow][acol];
-        game.game[arow][acol] = verifyplay.empty;
+        game.game[brow][bcol].moved = true;
+        game.game[arow][acol] = game.game[brow][bcol];
+        game.game[brow][bcol] = verifyplay.empty;
         game.enemies[move].pieces[game.enemies[move].pieces.indexOf([arow,acol])] = [brow,bcol];
         if (game.game[brow][bcol].piece == 'king')
           game.enemies[move].king = [brow,bcol];
