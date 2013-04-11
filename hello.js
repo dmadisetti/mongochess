@@ -115,7 +115,7 @@ var gameplay = function gameplay (){
       color = color == 'w' ? 'b' : 'w';
       self.after = col * 8 + row;
       
-
+      return false;
       for (var z=0;z<self.enemies[color].pieces.length;z++){
         self.col = self.enemies[color].pieces[z][0];
         self.row = self.enemies[color].pieces[z][1];
@@ -614,13 +614,15 @@ io.sockets.on('connection', function (socket) {
         game.game[arow][acol].moved = true;
         game.game[brow][bcol] = game.game[arow][acol];
         game.game[arow][acol] = verifyplay.empty;
+        console.log(game.enemies[move].pieces.indexOf([arow,acol]));
+        console.log(game.enemies[move].pieces[game.enemies[move].pieces.indexOf([arow,acol])]);
         game.enemies[move].pieces[game.enemies[move].pieces.indexOf([arow,acol])] = [brow,bcol];
         if (game.game[brow][bcol].piece == 'king')
           game.enemies[move].king = [brow,bcol];
 
 
         var oindex = game.enemies[omove].pieces.indexOf([brow,bcol]);
-
+        console.log('HEYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY' + oindex);
         if (oindex)
           game.enemies[omove].pieces.splice(oindex,1);
 
