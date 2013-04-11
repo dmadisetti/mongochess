@@ -614,15 +614,15 @@ io.sockets.on('connection', function (socket) {
         game.game[arow][acol].moved = true;
         game.game[brow][bcol] = game.game[arow][acol];
         game.game[arow][acol] = verifyplay.empty;
-        console.log(game.enemies[omove].pieces);
-        console.log(game.enemies[omove].pieces.indexOf([acol,arow]));
-        console.log(game.enemies[omove].pieces[game.enemies[omove].pieces.indexOf([arow,acol])]);
-        game.enemies[omove].pieces[game.enemies[omove].pieces.indexOf([arow,acol])] = [brow,bcol];
+        console.log(game.enemies[move].pieces);
+        console.log(game.enemies[move].pieces.indexOf([acol,arow]));
+        console.log(game.enemies[move].pieces[game.enemies[move].pieces.indexOf([arow,acol])]);
+        game.enemies[move].pieces[game.enemies[move].pieces.indexOf([arow,acol])] = [brow,bcol];
         if (game.game[brow][bcol].piece == 'king')
           game.enemies[move].king = [brow,bcol];
 
 
-        var oindex = game.enemies[move].pieces.indexOf([brow,bcol]);
+        var oindex = game.enemies[omove].pieces.indexOf([brow,bcol]);
         console.log('HEYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY' + oindex);
         if (oindex)
           game.enemies[omove].pieces.splice(oindex,1);
