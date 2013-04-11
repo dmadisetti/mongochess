@@ -615,11 +615,8 @@ io.sockets.on('connection', function (socket) {
         game.game[brow][bcol] = game.game[arow][acol];
         game.game[arow][acol] = verifyplay.empty;
 
-        console.log('THIS '+[arow,acol]);
-        console.log(game.enemies[move].pieces);
-        console.log(game.enemies[move].pieces.length);
-
         for (var z = 0; z > game.enemies[move].pieces.length; z++){
+        console.log(game.enemies[move].pieces[z] +' vs '+ [acol,arow]);
           if (game.enemies[move].pieces[z] == [acol,arow]){
             console.log('Yesssss');
             game.enemies[move].pieces[z] = [bcol,brow];
@@ -634,7 +631,7 @@ io.sockets.on('connection', function (socket) {
         }
         
         if (game.game[brow][bcol].piece == 'king')
-          game.enemies[move].king = [brow,bcol];
+          game.enemies[move].king = [bcol,brow];
 
 
 
