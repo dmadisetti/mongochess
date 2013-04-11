@@ -614,7 +614,7 @@ io.sockets.on('connection', function (socket) {
         game.game[arow][acol].moved = true;
         game.game[brow][bcol] = game.game[arow][acol];
         game.game[arow][acol] = verifyplay.empty;
-        console.log(game.enemies[move].pieces);
+        console.log([acol,arow]);
         console.log(game.enemies[move].pieces.indexOf([acol,arow]));
         console.log(game.enemies[move].pieces[game.enemies[move].pieces.indexOf([arow,acol])]);
         game.enemies[move].pieces[game.enemies[move].pieces.indexOf([arow,acol])] = [brow,bcol];
