@@ -100,6 +100,7 @@ var gameplay = function gameplay (){
         self.after = args.after[1] * 8 + args.after[0];
         if (self.move()){
           var squareholder = JSON.parse(JSON.stringify(self.square));
+          self.square = JSON.parse(JSON.stringify(self.square));
           self.square[args.after[1]][args.after[0]] = self.square[self.row][self.col];
           self.square[self.row][self.col] = self.empty;
           var king = self.enemies[self.piece.color].king;
