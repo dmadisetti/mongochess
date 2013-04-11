@@ -89,7 +89,6 @@ var gameplay = function gameplay (){
         if (self.movable.indexOf(self.after) >= 0)
           return true;
       }
-      alert('Finished');
       return false;
     }
     self.verify = function (args){
