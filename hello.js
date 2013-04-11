@@ -630,6 +630,8 @@ io.sockets.on('connection', function (socket) {
 
       if(auth !== null && game.turn == move && verifyplay.verify({before: [acol, arow],after: [bcol, brow]})){
         log += 'Legit Move\n';
+        console.log(game.game[brow][bcol]);
+        //console.log(game.game[arow][acol]);
         game.game[brow][bcol].moved = true;
         game.game[arow][acol] = game.game[brow][bcol];
         game.game[brow][bcol] = verifyplay.empty;
