@@ -603,7 +603,7 @@ io.sockets.on('connection', function (socket) {
 
   socket.on('move',function(params){
     var log = "----------------------------\n";
-    log += "Moving for game " + id + "\n";        
+    log += "Moving for game " + params.id + "\n";        
     DBCon.collection('games').findOne({_id:params.id},function(error,game){
       var auth = null;
       var acol = parseInt(params.acol);
