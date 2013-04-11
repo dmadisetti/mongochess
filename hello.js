@@ -120,7 +120,7 @@ var gameplay = function gameplay (){
       for (z=0;z<self.enemies[color].pieces.length;z++){
         self.col = self.enemies[color].pieces[z][1];
         self.row = self.enemies[color].pieces[z][0];
-        if (move())
+        if (self.move())
           return true;
       }
       return false;
