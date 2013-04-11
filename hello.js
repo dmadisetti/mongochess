@@ -99,13 +99,12 @@ var gameplay = function gameplay (){
         self.row = args.before[1];
         self.after = args.after[1] * 8 + args.after[0];
         if (self.move()){
-          var squareholder = JSON.parse(JSON.stringify(self.square));
-          self.square = JSON.parse(JSON.stringify(self.square));
+          var squareholder = JSON.stringify(self.square);
           self.square[args.after[1]][args.after[0]] = self.square[self.row][self.col];
           self.square[self.row][self.col] = self.empty;
           var king = self.enemies[self.piece.color].king;
           check = self.check(self.piece.color,king[1],king[0]);
-          self.square = squareholder;
+          self.square = JSON.parse(squareholder);
           return !(check);
         }
         return false;
