@@ -617,14 +617,14 @@ io.sockets.on('connection', function (socket) {
 
         for (var z = 0; z < game.enemies[move].pieces.length; z++){
           console.log(game.enemies[move].pieces[z] +' vs '+ [acol,arow]);
-          if (game.enemies[move].pieces[z] == [acol,arow]){
+          if (game.enemies[move].pieces[z][0] == acol && game.enemies[move].pieces[z][1] == arow){
             console.log('Yesssss');
             game.enemies[move].pieces[z] = [bcol,brow];
             break;
           }
         }
         for (var z = 0; z < game.enemies[omove].pieces.length; z++){
-          if (game.enemies[omove].pieces[z] == [acol,arow]){
+          if (game.enemies[omove].pieces[z][0] == bcol && game.enemies[omove].pieces[z][1] == brow){
             game.enemies[omove].pieces.splice(z,1);
             break;
           }
