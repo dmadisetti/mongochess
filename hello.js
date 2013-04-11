@@ -115,6 +115,8 @@ var gameplay = function gameplay (){
       console.log('In Check');
       color = color == 'w' ? 'b' : 'w';
       self.after = col * 8 + row;
+      console.log(self.enemies[color]);
+      console.log(self.enemies[color].length);
       for (z=0;z<self.enemies[color].length;z++){
         self.col = self.enemies[color][z][0];
         self.row = self.enemies[color][z][1];
