@@ -98,13 +98,13 @@ var gameplay = function gameplay (){
         self.row = args.before[1];
         self.after = args.after[1] * 8 + args.after[0];
         if (self.move()){
-          var squareholder = JSON.stringify(self.square);
+          var squareholder = self.square;
           self.square = JSON.parse(JSON.stringify(self.square));
           self.square[args.after[1]][args.after[0]] = self.square[self.row][self.col];
           self.square[self.row][self.col] = self.empty;
           var king = self.enemies[self.piece.color].king;
           check = self.check(self.piece.color,king[1],king[0]);
-          self.square = JSON.parse(squareholder);
+          self.square = squareholder;
           return !(check);
         }
         return false;
@@ -114,12 +114,10 @@ var gameplay = function gameplay (){
       console.log('In Check');
       color = color == 'w' ? 'b' : 'w';
       self.after = col * 8 + row;
-      
-      return false;
+
       for (var z=0;z<self.enemies[color].pieces.length;z++){
         self.col = self.enemies[color].pieces[z][0];
         self.row = self.enemies[color].pieces[z][1];
-        alert(self.square[self.row][self.col]);
         if (self.move())
           return true;
       }
@@ -616,9 +614,7 @@ io.sockets.on('connection', function (socket) {
         game.game[arow][acol] = verifyplay.empty;
 
         for (var z = 0; z < game.enemies[move].pieces.length; z++){
-          console.log(game.enemies[move].pieces[z] +' vs '+ [acol,arow]);
           if (game.enemies[move].pieces[z][0] == acol && game.enemies[move].pieces[z][1] == arow){
-            console.log('Yesssss');
             game.enemies[move].pieces[z] = [bcol,brow];
             break;
           }
