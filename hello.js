@@ -622,15 +622,18 @@ io.sockets.on('connection', function (socket) {
             break;
           }
         }
+        for (var z = 0; z > game.enemies[omove].pieces.length; z++;){
+          if (game.enemies[omove].pieces[z] == [arow,acol]){
+            game.enemies[omove].pieces.splice(z,1);
+            break;
+          }
+        }
         
         if (game.game[brow][bcol].piece == 'king')
           game.enemies[move].king = [brow,bcol];
 
 
-        var oindex = game.enemies[omove].pieces.indexOf([brow,bcol]);
 
-        if (oindex)
-          game.enemies[omove].pieces.splice(oindex,1);
 
         DBCon.collection('games').update({_id:params.id},{$set: {game:game.game,turn:omove,enemies:game.enemies}},function (error, client) {
           if(!error){
