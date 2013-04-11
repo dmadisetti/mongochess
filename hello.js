@@ -620,14 +620,14 @@ io.sockets.on('connection', function (socket) {
         console.log(game.enemies[move].pieces.length);
 
         for (var z = 0; z > game.enemies[move].pieces.length; z++){
-          if (game.enemies[move].pieces[z] == [arow,acol]){
+          if (game.enemies[move].pieces[z] == [acol,arow]){
             console.log('Yesssss');
-            game.enemies[move].pieces[z] = [brow,bcol];
+            game.enemies[move].pieces[z] = [bcol,brow];
             break;
           }
         }
         for (var z = 0; z > game.enemies[omove].pieces.length; z++){
-          if (game.enemies[omove].pieces[z] == [arow,acol]){
+          if (game.enemies[omove].pieces[z] == [acol,arow]){
             game.enemies[omove].pieces.splice(z,1);
             break;
           }
