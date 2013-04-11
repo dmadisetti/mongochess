@@ -99,7 +99,7 @@ var gameplay = function gameplay (){
         self.row = args.before[1];
         self.after = args.after[1] * 8 + args.after[0];
         if (self.move()){
-          var squareholder = JSON.parse(JSON.stringify(self.square));;
+          var squareholder = JSON.parse(JSON.stringify(self.square));
           self.square[args.after[1]][args.after[0]] = self.square[self.row][self.col];
           self.square[self.row][self.col] = self.empty;
           var king = self.enemies[self.piece.color].king;
@@ -612,12 +612,10 @@ io.sockets.on('connection', function (socket) {
         game.game[arow][acol].moved = true;
         game.game[brow][bcol] = game.game[arow][acol];
         game.game[arow][acol] = verifyplay.empty;
-        console.log(game.game[arow][acol]);
         game.enemies[move].pieces[game.enemies[move].pieces.indexOf([arow,acol])] = [brow,bcol];
         if (game.game[brow][bcol].piece == 'king')
           game.enemies[move].king = [brow,bcol];
 
-        console.log(game.game);
 
         var oindex = game.enemies[omove].pieces.indexOf([brow,bcol]);
 
