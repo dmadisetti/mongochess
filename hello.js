@@ -102,12 +102,13 @@ var gameplay = function gameplay (){
         self.row = args.before[1];
         self.after = args.after[1] * 8 + args.after[0];
         if (self.move()){
-          var squareholder = self.square;
-          self.square[args.after[1]][args.after[0]] = self.square[self.row][self.col];
+          var squareholder = self.square[args.before[1]][args.before[1]];
+          self.square[args.after[1]][args.after[0]] = self.square[args.before[1]][args.before[1]];
           self.square[self.row][self.col] = self.empty;
           var king = self.enemies[self.piece.color].king;
           check = self.check(self.piece.color,king[1],king[0]);
-          self.square = squareholder;
+          self.square[args.before[1]][args.before[0]] = self.square[args.after[1]][args.after[1]];
+          self.square[args.after[1]][args.after[1]] = squareholder;
           return !(check);
         }
         return false;
