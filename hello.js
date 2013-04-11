@@ -78,6 +78,7 @@ app.listen(port, function() {
 
 var gameplay = function gameplay (){
     var self = this;
+    self.square = '';
     self.empty = { piece: "",color: ""};
     self.move = function (){
       console.log('In Move');
@@ -631,6 +632,7 @@ io.sockets.on('connection', function (socket) {
         log += 'Legit Move\n';
         game.game[arow][acol].moved = true;
         console.log(game.game[arow][acol]);
+        console.log(verifyplay.square[arow][acol]);
         game.game[brow][bcol] = game.game[arow][acol];
         game.game[arow][acol] = verifyplay.empty;
         game.enemies[move].pieces[game.enemies[move].pieces.indexOf([arow,acol])] = [brow,bcol];
