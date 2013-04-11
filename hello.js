@@ -116,7 +116,7 @@ var gameplay = function gameplay (){
       color = color == 'w' ? 'b' : 'w';
       self.after = col * 8 + row;
       console.log(self.enemies[color]);
-      console.log(self.enemies[color].pieces.length);
+      console.log(self.enemies[color].pieces[0][1]);
       for (z=0;z<self.enemies[color].pieces.length;z++){
         self.col = self.enemies[color].pieces[z][1];
         self.row = self.enemies[color].pieces[z][0];
