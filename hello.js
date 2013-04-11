@@ -27,16 +27,15 @@ app.get('/js.js', function(request, response) {
 });
 
 app.get('/game/:id', function(request, response) {
-  var log = "----------------------------\n";
   var id = request.params.id;
   DBCon.collection('static').findOne({_id:'template'},function(error,template){
     DBCon.collection('games').findOne({_id:id},function(error,game){
-      log +='Looking for Game... \n';
+      console.log('Looking for Game...');
       if (game == null){
-        log += 'No Game Found... \n';
+        console.log('No Game Found...');
         response.send('No Game Found...');
       }else{
-        log += ('Found Game...\n');
+        console.log('Found Game...');
         var color,
         cookie = request.cookies.player,
         now = new Date().getTime(),
@@ -50,7 +49,6 @@ app.get('/game/:id', function(request, response) {
 
         response.send(mustache.render(template.css+template.body+template.board,{update:update,cookie:cookie,hash:hash,expire:expdate,game:game.game,color:color,id:id}));
       }
-      console.log(log);
     });
   });
 });
@@ -78,7 +76,6 @@ app.listen(port, function() {
 
 var gameplay = function gameplay (){
     var self = this;
-    self.square = '';
     self.empty = { piece: "",color: ""};
     self.move = function (){
       console.log('In Move');
@@ -102,13 +99,13 @@ var gameplay = function gameplay (){
         self.row = args.before[1];
         self.after = args.after[1] * 8 + args.after[0];
         if (self.move()){
-          var squareholder = self.square[args.before[1]][args.before[1]];
-          self.square[args.after[1]][args.after[0]] = self.square[args.before[1]][args.before[1]];
+          var squareholder = JSON.parse(JSON.stringify(self.square));;
+          self.square[args.after[1]][args.after[0]] = self.square[self.row][self.col];
           self.square[self.row][self.col] = self.empty;
           var king = self.enemies[self.piece.color].king;
           check = self.check(self.piece.color,king[1],king[0]);
-          self.square[args.before[1]][args.before[0]] = self.square[args.after[1]][args.after[1]];
-          self.square[args.after[1]][args.after[1]] = squareholder;
+          console.log(squareholder);
+          self.square = squareholder;
           return !(check);
         }
         return false;
@@ -473,47 +470,41 @@ var gameplay = function gameplay (){
 var CryptoJS = require('cryptojs').Crypto;
 
 app.get('/', function(request, response) {
-  var log = "----------------------------\n";
   var css = '<style>.onoffswitch { position: relative; width: 103px; -webkit-user-select:none; -moz-user-select:none; -ms-user-select: none; } .onoffswitch-checkbox { display: none; } .onoffswitch-label { display: block; overflow: hidden; cursor: pointer; border: 2px solid #999999; border-radius: 20px; } .onoffswitch-inner { width: 200%; margin-left: -100%; -moz-transition: margin 0.3s ease-in 0s; -webkit-transition: margin 0.3s ease-in 0s; -o-transition: margin 0.3s ease-in 0s; transition: margin 0.3s ease-in 0s; } .onoffswitch-inner:before, .onoffswitch-inner:after { float: left; width: 50%; height: 30px; padding: 0; line-height: 30px; font-size: 14px; color: white; font-family: Trebuchet, Arial, sans-serif; font-weight: bold; -moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: border-box; } label[for=privacy] .onoffswitch-inner:before { content:"PUBLIC"; padding-left: 10px; background-color: #86CCE3; color: #FFFFFF; } label[for=privacy] .onoffswitch-inner:after { content:"PRIVATE"; padding-right: 10px; background-color: #AEBBE3; color: #676769; text-align: right; } label[for=color] .onoffswitch-inner:before { content:"BLACK"; padding-left: 10px; background-color: #000; color: #FFFFFF; } label[for=color] .onoffswitch-inner:after { content:"WHITE"; padding-right: 10px; background-color: #FFF; color: #000; text-align: right; } .onoffswitch-switch { width: 13px; margin: 8.5px; background: #FFFFFF; border: 2px solid #999999; border-radius: 20px; position: absolute; top: 0; bottom: 0; right: 69px; -moz-transition: all 0.3s ease-in 0s; -webkit-transition: all 0.3s ease-in 0s; -o-transition: all 0.3s ease-in 0s; transition: all 0.3s ease-in 0s; } .onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-inner { margin-left: 0; } .onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-switch { right: 0px; }</style>';
   var cookie = request.cookies.player;
   var body = '<script src="/socket.io/socket.io.js"></script><script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script><script>  var socket = io.connect("mongochess.herokuapp.com");socket.on("created", function(state){ color = state.created ? "success" : "error"; /*popup.addClass(color);*/ alert(color+":"+state.message);});create = function(){ name = document.getElementById("newgame").value; privacy = document.getElementById("privacy").checked ? "public" : "private"; color = document.getElementById("color").checked ? "black" : "white"; socket.emit("create",{color:color,privacy:privacy,id:name,auth:cookie}); }; var cookie = "{{^cookie}}{{hash}}{{/cookie}}{{cookie}}"; document.cookie = "player="+cookie+"; expires={{expire}}; path=/";</script><!-- <script type="text/javascript" src="http://code.jquery.com/jquery-latest.js" /> --> <button class="submit" onclick="Javascript:create()">New Game</button> <div class="onoffswitch"> <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="privacy" checked /> <label class="onoffswitch-label" for="privacy"> <div class="onoffswitch-inner" id="onoffswitch-inner"></div> <div class="onoffswitch-switch"></div> </label> </div> <div class="onoffswitch"> <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="color" checked /> <label class="onoffswitch-label" for="color"> <div class="onoffswitch-inner" id="onoffswitch-inner"></div> <div class="onoffswitch-switch"></div> </label> </div> <input type="text" id="newgame"/>';
   var now = new Date().getTime();
   var hash = CryptoJS.SHA256("New"+ now +"Game");
   var expdate = new Date ();
-  console.log(log + "Right in the index " + cookie || hash);
   expdate.setTime (expdate.getTime() + (24 * 60 * 60 * 1000*365));
   response.send(mustache.render(css+body,{cookie:cookie,hash:hash,expire:expdate}));
 })
 
 app.get('/game/:id/opp', function(request, response) {
-  var log = "----------------------------\n";
   var now = new Date().getTime();
   var hash = CryptoJS.SHA256("New"+ now +"Game");
   var id = request.params.id;
   var cookie = request.cookies.player ? request.cookies.player : hash;
   var update;
-  log += "Opponent for game "+id+"\n";
   DBCon.collection('static').findOne({_id:'template'},function(error,template){
     DBCon.collection('games').findOne({_id:id},function(error,game){
-      log += 'Looking for Game...\n';
+      console.log('Looking for Game...');
       if (game == null){
-        console.log(log + 'No Game Found...');
+        console.log('No Game Found...');
         response.send('No Game Found...');
       }else{
-        log += 'Found Game...\n';
+        console.log('Found Game...');
         if (game.white && !game.black){
           update = {black:cookie};
         }else if(!game.white && game.black){
           update = {white:cookie};
         }else{
           response.send('Game has already started');
-          console.log(log+'Already started');
           return;
         }
         var expire = new Date ();
         expire.setTime (expire.getTime() + (24 * 60 * 60 * 1000*365));
         DBCon.collection('games').update({_id:id},{$set: update},function (error, client) {
-          console.log(log + 'Set Cookies');
           if(!error)
             response.send('<script type="text/javascript">document.cookie = "player='+cookie+'; expires='+expire+'; path=/"; window.location.href="/game/'+id+'";</script>')
             //response.redirect('/game/'+id);//response.send(mustache.render(template.css+push+template.body+template.board,{game:game.game}));  
@@ -527,59 +518,48 @@ app.get('/game/:id/opp', function(request, response) {
 
 io.sockets.on('connection', function (socket) {
   socket.on('getGamestate',function(id){
-    var log = "----------------------------\n";
-    log += "Getting game state " + id + "\n";
     DBCon.collection('games').findOne({_id:id},function(error,game){
-      log += 'Looking for Game...\n';
+      console.log('Looking for Game...');
       if (game == null){
-        log += 'No Game Found...\n';
+        console.log('No Game Found...');
         response.send('No Game Found...');
       }else{
-        log += 'Found Game...\n';
+        console.log('Found Game...');
         socket.join(game._id);
         socket.emit('setGamestate',{game:game.game,enemies:game.enemies});
       }
-      console.log(log);
     });
   })
-
   socket.on('getTurn',function(id){
-    var log = "----------------------------\n";
-    log += "Getting turn for " + id + "\n";
     DBCon.collection('games').findOne({_id:id},function(error,game){
-      log += 'Looking for Game...\n';
+      console.log('Looking for Game...');
       if (game == null){
-        log += 'No Game Found...\n';
+        console.log('No Game Found...');
         response.send('No Game Found...');
       }else{
-        log += 'Found Game...\n';
+        console.log('Found Game...');
         socket.join(game._id);
         socket.emit('setTurn',{turn:game.turn});
       }
-      console.log(log);
     });
   })
 
   socket.on('create',function(params){
-    var log = "----------------------------\n";
-    log += "Trying to make new game " + id + "\n";    
     var id = params.id;
     if (!id.match("^[a-zA-Z0-9_-]*$") || id == ''){
-      console.log(log+'Bad name');
       socket.emit({created:false,message:'Invalid Name (Alphanumeric Characters only)'});
       return;
     }
     if(!(params['color'] == 'black' || params['color'] == 'white') || !(params['privacy'] == 'public' || params['privacy'] == 'private')){
-      console.log(log+'Someone trying to break me!!');
       socket.emit({created:false,message:'Stop trying to hack the API'});
       return;
     }
     DBCon.collection('static').findOne({_id:'template'},function(error,template){
       var doc;
       DBCon.collection('games').findOne({_id:id},function(error,game){
-        console.log('Looking for Game...\n');
+        console.log('Looking for Game...');
         if (game == null){
-          console.log('No Game Found...\n');
+          console.log('No Game Found...');
           doc = {_id:id,game:{},white:'',black:'',privacy:''};
           doc.game = template.game;
           doc.turn = 'w';
@@ -590,13 +570,13 @@ io.sockets.on('connection', function (socket) {
           }else if(params['color'] == 'black'){
             doc.black = params['auth'];
           }
-          console.log(log+'Creating Game ' + id + '...');
+          console.log('Creating Game ' + id + '...');
           DBCon.collection('games').insert(doc);
           socket.emit('created',{created:true,message:'Game Successfully Created'});
           if (params['privacy'] == 'public')
             io.sockets.emit('new',{name:id,color:params['color']});
         }else{
-          console.log(log += 'Found Existing Game...');
+          console.log('Found Existing Game...');
           io.sockets.emit('created',{created:false,message:'Game Already Exists'});
         }
       });
@@ -604,8 +584,6 @@ io.sockets.on('connection', function (socket) {
 })
 
   socket.on('move',function(params){
-    var log = "----------------------------\n";
-    log += "Moving for game " + params.id + "\n";        
     DBCon.collection('games').findOne({_id:params.id},function(error,game){
       var auth = null;
       var acol = parseInt(params.acol);
@@ -630,41 +608,37 @@ io.sockets.on('connection', function (socket) {
       verifyplay.enemies = game.enemies;
 
       if(auth !== null && game.turn == move && verifyplay.verify({before: [acol, arow],after: [bcol, brow]})){
-        log += 'Legit Move\n';
-
-        //game.game[brow][bcol].moved = true;
-        //game.game[arow][acol] = game.game[brow][bcol];
-        //game.game[brow][bcol] = verifyplay.empty;
+        console.log('Legit Move');
+        game.game[arow][acol].moved = true;
+        game.game[brow][bcol] = game.game[arow][acol];
+        game.game[arow][acol] = verifyplay.empty;
+        console.log(game.game[arow][acol]);
         game.enemies[move].pieces[game.enemies[move].pieces.indexOf([arow,acol])] = [brow,bcol];
         if (game.game[brow][bcol].piece == 'king')
           game.enemies[move].king = [brow,bcol];
 
+        console.log(game.game);
 
         var oindex = game.enemies[omove].pieces.indexOf([brow,bcol]);
 
         if (oindex)
           game.enemies[omove].pieces.splice(oindex,1);
 
-        console.log(game.game);
-
-        
-        //,enemies:game.enemies
-        DBCon.collection('games').update({_id:params.id},{$set: {game:game.game,turn:omove}},function (error, client) {
-          //console.log(client);
+        DBCon.collection('games').update({_id:params.id},{$set: {game:game.game,turn:omove,enemies:game.enemies}},function (error, client) {
           if(!error){
-            console.log(log+'Broadcasting move to others');
+            console.log('Broadcasting move to others');
 
             socket.broadcast.to(game._id).emit(verifyplay.events,{before:[acol,arow],after:[bcol,brow]}); 
             
             socket.emit('moved',{success:true});
           }else{
-            console.log(log+'Something went wrong');
+            console.log('Something went wrong');
             socket.emit('moved',{success:false});
           }
         });
         
       }else{
-        console.log(log+'Bad Move');
+        console.log('Bad Move');
         socket.emit('moved',{success:false});
       }
     });  
