@@ -82,7 +82,7 @@ var gameplay = function gameplay (){
       self.piece = self.square[self.row][self.col];
       
       moves = self.pieces[self.piece.piece];
-      for (z=0;z<moves.length;z++){
+      for (var z=0;z<moves.length;z++){
         self.movable = [];
         moves[z].kind(moves[z].funct);
         console.log(self.after +' vs '+ self.movable);
@@ -116,7 +116,7 @@ var gameplay = function gameplay (){
       self.after = col * 8 + row;
       
 
-      for (z=0;z<self.enemies[color].pieces.length;z++){
+      for (var z=0;z<self.enemies[color].pieces.length;z++){
         alert(z);
         self.col = self.enemies[color].pieces[z][0];
         self.row = self.enemies[color].pieces[z][1];
