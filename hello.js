@@ -630,8 +630,7 @@ io.sockets.on('connection', function (socket) {
 
       if(auth !== null && game.turn == move && verifyplay.verify({before: [acol, arow],after: [bcol, brow]})){
         log += 'Legit Move\n';
-        console.log(game.game[brow][bcol]);
-        console.log(game.game[arow][acol]);
+        
         game.game[brow][bcol].moved = true;
         game.game[arow][acol] = game.game[brow][bcol];
         game.game[brow][bcol] = verifyplay.empty;
@@ -639,6 +638,7 @@ io.sockets.on('connection', function (socket) {
         if (game.game[brow][bcol].piece == 'king')
           game.enemies[move].king = [brow,bcol];
 
+        console.log(game.game);
 
         var oindex = game.enemies[omove].pieces.indexOf([brow,bcol]);
 
@@ -646,6 +646,7 @@ io.sockets.on('connection', function (socket) {
           game.enemies[omove].pieces.splice(oindex,1);
 
         DBCon.collection('games').update({_id:params.id},{$set: {game:game.game,turn:omove,enemies:game.enemies}},function (error, client) {
+          console.log(error);
           if(!error){
             console.log(log+'Broadcasting move to others');
 
