@@ -116,8 +116,8 @@ var gameplay = function gameplay (){
       color = color == 'w' ? 'b' : 'w';
       self.after = col * 8 + row;
       for (z=0;z<self.enemies[color].length;z++){
-        self.col = self.enemies[color][z][1];
-        self.row = self.enemies[color][z][0];
+        self.col = self.enemies[color][z][0];
+        self.row = self.enemies[color][z][1];
         if (move())
           return true;
       }
