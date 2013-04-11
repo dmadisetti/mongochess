@@ -615,13 +615,13 @@ io.sockets.on('connection', function (socket) {
         game.game[brow][bcol] = game.game[arow][acol];
         game.game[arow][acol] = verifyplay.empty;
 
-        game.enemies[move].pieces.forEach(function(piece){
+        for (var z = 0; z > game.enemies[move].pieces.length; z++;){
           if (piece == [arow,acol]){
             console.log('Yesssss');
             piece = [brow,bcol];
             break;
           }
-        });
+        }
         
         if (game.game[brow][bcol].piece == 'king')
           game.enemies[move].king = [brow,bcol];
