@@ -615,7 +615,7 @@ io.sockets.on('connection', function (socket) {
         game.game[brow][bcol] = game.game[arow][acol];
         game.game[arow][acol] = verifyplay.empty;
 
-        console.log('THIS->'+[arow,acol]);
+        console.log('THIS '+[arow,acol]);
         console.log(game.enemies[move].pieces);
         console.log(game.enemies[move].pieces.length);
 
