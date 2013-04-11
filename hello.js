@@ -616,7 +616,9 @@ io.sockets.on('connection', function (socket) {
         game.game[arow][acol] = verifyplay.empty;
 
         for (var z = 0; z < game.enemies[move].pieces.length; z++){
+          console.log(game.enemies[move].pieces[z] +' vs '+ [acol,arow]);
           if (game.enemies[move].pieces[z] == [acol,arow]){
+            console.log('Yesssss');
             game.enemies[move].pieces[z] = [bcol,brow];
             break;
           }
