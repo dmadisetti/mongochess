@@ -468,6 +468,7 @@ var gameplay = function gameplay (){
         if(self.square[row][--col].piece)
           return;
         squares.push(row * 8 + col)
+        castle = row * 8 + col;
         if(self.square[row][--col].piece)
           return;
         col--;
@@ -480,6 +481,7 @@ var gameplay = function gameplay (){
         if(self.square[row][++col].piece)
           return;
         squares.push(row * 8 + col);
+        castle = row * 8 + col;
         col++;
         if(self.square[row][col].moved || self.square[row][col].piece != 'castle')
           return;
@@ -490,7 +492,7 @@ var gameplay = function gameplay (){
       console.log(squares);
 
       if(funct(squares,self.piece.color))
-        self.movable = squares;
+        self.movable = [castle];
     }
 
     function pawneat(funct){
