@@ -348,6 +348,8 @@ var gameplay = function gameplay (){
       {funct: function(squares,clr){
         var all = [];
         var color = clr == 'w' ? 'b' : 'w';
+        var col = int(self.col);
+        var row = int(self.row);
         for (var z=0; z<self.enemies[color].pieces.length;z++){
           self.col = self.enemies[color].pieces[z][0];
           self.row = self.enemies[color].pieces[z][1];
@@ -358,6 +360,8 @@ var gameplay = function gameplay (){
             all.push(self.movable);
           }
         }
+        self.col = col;
+        self.row = row;
         console.log(all);
         for (var z=0;z<squares.length;z++){
           if(all.indexOf(squares[z]) >=0)
