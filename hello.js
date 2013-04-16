@@ -445,6 +445,8 @@ var gameplay = function gameplay (){
 
       squares.concat(row * 8 + col)
 
+      console.log(self.after % 8);
+
       if(self.after % 8 == 2){
         if(self.square[row][--col].piece)
           return;
