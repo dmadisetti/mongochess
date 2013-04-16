@@ -352,7 +352,9 @@ var gameplay = function gameplay (){
           self.col = self.enemies[color].pieces[z][0];
           self.row = self.enemies[color].pieces[z][1];
           for (var i=0;i<moves.length;i++){
-            all.push(moves[z].kind(moves[z].funct));
+            self.movable = [];
+            moves[z].kind(moves[z].funct)
+            all.push(self.movable);
           }
         }
         console.log(all);
