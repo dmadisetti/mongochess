@@ -324,15 +324,18 @@ var gameplay = function gameplay (){
       },
        kind: shortmove
       },
-      {funct: function(squares){
-        for (z=0;z<moves.length;z++){
-          self.movable = [];
-          moves[z].kind(moves[z].funct);
-          for (i=0;i<squares.length;i++){
-            if (self.movable.indexOf(squares[i]) >= 0)
-              squares.pop(i);
+      {funct: function(squares,clr){
+        var all = [];
+        var color = clr == 'w' ? 'b' : 'w';
+        for (var z=0; z<self.enemies[color].pieces.length;z++){
+          self.col = self.enemies[color].pieces[z][0];
+          self.row = self.enemies[color].pieces[z][1];
+          for (var i=0;i<moves.length;i++){
+            all.concat(moves[z].kind(moves[z].funct));
           }
-          if (squares.length == 0)
+        }
+        for (var z=0;squares.length;z++){
+          if(all.indexOf(squares[z]) >=0)
             return false;
         }
         return true;
@@ -412,11 +415,40 @@ var gameplay = function gameplay (){
     }
 
     function castle(funct){
-      // TODO: Well you know..
-      // Check color then possible spots
-      // Check if castle/king move
+      var col = self.col,
+      row = self.row;
+      squares = [];
 
-      // gameplay.castle = true;
+      if((self.piece.moved))
+        return;
+
+      squares.concat(row * 8 + col)
+
+      if(self.after % 8 == 2){
+        if(self.square[row][--col].piece)
+          return;
+        squares.concat(row * 8 + col)
+        if(self.square[row][--col].piece)
+          return;
+        squares.concat(row * 8 + col)
+        if(self.square[row][--col].piece)
+          return;
+        if(self.square[row][--col].piece || self.square[row][col].moved)
+          return;        
+      }else if (self.after % 8 == 6){
+        if(self.square[row][++col].piece)
+          return;
+        squares.concat(row * 8 + col)
+        if(self.square[row][++col].piece)
+          return;
+        squares.concat(row * 8 + col)
+        if(self.square[row][++col].piece || self.square[row][col].moved)
+          return;
+      }else{
+        return;
+      }
+      if(funct(squares,self.piece.color));
+      self.movable = squares;
     }
 
     function pawneat(funct){
