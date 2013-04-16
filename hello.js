@@ -359,7 +359,7 @@ var gameplay = function gameplay (){
           }
         }
         console.log(all);
-        for (var z=0;squares.length;z++){
+        for (var z=0;z<squares.length;z++){
           if(all.indexOf(squares[z]) >=0)
             return false;
         }
