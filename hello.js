@@ -458,7 +458,7 @@ var gameplay = function gameplay (){
           return;
         console.log(3);
         col--;
-        if(!(self.square[row][col].piece) || self.square[row][col].moved)
+        if(self.square[row][col].moved || self.square[row][col].piece != 'castle')
           return;
         console.log(4);        
       }else if (self.after % 8 == 6){
@@ -469,7 +469,7 @@ var gameplay = function gameplay (){
           return;
         squares.concat(row * 8 + col);
         col++;
-        if(self.square[row][++col].piece && !(self.square[row][col].moved))
+        if(self.square[row][col].moved || self.square[row][col].piece != 'castle')
           return;
       }else{
         return;
