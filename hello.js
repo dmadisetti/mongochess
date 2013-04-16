@@ -350,9 +350,16 @@ var gameplay = function gameplay (){
         var color = clr == 'w' ? 'b' : 'w';
         var col = parseInt(self.col);
         var row = parseInt(self.row);
+        
+        var pieceholder = JSON.parse(JSON.stringify(self.piece));
+
         for (var z=0; z<self.enemies[color].pieces.length;z++){
           self.col = self.enemies[color].pieces[z][0];
           self.row = self.enemies[color].pieces[z][1];
+          
+          self.piece = self.square[self.row][self.col];      
+          moves = self.pieces[self.piece.piece];
+          
           for (var i=0;i<moves.length;i++){
             self.movable = [];
             moves[i].kind(moves[i].funct);
@@ -360,6 +367,7 @@ var gameplay = function gameplay (){
             all.push(self.movable);
           }
         }
+        self.piece = pieceholder;
         self.col = col;
         self.row = row;
         console.log(all);
