@@ -445,19 +445,21 @@ var gameplay = function gameplay (){
 
       squares.concat(row * 8 + col)
 
-      console.log(self.after % 8);
-
       if(self.after % 8 == 2){
         if(self.square[row][--col].piece)
           return;
+        console.log(1);
         squares.concat(row * 8 + col)
         if(self.square[row][--col].piece)
           return;
+        console.log(2);
         squares.concat(row * 8 + col)
         if(self.square[row][--col].piece)
           return;
+        console.log(3);
         if(self.square[row][--col].piece || self.square[row][col].moved)
-          return;        
+          return;
+        console.log(4);        
       }else if (self.after % 8 == 6){
         if(self.square[row][++col].piece)
           return;
