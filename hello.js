@@ -110,6 +110,7 @@ var gameplay = function gameplay (){
               console.log(self.enemies[color].pieces[z][0]+ '=='+ args.after[0] +'&&'+ self.enemies[color].pieces[z][1]+ '=='+ args.after[1]);
               if(self.enemies[color].pieces[z][0] == args.after[0] && self.enemies[color].pieces[z][1] == args.after[1] ){
                 self.enemies[color].pieces.splice(z, 1);
+                break;
               }
             }
           }
