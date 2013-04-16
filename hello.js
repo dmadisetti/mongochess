@@ -348,8 +348,8 @@ var gameplay = function gameplay (){
       {funct: function(squares,clr){
         var all = [];
         var color = clr == 'w' ? 'b' : 'w';
-        var col = int(self.col);
-        var row = int(self.row);
+        var col = parseInt(self.col);
+        var row = parseInt(self.row);
         for (var z=0; z<self.enemies[color].pieces.length;z++){
           self.col = self.enemies[color].pieces[z][0];
           self.row = self.enemies[color].pieces[z][1];
