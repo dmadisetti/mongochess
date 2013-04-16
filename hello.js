@@ -107,8 +107,8 @@ var gameplay = function gameplay (){
           
           if(self.square[args.after[1]][args.after[0]].piece){
             for (var z=0;z<self.enemies[color].pieces.length;z++){
-              console.log(self.enemies[color].pieces[z][0]+ '=='+ self.col +'&&'+ self.enemies[color].pieces[z][1]+ '=='+ self.row);
-              if(self.enemies[color].pieces[z][0] == self.col && self.enemies[color].pieces[z][1] == self.row ){
+              console.log(self.enemies[color].pieces[z][0]+ '=='+ args.after[1] +'&&'+ self.enemies[color].pieces[z][1]+ '=='+ args.after[0]);
+              if(self.enemies[color].pieces[z][0] == args.after[1] && self.enemies[color].pieces[z][1] == args.after[0] ){
                 self.enemies[color].pieces.splice(z, 1);
               }
             }
