@@ -98,13 +98,33 @@ var gameplay = function gameplay (){
         self.row = args.before[1];
         self.after = args.after[1] * 8 + args.after[0];
         if (self.move()){
+          var color = self.piece.color == 'w' ? 'b' : 'w';
+          
           var squareholder = self.square;
+          var enemyholder = self.enemies;
           self.square = JSON.parse(JSON.stringify(self.square));
+          self.enemies = JSON.parse(JSON.stringify(self.enemies));
+          
+          if(self.square[args.after[1]][args.after[0]].piece){
+            for (var z=0;z<self.enemies[color].pieces.length;z++){
+              console.log(self.enemies[color].pieces[z][0]+ '=='+ self.col +'&&'+ self.enemies[color].pieces[z][1]+ '=='+ self.row);
+              if(self.enemies[color].pieces[z][0] == self.col && self.enemies[color].pieces[z][1] == self.row ){
+                self.enemies[color].pieces.splice(z, 1);
+              }
+            }
+          }
+          
           self.square[args.after[1]][args.after[0]] = self.square[self.row][self.col];
           self.square[self.row][self.col] = self.empty;
+          if (self.piece.piece == 'king')
+            self.enemies[self.piece.color].king = [self.col,self.row];
+
           var king = self.enemies[self.piece.color].king;
-          check = self.check(self.piece.color,king[1],king[0]);
+          check = self.check(color,king[1],king[0]);
+          
           self.square = squareholder;
+          self.enemies = enemyholder;
+          
           return !(check);
         }
         return false;
@@ -112,7 +132,6 @@ var gameplay = function gameplay (){
 
     self.check = function (color,col,row){
       console.log('In Check');
-      color = color == 'w' ? 'b' : 'w';
       self.after = col * 8 + row;
 
       for (var z=0;z<self.enemies[color].pieces.length;z++){
