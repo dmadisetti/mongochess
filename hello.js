@@ -352,7 +352,7 @@ var gameplay = function gameplay (){
           self.col = self.enemies[color].pieces[z][0];
           self.row = self.enemies[color].pieces[z][1];
           for (var i=0;i<moves.length;i++){
-            all.concat(moves[z].kind(moves[z].funct));
+            all.push(moves[z].kind(moves[z].funct));
           }
         }
         console.log(all);
@@ -444,15 +444,15 @@ var gameplay = function gameplay (){
       if((self.piece.moved))
         return;
 
-      squares.concat(row * 8 + col)
+      squares.push(row * 8 + col)
 
       if(self.after % 8 == 2){
         if(self.square[row][--col].piece)
           return;
-        squares.concat(row * 8 + col)
+        squares.push(row * 8 + col)
         if(self.square[row][--col].piece)
           return;
-        squares.concat(row * 8 + col)
+        squares.push(row * 8 + col)
         if(self.square[row][--col].piece)
           return;
         col--;
@@ -461,10 +461,10 @@ var gameplay = function gameplay (){
       }else if (self.after % 8 == 6){
         if(self.square[row][++col].piece)
           return;
-        squares.concat(row * 8 + col);
+        squares.push(row * 8 + col);
         if(self.square[row][++col].piece)
           return;
-        squares.concat(row * 8 + col);
+        squares.push(row * 8 + col);
         col++;
         if(self.square[row][col].moved || self.square[row][col].piece != 'castle')
           return;
