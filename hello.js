@@ -118,7 +118,7 @@ var gameplay = function gameplay (){
           self.square[args.after[1]][args.after[0]] = self.square[self.row][self.col];
           self.square[self.row][self.col] = self.empty;
           if (self.piece.piece == 'king'){
-            self.enemies[self.piece.color].king = [self.col,self.row];
+            self.enemies[self.piece.color].king = [args.after[0],args.after[1]];
             console.log('I madde it');
           }
           var king = self.enemies[self.piece.color].king;
