@@ -355,6 +355,7 @@ var gameplay = function gameplay (){
             all.concat(moves[z].kind(moves[z].funct));
           }
         }
+        console.log(all);
         for (var z=0;squares.length;z++){
           if(all.indexOf(squares[z]) >=0)
             return false;
@@ -448,19 +449,15 @@ var gameplay = function gameplay (){
       if(self.after % 8 == 2){
         if(self.square[row][--col].piece)
           return;
-        console.log(1);
         squares.concat(row * 8 + col)
         if(self.square[row][--col].piece)
           return;
-        console.log(2);
         squares.concat(row * 8 + col)
         if(self.square[row][--col].piece)
           return;
-        console.log(3);
         col--;
         if(self.square[row][col].moved || self.square[row][col].piece != 'castle')
-          return;
-        console.log(4);        
+          return;    
       }else if (self.after % 8 == 6){
         if(self.square[row][++col].piece)
           return;
@@ -474,8 +471,11 @@ var gameplay = function gameplay (){
       }else{
         return;
       }
-      if(funct(squares,self.piece.color));
-      self.movable = squares;
+
+      console.log(squares);
+
+      if(funct(squares,self.piece.color))
+        self.movable = squares;
     }
 
     function pawneat(funct){
