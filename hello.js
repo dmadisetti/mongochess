@@ -98,6 +98,11 @@ var gameplay = function gameplay (){
         self.row = args.before[1];
         self.after = args.after[1] * 8 + args.after[0];
         if (self.move()){
+
+          if(self.events == 'castle')
+            return true;
+
+
           var color = self.piece.color == 'w' ? 'b' : 'w';
           
           var squareholder = self.square;
@@ -126,6 +131,7 @@ var gameplay = function gameplay (){
           
           self.square = squareholder;
           self.enemies = enemyholder;
+          
           
           return !(check);
         }
@@ -491,8 +497,10 @@ var gameplay = function gameplay (){
 
       console.log(squares);
 
-      if(funct(squares,self.piece.color))
+      if(funct(squares,self.piece.color)){
+        self.events = 'castle';
         self.movable = [castle];
+      }
     }
 
     function pawneat(funct){
@@ -712,7 +720,23 @@ io.sockets.on('connection', function (socket) {
           if(!error){
             console.log('Broadcasting move to others');
 
-            socket.broadcast.to(game._id).emit(verifyplay.events,{before:[acol,arow],after:[bcol,brow]}); 
+            switch(verifyplay.events){
+              case 'castle':
+                socket.broadcast.to(game._id).emit('update',{before:[acol,arow],after:[bcol,brow]});
+                break;
+              case 'promote':
+                socket.broadcast.to(game._id).emit('update',{before:[acol,arow],after:[bcol,brow]});
+                break;
+              case 'pass':
+                socket.broadcast.to(game._id).emit('update',{before:[acol,arow],after:[bcol,brow]});
+                break;
+              default:
+                socket.broadcast.to(game._id).emit('update',{before:[acol,arow],after:[bcol,brow]});
+                break;
+            }
+
+            if(checkmate)
+              socket.broadcast.to(game._id).emit('checkmate');
             
             socket.emit('moved',{success:true});
           }else{
