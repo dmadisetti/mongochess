@@ -1,6 +1,3 @@
-if(module)
-  module.exports.gameplay = gameplay;
-
 var gameplay = function gameplay (){
     var self = this;
     self.empty = { piece: "",color: ""};
@@ -475,3 +472,6 @@ var gameplay = function gameplay (){
       return;
     }
 }
+
+if(module)
+  module.exports.gameplay = gameplay();
