@@ -1,13 +1,11 @@
-console.log(module);
 var express = require('express')
 ,mustache = require('mustache')
-,gameplay = require('/app/gameplay')
+,gameplay = require(__dirname+'/gameplay')
 ,CryptoJS = require('cryptojs').Crypto
 ,mongo = require('mongodb')
 ,Server = mongo.Server
 ,Db = mongo.Db
 ,con = null;
-console.log(module);
 
 server = new Server('alex.mongohq.com', 10094, {auto_reconnect: true});
 var DBCon = new Db('app13760571', server, {safe: false});
