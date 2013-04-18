@@ -1,0 +1,13 @@
+{
+  "name": "gameplay",
+  "version": "0.7.2",
+  "description": "Chessgame moves",
+  "author": {
+    "name": "dmadisetti",
+    "email": "http://github.com/dmadisetti/mongochess"
+  },
+  "keywords": [
+    "chess"
+  ],
+  "main": "./gameplay.js"
+}
