@@ -244,8 +244,10 @@ io.sockets.on('connection', function (socket) {
                 break;
             }
 
-            if(checkmate)
-              socket.broadcast.to(game._id).emit('checkmate');
+            console.log(verifyplay.events);
+
+            //if(checkmate)
+              //socket.broadcast.to(game._id).emit('checkmate');
             
             socket.emit('moved',{success:true});
           }else{
