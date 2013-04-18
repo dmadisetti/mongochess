@@ -474,4 +474,4 @@ var gameplay = function gameplay (){
 }
 
 if(module)
-  module.exports.gameplay = gameplay();
+  module.exports.gameplay = gameplay;
