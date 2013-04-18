@@ -1,7 +1,7 @@
 console.log(module);
 var express = require('express')
 ,mustache = require('mustache')
-,gameplay = require('gameplay')
+,gameplay = require('/app/gameplay')
 ,CryptoJS = require('cryptojs').Crypto
 ,mongo = require('mongodb')
 ,Server = mongo.Server
