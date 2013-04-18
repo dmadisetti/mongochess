@@ -1,13 +1,14 @@
 {
   "name": "Chess",
   "version": "0.7.2",
+  "bin" : { "gameplay" : "./gameplay.js" },
   "dependencies": {
     "express": "2.5.x",
     "mustache":"0.7.2",
     "mongodb":"1.2.14",
     "socket.io":"0.9.x",
     "cryptojs":"2.5.3",
-    "gameplay":"app/gameplay"
+    "gameplay":"*"
   },
   "engines": {
     "node": "0.8.x",
