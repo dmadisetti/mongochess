@@ -1,6 +1,6 @@
 var express = require('express')
 ,mustache = require('mustache')
-,gameplay = require('./gameplay')
+,gameplay = require('./static')
 ,CryptoJS = require('cryptojs').Crypto
 ,mongo = require('mongodb')
 ,Server = mongo.Server
