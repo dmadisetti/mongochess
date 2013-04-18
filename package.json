@@ -6,8 +6,7 @@
     "mustache":"0.7.2",
     "mongodb":"1.2.14",
     "socket.io":"0.9.x",
-    "cryptojs":"2.5.3",
-    "gameplay":"./gameplay.js"
+    "cryptojs":"2.5.3"
   },
   "engines": {
     "node": "0.8.x",
