@@ -228,7 +228,7 @@ io.sockets.on('connection', function (socket) {
 
         switch(verifyplay.events){
           case 'castle':
-            if (verifyplay.side = 'left'){
+            if (verifyplay.side == 'left'){
               game.game[0][arow].moved = true;
               game.game[3][brow] = game.game[0][arow];
               game.game[0][arow] = verifyplay.empty;

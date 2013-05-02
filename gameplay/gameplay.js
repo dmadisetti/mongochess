@@ -419,8 +419,6 @@ var gameplay = function gameplay (){
         return;
       }
 
-      console.log(squares);
-
       if(funct(squares,self.piece.color)){
         self.events = 'castle';
         self.movable = [castle];
