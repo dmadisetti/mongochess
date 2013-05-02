@@ -302,7 +302,7 @@ var gameplay = function gameplay (){
         all = [].concat.apply([],all);
  
         for (var z=0;z<squares.length;z++){
-          if(merged.indexOf(squares[z]) >=0)
+          if(all.indexOf(squares[z]) >=0)
             return false;
         }
         return true;
