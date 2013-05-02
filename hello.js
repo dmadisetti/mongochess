@@ -1,18 +1,11 @@
 var express = require('express')
 ,mustache = require('mustache')
-,Gameplay = require(__dirname+'/gameplay/gameplay').gameplay
+,gameplay = require(__dirname+'/gameplay/gameplay').gameplay
 ,CryptoJS = require('cryptojs').Crypto
 ,mongo = require('mongodb')
 ,Server = mongo.Server
 ,Db = mongo.Db
 ,con = null;
-
-
-Gameplay.prototype.promotePawn = function(){
-  alert('Ayo!!');
-}
-
-gameplay = new Gameplay;
 
 
 
