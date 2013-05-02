@@ -473,3 +473,7 @@ var gameplay = function gameplay (){
       return;
     }
 }
+
+
+if(module)
+  module.exports.gameplay = gameplay;
