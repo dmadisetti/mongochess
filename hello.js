@@ -109,6 +109,11 @@ app.get('/game/:id/opp', function(request, response) {
   });
 });
 
+io.configure(function () { 
+  io.set("transports", ["xhr-polling"]); 
+  io.set("polling duration", 10); 
+});
+
 io.sockets.on('connection', function (socket) {
   socket.on('getGamestate',function(id){
     DBCon.collection('games').findOne({_id:id},function(error,game){
