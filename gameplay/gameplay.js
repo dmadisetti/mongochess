@@ -293,7 +293,6 @@ var gameplay = function gameplay (){
           for (var i=0;i<moves.length;i++){
             self.movable = [];
             moves[i].kind(moves[i].funct);
-            console.log(self.movable);
             all.push(self.movable);
           }
         }
@@ -301,7 +300,10 @@ var gameplay = function gameplay (){
         self.col = col;
         self.row = row;
         all = [].concat.apply([],all);
-        console.log(merged);
+ 
+        console.log(all);
+
+        lol break dis shit
         console.log(squares);
         for (var z=0;z<squares.length;z++){
           if(merged.indexOf(squares[z]) >=0)
