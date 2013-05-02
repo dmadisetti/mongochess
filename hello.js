@@ -1,12 +1,21 @@
 var express = require('express')
 ,mustache = require('mustache')
-,gameplay = require(__dirname+'/gameplay/gameplay').gameplay
+,Gameplay = require(__dirname+'/gameplay/gameplay').gameplay
 ,CryptoJS = require('cryptojs').Crypto
 ,mongo = require('mongodb')
 ,Server = mongo.Server
 ,Db = mongo.Db
 ,con = null;
-console.log(gameplay);
+
+
+Gameplay.prototype.promotePawn = function(){
+  alert('Ayo!!');
+}
+
+gameplay = new Gameplay;
+
+
+
 
 server = new Server('alex.mongohq.com', 10094, {auto_reconnect: true});
 var DBCon = new Db('app13760571', server, {safe: false});

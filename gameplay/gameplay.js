@@ -1,6 +1,7 @@
 var gameplay = function gameplay (){
     var self = this;
     self.empty = { piece: "",color: ""};
+    self.promotePawn = function (){}
     self.move = function (){
       console.log('In Move');
       self.piece = self.square[self.row][self.col];
@@ -437,15 +438,14 @@ var gameplay = function gameplay (){
           && self.square[row][col].color !== self.piece.color
           && self.square[row][col].piece
       ){
-        self.promote = self.square[row][col].piece.color == 'w' ? row == 0 : row == 7;
+        self.promoted = (self.square[row][col].piece.color == 'w' ? row == 0 : row == 7) ? self.promotePawn() : null;
         self.movable = [row * 8 + col];
       }
       return;
     }
 
     function pawnmove(funct){
-      var promote, 
-      col = self.col,
+      var col = self.col,
       row = self.row;
 
       pos = funct(col,row);
@@ -455,7 +455,7 @@ var gameplay = function gameplay (){
           && (self.square[row][col]) 
           && !(self.square[row][col].piece)
       ){
-        self.promote = self.square[row][col].piece.color == 'w' ? row == 0 : row == 7;
+        self.promoted = (self.square[row][col].piece.color == 'w' ? row == 0 : row == 7) ? self.promotePawn() : null;
         self.movable[0] = row * 8 + col;
         pos = funct(col,row);
         col = pos[0];
