@@ -300,11 +300,12 @@ var gameplay = function gameplay (){
         self.piece = pieceholder;
         self.col = col;
         self.row = row;
-        all = [].concat.apply(all);
-        console.log(all);
+        merged = [];
+        merged.concat.apply(merged,all);
+        console.log(merged);
         console.log(squares);
         for (var z=0;z<squares.length;z++){
-          if(all.indexOf(squares[z]) >=0)
+          if(merged.indexOf(squares[z]) >=0)
             return false;
         }
         return true;
