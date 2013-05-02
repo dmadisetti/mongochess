@@ -170,7 +170,7 @@ io.sockets.on('connection', function (socket) {
             io.sockets.emit('new',{name:id,color:params['color']});
         }else{
           console.log('Found Existing Game...');
-          io.sockets.emit('created',{created:false,message:'Game Already Exists'});
+          socket.emit('created',{created:false,message:'Game Already Exists'});
         }
       });
     });
@@ -202,10 +202,12 @@ io.sockets.on('connection', function (socket) {
 
       if(auth !== null && game.turn == move && verifyplay.verify({before: [acol, arow],after: [bcol, brow]})){
         console.log('Legit Move');
+        // update board hash
         game.game[arow][acol].moved = true;
         game.game[brow][bcol] = game.game[arow][acol];
         game.game[arow][acol] = verifyplay.empty;
 
+        // update hash of pieces
         for (var z = 0; z < game.enemies[move].pieces.length; z++){
           if (game.enemies[move].pieces[z][0] == acol && game.enemies[move].pieces[z][1] == arow){
             game.enemies[move].pieces[z] = [bcol,brow];
@@ -219,10 +221,32 @@ io.sockets.on('connection', function (socket) {
           }
         }
         
+
         if (game.game[brow][bcol].piece == 'king')
           game.enemies[move].king = [bcol,brow];
 
 
+        switch(verifyplay.events){
+          case 'castle':
+            if (verifyplay.side = 'left'){
+              game.game[arow][0].moved = true;
+              game.game[brow][2] = game.game[arow][0];
+              game.game[arow][0] = verifyplay.empty;
+              var castle = [[arow,0],[brow,2]];
+            }else{
+              game.game[arow][7].moved = true;
+              game.game[brow][5] = game.game[arow][7];
+              game.game[arow][7] = verifyplay.empty;
+              var castle = [[arow,7],[brow,5]];
+            }
+            break;
+          case 'promote':
+            break;
+          case 'pass':
+            break;
+          default:
+            break;
+        }
 
 
         DBCon.collection('games').update({_id:params.id},{$set: {game:game.game,turn:omove,enemies:game.enemies}},function (error, client) {
@@ -232,6 +256,7 @@ io.sockets.on('connection', function (socket) {
             switch(verifyplay.events){
               case 'castle':
                 socket.broadcast.to(game._id).emit('update',{before:[acol,arow],after:[bcol,brow]});
+                io.sockets.to(game._id).emit('update',{before:castle[0],after:castle[1]});
                 break;
               case 'promote':
                 socket.broadcast.to(game._id).emit('update',{before:[acol,arow],after:[bcol,brow]});

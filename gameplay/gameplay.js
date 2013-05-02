@@ -402,6 +402,7 @@ var gameplay = function gameplay (){
         col--;
         if(self.square[row][col].moved || self.square[row][col].piece != 'castle')
           return;    
+        self.side = 'left';
       }else if (self.after % 8 == 6){
         if(self.square[row][++col].piece)
           return;
@@ -413,6 +414,7 @@ var gameplay = function gameplay (){
         col++;
         if(self.square[row][col].moved || self.square[row][col].piece != 'castle')
           return;
+        self.side = 'right';
       }else{
         return;
       }
