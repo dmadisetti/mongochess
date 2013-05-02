@@ -300,6 +300,7 @@ var gameplay = function gameplay (){
         self.piece = pieceholder;
         self.col = col;
         self.row = row;
+        all = [].concat.apply(all);
         console.log(all);
         console.log(squares);
         for (var z=0;z<squares.length;z++){
