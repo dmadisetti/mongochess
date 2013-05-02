@@ -229,15 +229,15 @@ io.sockets.on('connection', function (socket) {
         switch(verifyplay.events){
           case 'castle':
             if (verifyplay.side = 'left'){
-              game.game[arow][0].moved = true;
-              game.game[brow][2] = game.game[arow][0];
-              game.game[arow][0] = verifyplay.empty;
-              var castle = [[arow,0],[brow,2]];
+              game.game[0][arow].moved = true;
+              game.game[3][brow] = game.game[0][arow];
+              game.game[0][arow] = verifyplay.empty;
+              var castle = [[0,arow],[3,brow]];
             }else{
-              game.game[arow][7].moved = true;
-              game.game[brow][5] = game.game[arow][7];
-              game.game[arow][7] = verifyplay.empty;
-              var castle = [[arow,7],[brow,5]];
+              game.game[7][arow].moved = true;
+              game.game[5][brow] = game.game[7][arow];
+              game.game[7][arow] = verifyplay.empty;
+              var castle = [[7,arow],[5,brow]];
             }
             break;
           case 'promote':
