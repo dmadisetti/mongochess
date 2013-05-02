@@ -303,7 +303,7 @@ var gameplay = function gameplay (){
  
         console.log(all);
 
-        lol break dis shit
+        hey = lol;
         console.log(squares);
         for (var z=0;z<squares.length;z++){
           if(merged.indexOf(squares[z]) >=0)
