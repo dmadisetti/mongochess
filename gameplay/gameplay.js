@@ -301,6 +301,7 @@ var gameplay = function gameplay (){
         self.col = col;
         self.row = row;
         console.log(all);
+        console.log(squares);
         for (var z=0;z<squares.length;z++){
           if(all.indexOf(squares[z]) >=0)
             return false;
@@ -472,6 +473,3 @@ var gameplay = function gameplay (){
       return;
     }
 }
-
-if(module)
-  module.exports.gameplay = gameplay;
