@@ -301,10 +301,6 @@ var gameplay = function gameplay (){
         self.row = row;
         all = [].concat.apply([],all);
  
-        console.log(all);
-
-        hey = lol;
-        console.log(squares);
         for (var z=0;z<squares.length;z++){
           if(merged.indexOf(squares[z]) >=0)
             return false;
