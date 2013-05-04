@@ -58,6 +58,8 @@ app.get('/game/:id', function(request, response) {
   });
 });
 
+app.use(express.favicon(__dirname + '/favicon.ico')); 
+
 var port = process.env.PORT || 5000;
 app.listen(port, function() {
   console.log("Listening on " + port);
