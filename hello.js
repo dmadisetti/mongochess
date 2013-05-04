@@ -26,6 +26,13 @@ var io = require('socket.io').listen(app, { log: false });;
 app.use("/pieces", express.static(__dirname + '/pieces'));
 app.use(express.cookieParser());
 
+require('nodefly').profile(
+    'ff6782d5-487c-4385-8f30-f13786239858',
+    [APPLICATION_NAME,'Heroku'],
+    options // optional
+);
+
+
 app.get('/js.js', function(request, response) {
   response.header('Content-Type', 'text/javascript');
   response.send(gameplay.toString());
