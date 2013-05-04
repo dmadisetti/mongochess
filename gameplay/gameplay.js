@@ -463,7 +463,7 @@ var gameplay = function gameplay (){
         promoted = self.square[row][col].piece.color == 'w' ? row == 0 : row == 7;
         if(promoted){
           self.events = 'promoted';
-          if(!self.args['promoted'])
+          if(self.args['promoted'] == null)
             return;
         }
         self.movable[0] = row * 8 + col;
