@@ -100,16 +100,12 @@
     var gameplay = new gameplay();
     var socket = io.connect('http://mongochess.herokuapp.com/');
     $(document).ready(function () {
-        {
-            {#
-                color
-            }
-        }
+        {{#color}}
         $('img.{{color}}').draggable({
             revert: true
-        }); {
-            {
-                /color}}$('#pawnMessage').hide();  $('#pawnMessage').css( {    left: '580px',    top: '250px',    width: 0,    height: 0  } );      $('#mateMessage').hide();  $('#mateMessage').css( {    left: '580px',    top: '250px',    width: 0,    height: 0  } );$('.board > div').droppable({ accept: $('.ui-draggable-dragging')[0], drop: function(){ if (!gameplay.turn) return; var piece = $('.ui-draggable-dragging'); var aindex = piece.parent().index('.board > div'); var bindex = $(this).index('.board > div'); acol = aindex % 8; bcol = bindex % 8; arow = Math.floor(aindex/8);
+        }); 
+        {{/color}}
+        	$('#pawnMessage').hide();  $('#pawnMessage').css( {    left: '580px',    top: '250px',    width: 0,    height: 0  } );      $('#mateMessage').hide();  $('#mateMessage').css( {    left: '580px',    top: '250px',    width: 0,    height: 0  } );$('.board > div').droppable({ accept: $('.ui-draggable-dragging')[0], drop: function(){ if (!gameplay.turn) return; var piece = $('.ui-draggable-dragging'); var aindex = piece.parent().index('.board > div'); var bindex = $(this).index('.board > div'); acol = aindex % 8; bcol = bindex % 8; arow = Math.floor(aindex/8);
             brow = Math.floor(bindex / 8);
             if (gameplay.verify({
                 before: [acol, arow],
@@ -138,16 +134,12 @@
     });
     });
     socket.on('connect', function () {
-        {
-            {#
-                color
-            }
-        }
-        socket.emit('getTurn', '{{id}}'); {
-            {
-                /color}} socket.emit('getGamestate', '{{id}}'); }); socket.on('setGamestate', function(game){ gameplay.square = game.game; gameplay.enemies = game.enemies; });{{#color}}socket.on('setTurn', function(game){ if('{{color}}' == game.turn) gameplay.turn = true; else gameplay.turn = false; }); {{/color
-            }
-        }
+        {{#color}}
+        socket.emit('getTurn', '{{id}}'); 
+        {{/color}} socket.emit('getGamestate', '{{id}}'); }); socket.on('setGamestate', function(game){ gameplay.square = game.game; gameplay.enemies = game.enemies; });
+    	{{#color}}
+    		socket.on('setTurn', function(game){ if('{{color}}' == game.turn) gameplay.turn = true; else gameplay.turn = false; }); 
+    	{{/color}}
         socket.on('update', function (details) {
             socket.emit('getGamestate', '{{id}}');
             animate(details);
