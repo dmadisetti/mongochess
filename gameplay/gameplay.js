@@ -439,9 +439,11 @@ var gameplay = function gameplay (){
           && self.square[row][col].color !== self.piece.color
           && self.square[row][col].piece
       ){
-        promoted = self.square[row][col].piece.color == 'w' ? row == 0 : row == 7;
-        if(promoted && self.args['promoted']){
-        
+        promoted = self.piece.color == 'w' ? row == 0 : row == 7;
+        if(promoted){
+          self.events = 'promoted';
+          if(self.args['promoted'] == null)
+            return;
         }
         self.movable = [row * 8 + col];
       }
@@ -460,12 +462,11 @@ var gameplay = function gameplay (){
           && (self.square[row][col]) 
           && !(self.square[row][col].piece)
       ){
-        promoted = self.square[self.row][self.col].piece.color == 'w' ? row == 0 : row == 7;
-        console.log(self.square[self.row][self.col].piece.color);
-        console.log(row);
+        promoted = self.piece.color == 'w' ? row == 0 : row == 7;
         if(promoted){
           self.events = 'promoted';
-          return;
+          if(self.args['promoted'] == null)
+            return;
         }
         self.movable[0] = row * 8 + col;
         pos = funct(col,row);
