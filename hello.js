@@ -6,6 +6,7 @@ require('nodefly').profile(
 var express = require('express')
 ,mustache = require('mustache')
 ,gameplay = require(__dirname+'/gameplay/gameplay').gameplay
+,fs = require('fs')
 ,CryptoJS = require('cryptojs').Crypto
 ,mongo = require('mongodb')
 ,Server = mongo.Server
@@ -40,7 +41,7 @@ app.get('/js.js', function(request, response) {
 
 app.get('/game/:id', function(request, response) {
   var id = request.params.id;
-  DBCon.collection('static').findOne({_id:'template'},function(error,template){
+  fs.readFile( __dirname+'/index.html', function (err, template) {
     DBCon.collection('games').findOne({_id:id},function(error,game){
       console.log('Looking for Game...');
       if (game == null){
@@ -58,8 +59,7 @@ app.get('/game/:id', function(request, response) {
 
         update = color == 'w' ? 'b' : 'w';
 
-
-        response.send(mustache.render(template.css+template.body+template.board,{update:update,cookie:cookie,hash:hash,expire:expdate,game:game.game,color:color,id:id}));
+        response.send(mustache.render(template.toString(),{update:update,cookie:cookie,hash:hash,expire:expdate,game:game.game,color:color,id:id}));
       }
     });
   });
@@ -90,33 +90,30 @@ app.get('/game/:id/opp', function(request, response) {
   var id = request.params.id;
   var cookie = request.cookies.player ? request.cookies.player : hash;
   var update;
-  DBCon.collection('static').findOne({_id:'template'},function(error,template){
-    DBCon.collection('games').findOne({_id:id},function(error,game){
-      console.log('Looking for Game...');
-      if (game == null){
-        console.log('No Game Found...');
-        response.send('No Game Found...');
+  DBCon.collection('games').findOne({_id:id},function(error,game){
+    console.log('Looking for Game...');
+    if (game == null){
+      console.log('No Game Found...');
+      response.send('No Game Found...');
+    }else{
+      console.log('Found Game...');
+      if (game.white && !game.black){
+        update = {black:cookie};
+      }else if(!game.white && game.black){
+        update = {white:cookie};
       }else{
-        console.log('Found Game...');
-        if (game.white && !game.black){
-          update = {black:cookie};
-        }else if(!game.white && game.black){
-          update = {white:cookie};
-        }else{
-          response.send('Game has already started');
-          return;
-        }
-        var expire = new Date ();
-        expire.setTime (expire.getTime() + (24 * 60 * 60 * 1000*365));
-        DBCon.collection('games').update({_id:id},{$set: update},function (error, client) {
-          if(!error)
-            response.send('<script type="text/javascript">document.cookie = "player='+cookie+'; expires='+expire+'; path=/"; window.location.href="/game/'+id+'";</script>')
-            //response.redirect('/game/'+id);//response.send(mustache.render(template.css+push+template.body+template.board,{game:game.game}));  
-          else
-            response.send('Error');
-        });
+        response.send('Game has already started');
+        return;
       }
-    });
+      var expire = new Date ();
+      expire.setTime (expire.getTime() + (24 * 60 * 60 * 1000*365));
+      DBCon.collection('games').update({_id:id},{$set: update},function (error, client) {
+        if(!error)
+          response.send('<script type="text/javascript">document.cookie = "player='+cookie+'; expires='+expire+'; path=/"; window.location.href="/game/'+id+'";</script>')
+        else
+          response.send('Error');
+      });
+    }
   });
 });
 
