@@ -460,10 +460,8 @@ var gameplay = function gameplay (){
           && (self.square[row][col]) 
           && !(self.square[row][col].piece)
       ){
-        promoted = self.square[row][col].piece.color == 'w' ? row == 0 : row == 7;
+        promoted = self.square[self.row][self.col].piece.color == 'w' ? row == 0 : row == 7;
         console.log(promoted);
-        console.log(row,col);
-        console.log(self.square[row][col].piece.color == 'w' ? col == 0 : col == 7);
         if(promoted){
           self.events = 'promoted';
           return;
