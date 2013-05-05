@@ -1,5 +1,7 @@
+var auth = gameplay = require(__dirname+'/auth');
+
 require('nodefly').profile(
-    'ff6782d5-487c-4385-8f30-f13786239858',
+    auth.nodefly,
     ['mongochess','Heroku']
 );
 
@@ -16,11 +18,11 @@ var express = require('express')
 
 
 
-server = new Server('alex.mongohq.com', 10094, {auto_reconnect: true});
-var DBCon = new Db('app13760571', server, {safe: false});
+server = new Server(auth.server, 10094, {auto_reconnect: true});
+var DBCon = new Db(auth.database, server, {safe: false});
 DBCon.open(function(err, db) {
   if(!err){
-    db.authenticate('heroku', 'Dominica!<3', function(err){
+    db.authenticate(auth.user, auth.password, function(err){
       if(!err) con = db;
     });
   }
