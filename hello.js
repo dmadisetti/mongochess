@@ -1,9 +1,6 @@
-var auth = require(__dirname+'/auth');
+require(__dirname+'/auth').nodefly();
 
-require('nodefly').profile(
-    auth.nodefly,
-    ['mongochess','Heroku']
-);
+var auth = require(__dirname+'/auth');
 
 var express = require('express')
 ,mustache = require('mustache')
