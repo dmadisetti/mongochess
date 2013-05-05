@@ -1,4 +1,4 @@
-var auth = gameplay = require(__dirname+'/auth');
+var auth = require(__dirname+'/auth');
 
 require('nodefly').profile(
     auth.nodefly,
