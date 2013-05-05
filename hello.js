@@ -29,19 +29,20 @@ DBCon.open(function(err, db) {
 var app = express.createServer();
 var io = require('socket.io').listen(app, { log: false });;
 
-app.use("/pieces", express.static(__dirname + '/pieces'));
+app.use("/goodies", express.static(__dirname + '/goodies'));
 app.use(express.cookieParser());
 
 
 
-app.get('/js.js', function(request, response) {
+app.get('/gameplay.js', function(request, response) {
   response.header('Content-Type', 'text/javascript');
   response.send(gameplay.toString());
 });
 
-app.get('/game/:id', function(request, response) {
-  var id = request.params.id;
-  fs.readFile( __dirname+'/index.html', function (err, template) {
+app.get('/the.js', function(request, response) {
+  response.header('Content-Type', 'text/javascript');
+  request.query.id = id;
+  fs.readFile( __dirname+'/goodies/the.js', function (err, template) {
     DBCon.collection('games').findOne({_id:id},function(error,game){
       console.log('Looking for Game...');
       if (game == null){
@@ -56,10 +57,27 @@ app.get('/game/:id', function(request, response) {
         expdate = new Date ();
         expdate.setTime (expdate.getTime() + (24 * 60 * 60 * 1000*365));
         color = cookie == game.white ? "w" : cookie == game.black ? "b" : null;
-
         update = color == 'w' ? 'b' : 'w';
+        response.send(mustache.render(template.toString(),{update:update,cookie:cookie,hash:hash,expire:expdate,color:color,id:id}));
+      }
+    });
+  })
+});
 
-        response.send(mustache.render(template.toString(),{update:update,cookie:cookie,hash:hash,expire:expdate,game:game.game,color:color,id:id}));
+app.get('/game/:id', function(request, response) {
+  var id = request.params.id;
+  fs.readFile( __dirname+'/index.html', function (err, template) {
+    DBCon.collection('games').findOne({_id:id},function(error,game){
+      console.log('Looking for Game...');
+      if (game == null){
+        console.log('No Game Found...');
+        response.send('No Game Found...');
+      }else{
+        console.log('Found Game...');
+        var color,
+        cookie = request.cookies.player,
+        color = cookie == game.white ? "w" : cookie == game.black ? "b" : null;
+        response.send(mustache.render(template.toString(),{game:game.game,color:color,id:id}));
       }
     });
   });

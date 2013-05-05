@@ -1,187 +1,34 @@
-<style>
-    body {
-        background-color:#000
-    }
-    .board {
-        width:750px;
-        height:750px;
-        border:2px solid #FFF;
-        margin:100px auto auto
-    }
-    .board > div {
-        width:12.5%;
-        height:12.5%;
-        float:left;
-        background-color:#21213F
-    }
-    .board > div:nth-child(16n+2) {
-        background-color:#AFAFD4
-    }
-    .board > div:nth-child(16n+4) {
-        background-color:#AFAFD4
-    }
-    .board > div:nth-child(16n+6) {
-        background-color:#AFAFD4
-    }
-    .board > div:nth-child(16n+8) {
-        background-color:#AFAFD4
-    }
-    .board > div:nth-child(16n-5) {
-        background-color:#AFAFD4
-    }
-    .board > div:nth-child(16n-3) {
-        background-color:#AFAFD4
-    }
-    .board > div:nth-child(16n-1) {
-        background-color:#AFAFD4
-    }
-    .board > div:nth-child(16n-7) {
-        background-color:#AFAFD4
-    }
-    .board div img {
-        width:100%;
-        height:100%
-    }
-    #pawnMessage {
-        position: absolute;
-        left: 580px;
-        top: 250px;
-        width: 0;
-        height: 0;
-        z-index: 100;
-        background: #fff;
-        border: 2px solid #333;
-        -moz-border-radius: 10px;
-        -webkit-border-radius: 10px;
-        border-radius: 10px;
-        -moz-box-shadow: .3em .3em .5em rgba(0, 0, 0, .8);
-        -webkit-box-shadow: .3em .3em .5em rgba(0, 0, 0, .8);
-        box-shadow: .3em .3em .5em rgba(0, 0, 0, .8);
-        padding: 20px;
-    }
-    #mateMessage {
-        position: absolute;
-        left: 580px;
-        top: 250px;
-        width: 0;
-        height: 0;
-        z-index: 100;
-        background: #fff;
-        border: 2px solid #333;
-        -moz-border-radius: 10px;
-        -webkit-border-radius: 10px;
-        border-radius: 10px;
-        -moz-box-shadow: .3em .3em .5em rgba(0, 0, 0, .8);
-        -webkit-box-shadow: .3em .3em .5em rgba(0, 0, 0, .8);
-        box-shadow: .3em .3em .5em rgba(0, 0, 0, .8);
-        padding: 20px;
-    }
-    #pawnMessage > img {
-        height:100px;
-        width:100px;
-        float:left;
-    }
-    .attacking {
-        background-color:#0000FF;
-    }
-    .attacked {
-        background-color:#FF0000;
-    }
-    .attacked.attacking {
-        background-color:#FF00FF;
-    }
-</style>
-<script type='text/javascript' src='http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js'></script>
-<script type='text/javascript' src='//ajax.googleapis.com/ajax/libs/jqueryui/1.10.2/jquery-ui.min.js'></script>
-<script type='text/javascript' src='/js.js'></script>
-<script src='/socket.io/socket.io.js'></script>
-<script>
-    document.cookie = 'player={{cookie}}; expires={{expire}}; path=/';
-    var gameplay = new gameplay();
-    var socket = io.connect('http://mongochess.herokuapp.com/');
-    $(document).ready(function () {
-        {{#color}}
-        $('img.{{color}}').draggable({
-            revert: true
-        }); 
-        {{/color}}
-        	$('#pawnMessage').hide();  $('#pawnMessage').css( {    left: '580px',    top: '250px',    width: 0,    height: 0  } );      $('#mateMessage').hide();  $('#mateMessage').css( {    left: '580px',    top: '250px',    width: 0,    height: 0  } );$('.board > div').droppable({ accept: $('.ui-draggable-dragging')[0], drop: function(){ if (!gameplay.turn) return; var piece = $('.ui-draggable-dragging'); var aindex = piece.parent().index('.board > div'); var bindex = $(this).index('.board > div'); acol = aindex % 8; bcol = bindex % 8; arow = Math.floor(aindex/8);
-            brow = Math.floor(bindex / 8);
-            if (gameplay.verify({
-                before: [acol, arow],
-                after: [bcol, brow]
-            })) {
-                gameplay.turn = false;
-                var img = '<img src=\"' + piece.attr('src') + '\" class=\"{{color}}\" />';
-                piece.remove();
-                $(this).html(img);
-                $('img.{{color}}').draggable({
-                    zIndex: 100,
-                    containment: '.board',
-                    revert: true
-                });
-                gameplay.turn = false;
-                socket.emit('move', {
-                    acol: acol,
-                    arow: arow,
-                    bcol: bcol,
-                    brow: brow,
-                    id: '{{id}}',
-                    auth: '{{cookie}}'
-                });
-            }
-        }
-    });
-    });
-    socket.on('connect', function () {
-        {{#color}}
-        socket.emit('getTurn', '{{id}}'); 
-        {{/color}} socket.emit('getGamestate', '{{id}}'); }); socket.on('setGamestate', function(game){ gameplay.square = game.game; gameplay.enemies = game.enemies; });
-    	{{#color}}
-    		socket.on('setTurn', function(game){ if('{{color}}' == game.turn) gameplay.turn = true; else gameplay.turn = false; }); 
-    	{{/color}}
-        socket.on('update', function (details) {
-            socket.emit('getGamestate', '{{id}}');
-            animate(details);
-            gameplay.turn = true;
-        });
+<html>
+	<head>
 
-        function animate(details) {
-            norm0 = details.before[1] * 8 + details.before[0] + 1;
-            norm1 = details.after[1] * 8 + details.after[0] + 1;
-            alert('before' + details.before);
-            alert('after' + details.after);
-            left = -(details.before[1] - details.after[1]) * 100;
-            tip = -(details.before[0] - details.after[0]) * 100;
-            var piece = $('.board div:nth-child(' + norm0 + ') img');
-            alert(left);
-            alert(tip);
-            var img = '<img src=\"' + piece.attr('src') + '\" class=\"{{update}}\" />';
-            piece.remove();
-            update = $('.board div:nth-child(' + norm1 + ')');
-            update.html(img);
-            img = $('.board div:nth-child(' + norm1 + ') img');
-            img.css({
-                position: 'relative',
-                left: tip + '%',
-                top: left + '%'
-            });
-            img.animate({
-                top: '0px',
-                left: '0px'
-            }, 'slow');
-        };
-</script>
-<div id='pawnMessage'>
-    <img src='/pieces/wqueen.png' />
-    <img src='/pieces/wcastle.png' />
-    <img src='/pieces/wbishop.png' />
-    <img src='/pieces/wknight.png' />
-</div>
-<div id='mateMessage'>
-    <h1>Checkmate</h1>
-    <p></p>
-</div>
-<div class='board'>{{#game}}{{#.}}
-    <div>{{#piece}}
-        <img src='/pieces/{{color}}{{piece}}.png' class='{{color}}' />{{/piece}}</div>{{/.}}{{/game}}</div>
+		<title>a chess app</title>
+
+		<!-- meta -->
+
+		<!--styles -->
+		<script type='text/javascript' src='/goodies/the.css'></script>
+
+		<!-- scripts -->
+		<script type='text/javascript' src='http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js'></script>
+		<script type='text/javascript' src='//ajax.googleapis.com/ajax/libs/jqueryui/1.10.2/jquery-ui.min.js'></script>
+		<script type='text/javascript' src='/gameplay.js'></script>
+		<script src='/socket.io/socket.io.js'></script>
+		<script type='text/javascript' src='/the.js{{#id}}?id={{.}}{{/id}}'></script>
+
+	</head>
+	<body>
+		<div id='pawnMessage'>
+		    <img src='/goodies/pieces/wqueen.png' />
+		    <img src='/goodies/pieces/wcastle.png' />
+		    <img src='/goodies/pieces/wbishop.png' />
+		    <img src='/goodies/pieces/wknight.png' />
+		</div>
+		<div id='mateMessage'>
+		    <h1>Checkmate</h1>
+		    <p></p>
+		</div>
+		<div class='board'>{{#game}}{{#.}}
+		    <div>{{#piece}}
+		        <img src='/goodies/pieces/{{color}}{{piece}}.png' class='{{color}}' />{{/piece}}</div>{{/.}}{{/game}}</div>
+	</body>
+</html>
