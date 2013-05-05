@@ -1,10 +1,14 @@
-require(__dirname+'/auth').nodefly();
-
-var auth = require(__dirname+'/auth');
+(function(nodefly){
+  require('nodefly').profile(
+    nodefly,
+    ['mongochess','Heroku']
+  )}
+)(require(__dirname+'/auth').nodefly);
 
 var express = require('express')
 ,mustache = require('mustache')
 ,gameplay = require(__dirname+'/gameplay/gameplay').gameplay
+,auth = require(__dirname+'/auth')
 ,fs = require('fs')
 ,CryptoJS = require('cryptojs').Crypto
 ,mongo = require('mongodb')
