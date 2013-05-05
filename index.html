@@ -7,7 +7,7 @@
 
 		<!--styles -->
 		<link rel="stylesheet" type='text/css' href='/goodies/the.css' />
-
+		<link rel="stylesheet" href="/goodies/icons/style.css" />
 		<!-- scripts -->
 		<script type='text/javascript' src='http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js'></script>
 		<script type='text/javascript' src='//ajax.googleapis.com/ajax/libs/jqueryui/1.10.2/jquery-ui.min.js'></script>
@@ -17,23 +17,51 @@
 
 	</head>
 	<body>
-		<div id='pawnMessage'>
-		    <img src='/goodies/pieces/wqueen.png' />
-		    <img src='/goodies/pieces/wcastle.png' />
-		    <img src='/goodies/pieces/wbishop.png' />
-		    <img src='/goodies/pieces/wknight.png' />
-		</div>
-		<div id='mateMessage'>
-		    <h1>Checkmate</h1>
-		    <p></p>
-		</div>
-		<div class='board'>
-			{{#game}}{{#.}}
-		    <div>{{#piece}}
-		        <img src='/goodies/pieces/{{color}}{{piece}}.png' class='{{color}}' />
-		    	{{/piece}}
+			<header style="background-color:#717171">
+	</header>
+
+	<section>
+		<article style="background-color:#5D5D5D">
+			<div id='pawnMessage'>
+			    <img src='/goodies/pieces/wqueen.png' />
+			    <img src='/goodies/pieces/wcastle.png' />
+			    <img src='/goodies/pieces/wbishop.png' />
+			    <img src='/goodies/pieces/wknight.png' />
 			</div>
-			{{/.}}{{/game}}
+			<div id='mateMessage'>
+			    <h1>Checkmate</h1>
+			    <p></p>
+			</div>
+			<div class='board'>
+				{{#game}}{{#.}}
+			    <div>{{#piece}}
+			        <img src='/goodies/pieces/{{color}}{{piece}}.png' class='{{color}}' />
+			    	{{/piece}}
+				</div>
+				{{/.}}{{/game}}
+			</div>
+		</article>
+		<article  style="background-color:#464646">
+			<!-- Explaination- Dog and other Jazz -->
+		</article>
+		<article  style="background-color:#3F3F3F">
+			<!-- Author? Github? No idea. But needs at least 3 panels. -->
+		</article>
+	</section>
+
+	<footer>
+		<div class= "inner">
+			<a class='gittip'>
+				Give us moneys on Gittip
+				<i class="icon icon-heart"> </i>
+			</a>
+			<div class="social">
+				<p>Share the love</p>
+				<a><i class="icon icon-facebook"></i></a>
+				<a><i class="icon icon-twitter"></i></a>
+				<a><i class="icon icon-google"></i></a>
+			</div>
 		</div>
+	</footer>
 	</body>
 </html>
