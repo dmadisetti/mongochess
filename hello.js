@@ -1,23 +1,13 @@
-(function(nodefly){
-  require('nodefly').profile(
-    nodefly,
-    ['mongochess','Heroku']
-  )}
-)(require(__dirname+'/auth').nodefly);
-
-var express = require('express')
+var auth = require(__dirname+'/auth').auth
+,express = require('express')
 ,mustache = require('mustache')
 ,gameplay = require(__dirname+'/gameplay/gameplay').gameplay
-,auth = require(__dirname+'/auth')
 ,fs = require('fs')
 ,CryptoJS = require('cryptojs').Crypto
 ,mongo = require('mongodb')
 ,Server = mongo.Server
 ,Db = mongo.Db
 ,con = null;
-
-
-
 
 server = new Server(auth.server, 10094, {auto_reconnect: true});
 var DBCon = new Db(auth.database, server, {safe: false});
