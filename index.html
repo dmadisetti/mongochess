@@ -27,8 +27,13 @@
 		    <h1>Checkmate</h1>
 		    <p></p>
 		</div>
-		<div class='board'>{{#game}}{{#.}}
+		<div class='board'>
+			{{#game}}{{#.}}
 		    <div>{{#piece}}
-		        <img src='/goodies/pieces/{{color}}{{piece}}.png' class='{{color}}' />{{/piece}}</div>{{/.}}{{/game}}</div>
+		        <img src='/goodies/pieces/{{color}}{{piece}}.png' class='{{color}}' />
+		    	{{/piece}}
+			</div>
+			{{/.}}{{/game}}
+		</div>
 	</body>
 </html>
