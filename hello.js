@@ -41,7 +41,7 @@ app.get('/gameplay.js', function(request, response) {
 
 app.get('/the.js', function(request, response) {
   response.header('Content-Type', 'text/javascript');
-  request.query.id = id;
+  request.param('id') = id;
   fs.readFile( __dirname+'/goodies/the.js', function (err, template) {
     DBCon.collection('games').findOne({_id:id},function(error,game){
       console.log('Looking for Game...');
