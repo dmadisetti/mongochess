@@ -53,6 +53,8 @@
 
         function promote(name){
             standby.src = this.src;
+            var message = document.getElementById("promotion");
+            message.className = "message";
             socket.emit('move', {
                 acol: acol,
                 arow: arow,
