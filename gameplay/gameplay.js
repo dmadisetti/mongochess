@@ -37,6 +37,7 @@ var gameplay = function gameplay (){
           
           var squareholder = self.square;
           var enemyholder = self.enemies;
+          var eventholder = self.events;
           self.square = JSON.parse(JSON.stringify(self.square));
           self.enemies = JSON.parse(JSON.stringify(self.enemies));
           
@@ -61,7 +62,7 @@ var gameplay = function gameplay (){
           
           self.square = squareholder;
           self.enemies = enemyholder;
-          
+          self.events = eventholder;
           
           return !(check);
         }
