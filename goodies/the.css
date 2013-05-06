@@ -49,7 +49,7 @@ header{
     vertical-align:top;
     color:#446644;
     margin:0px;
-    padding:0px;
+    padding:20px;
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     width:100%;
     overflow:hidden;
@@ -86,7 +86,7 @@ footer a,footer p{
 /* Woohoo! Media queries */
 
 @media (min-width: 1250px){
-    article,header{
+    article{
         padding:45px;
     }
     section{
@@ -97,14 +97,14 @@ footer a,footer p{
         clear:none;
     }
 
-    footer{
+    footer,header{
         position:fixed;
     }
 
 }
 
 @media (max-width: 1250px){
-    article,header{
+    article{
         padding:25px;
     }
     section{
@@ -114,7 +114,7 @@ footer a,footer p{
         float:left;
         clear:both;
     }
-    footer{
+    footer,header{
         position:static;
     }
 }
