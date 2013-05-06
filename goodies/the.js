@@ -65,6 +65,23 @@
             animate(details);
         });
 
+        socket.on("created", function (state) {
+            color = state.created ? "success" : "error"; /*popup.addClass(color);*/
+            alert(color + ":" + state.message);
+        });
+
+        create = function () {
+            name = document.getElementById("newgame").value;
+            privacy = document.getElementById("privacy").checked ? "public" : "private";
+            color = document.getElementById("color").checked ? "black" : "white";
+            socket.emit("create", {
+                color: color,
+                privacy: privacy,
+                id: name,
+                auth: cookie
+            });
+        };
+
         function animate(details) {
 
             norm0 = details.before[1] * 8 + details.before[0] + 1;
