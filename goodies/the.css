@@ -119,6 +119,11 @@ label[for=privacy] .onoffswitch-inner:after {
     display:none;   
 }
 
+.parallax{
+    background-image: url("/goodies/pieces/bg.png");
+}
+
+
 a,a:active,a:hover,a:visited,a:link {
     text-decoration: none;
     color:#FFF;
