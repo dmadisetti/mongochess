@@ -110,6 +110,7 @@ label[for=privacy] .onoffswitch-inner:after {
     -o-transition: height 1s ease;
     transition: height 1s ease;
     margin: 0 auto;
+    max-width:760;
 }
 
 
@@ -124,11 +125,9 @@ label[for=privacy] .onoffswitch-inner:after {
 
 .display{
     border-top:1px solid black;
-    overflow: visible;
+    overflow: hidden;
     height:200px; 
 }
-
-
 
 .display img{
     width:150px;
