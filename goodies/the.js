@@ -93,7 +93,7 @@
                 console.log('wtf');
                 norm0 = details.after[1] * 8 + details.after[0] + 1;
                 var piece = $('.board div:nth-child(' + norm0 + ') img');
-                piece.attr('src',details.promote);
+                piece.attr('src',"/goodies/pieces/{{update}}"+details.promote+".png");
             }
         });
 
