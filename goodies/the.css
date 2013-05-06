@@ -104,6 +104,12 @@ label[for=privacy] .onoffswitch-inner:after {
     right: 0px;
 }
 
+#message{
+    -moz-transition: height 1s ease;
+    -webkit-transition: height 1s ease;
+    -o-transition: height 1s ease;
+    transition: height 1s ease;
+}
 
 .inner{
     padding-top: 10px;
@@ -112,15 +118,16 @@ label[for=privacy] .onoffswitch-inner:after {
     overflow: visible;
     min-height:45px;
     max-width:1000px;
+    margin: 0 auto;
 }
 
 .display{
-    display:block;
     border-top:1px solid black;
-    margin: 0 auto;
     overflow: visible;
-    max-width:1000px; 
+    height:200px; 
 }
+
+
 
 .display img{
     width:150px;
@@ -130,7 +137,8 @@ label[for=privacy] .onoffswitch-inner:after {
 }
 
 .message{
-    display:none;   
+    height:0px;
+    overflow:hidden;   
 }
 
 .parallax{
