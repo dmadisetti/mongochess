@@ -57,10 +57,10 @@
   {{#color}}
 
         promote = function (name){
-            standby.src = this.src;
+            standby.src = "/goodies/pieces/{{color}}"+name+".png";
             var message = document.getElementById("promotion");
             message.className = "message";
-            socket.emit('move', {
+/*          socket.emit('move', {
                 acol: acol,
                 arow: arow,
                 bcol: bcol,
@@ -68,7 +68,7 @@
                 promote: name,
                 id: '{{id}}',
                 auth: '{{cookie}}'
-            });
+            }); */
         }
 
     socket.on('connect', function () {
