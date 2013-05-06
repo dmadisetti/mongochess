@@ -27,7 +27,7 @@ article{
     width:750px;
     height:750px;
     border:2px solid #FFF;
-    margin:100px auto auto
+    margin:0px auto;
 }
 .board > div {
     width:12.5%;
@@ -83,10 +83,9 @@ footer a,footer p{
 @media (min-width: 1250px){
     article{
         padding:45px;
-        width:1160px;
+        max-width:1160px;
     }
     section{
-        max-width:1250px;
         padding-bottom: 45px;
     }
     .social{
