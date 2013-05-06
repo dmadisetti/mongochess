@@ -22,10 +22,10 @@ DBCon.open(function(err, db) {
 var app = express.createServer();
 var io = require('socket.io').listen(app, { log: false });;
 
+app.use(express.favicon(__dirname + '/favicon.ico'));
+
 app.use("/goodies", express.static(__dirname + '/goodies'));
 app.use(express.cookieParser());
-
-
 
 app.get('/gameplay.js', function(request, response) {
   response.header('Content-Type', 'text/javascript');
@@ -75,8 +75,7 @@ app.get('/game/:id', function(request, response) {
     });
   });
 });
-
-app.use(express.favicon(__dirname + '/favicon.ico')); 
+ 
 
 var port = process.env.PORT || 5000;
 app.listen(port, function() {
@@ -245,7 +244,6 @@ io.sockets.on('connection', function (socket) {
           }
         }
         
-
         if (game.game[brow][bcol].piece == 'king')
           game.enemies[move].king = [bcol,brow];
 
