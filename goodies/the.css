@@ -11,6 +11,11 @@ body{
     float:right;
     width:300px;
 }
+
+.display{
+    display:block;
+}
+
 .submit{
     width:100%;
 }

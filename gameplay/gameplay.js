@@ -27,6 +27,12 @@ var gameplay = function gameplay (){
           if(self.events == 'castle')
             return true;
 
+          if(self.events == 'promoted')
+            if(self.args['promoted'] != null)
+              // Change her up
+              return;
+            }
+          }
 
           var color = self.piece.color == 'w' ? 'b' : 'w';
           
@@ -440,11 +446,8 @@ var gameplay = function gameplay (){
           && self.square[row][col].piece
       ){
         promoted = self.piece.color == 'w' ? row == 0 : row == 7;
-        if(promoted){
+        if(promoted)
           self.events = 'promoted';
-          if(self.args['promoted'] == null)
-            return;
-        }
         self.movable = [row * 8 + col];
       }
       return;
@@ -463,11 +466,9 @@ var gameplay = function gameplay (){
           && !(self.square[row][col].piece)
       ){
         promoted = self.piece.color == 'w' ? row == 0 : row == 7;
-        if(promoted){
+        if(promoted)
           self.events = 'promoted';
-          if(self.args['promoted'] == null)
-            return;
-        }
+
         self.movable[0] = row * 8 + col;
         pos = funct(col,row);
         col = pos[0];

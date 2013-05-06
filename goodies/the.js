@@ -21,29 +21,41 @@
 	    	            after: [bcol, brow]
 	        	    })) {
 		                gameplay.turn = false;
-	    	            var img = '<img src=\"' + piece.attr('src') + '\" class=\"{{color}}\" />';
+                        var img = document.createElement("img");
+	    	            img.src = piece.attr('src') 
+                        img.className = "{{color}}";
 	        	        piece.remove();
 	            	    $(this).html(img);
-	                	$('img.{{color}}').draggable({
+                        $('img.{{color}}').draggable({
 		                    zIndex: 100,
 	    	                containment: '.board',
 	        	            revert: true
 	            	    });
-	                	gameplay.turn = false;
-		                socket.emit('move', {
-		                    acol: acol,
-		                    arow: arow,
-		                    bcol: bcol,
-		                    brow: brow,
-		                    id: '{{id}}',
-		                    auth: '{{cookie}}'
-		                });
-	    	        }else if(gameplay.events == 'promoted')    
-                            alert("fuck yeah"); 
+                        if(gameplay.events == 'promoted'){
+                            var message = document.getElementById("message");
+                            message.html(make("queen"),make("bishop"),make("castle"),make("knight"))
+                            message.className += "display";
+                        }else{
+                            socket.emit('move', {
+    		                    acol: acol,
+    		                    arow: arow,
+    		                    bcol: bcol,
+    		                    brow: brow,
+    		                    id: '{{id}}',
+    		                    auth: '{{cookie}}'
+    		                });
+                        }
+	    	        }
 	        	}
 	    	});
+        function make(name){
+            var img = document.createElement("img");
+            img.src = "/goodies/pieces/{{color}}" +name+".png";
+            img.className = "{{color}}";
+            return img;
+        }
+
 		{{/color}}
-	$('#pawnMessage').hide();  $('#pawnMessage').css( {    left: '580px',    top: '250px',    width: 0,    height: 0  } );      $('#mateMessage').hide();  $('#mateMessage').css( {    left: '580px',    top: '250px',    width: 0,    height: 0  } );
     });
   {{#color}}
     socket.on('connect', function () {
