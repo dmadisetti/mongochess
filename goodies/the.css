@@ -73,6 +73,7 @@ header{
 }
 
 h1{
+    margin: 1em 0;
     font-size: 3.8em;
     letter-spacing: -3px;
     line-height: 0px;
