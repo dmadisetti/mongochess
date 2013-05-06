@@ -89,7 +89,13 @@
             gameplay.turn = true;
           {{/color}}
             animate(details);
+            if (details.promote){
+                norm0 = details.after[1] * 8 + details.after[0] + 1;
+                var piece = $('.board div:nth-child(' + norm0 + ') img');
+                piece.src = "/goodies/pieces/{{color}}"+details.promote+".png";
+            }
         });
+
 
         socket.on("created", function (state) {
             color = state.created ? "success" : "error"; /*popup.addClass(color);*/

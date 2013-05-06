@@ -202,7 +202,6 @@ io.sockets.on('connection', function (socket) {
   socket.on('move',function(params){
     DBCon.collection('games').findOne({_id:params.id},function(error,game){
       var auth = null;
-      var promote = params.promote || null;
       var acol = parseInt(params.acol);
       var arow = parseInt(params.arow);
       var bcol = parseInt(params.bcol);
@@ -224,12 +223,13 @@ io.sockets.on('connection', function (socket) {
       verifyplay.square = game.game;
       verifyplay.enemies = game.enemies;
 
-      if(auth !== null && game.turn == move && verifyplay.verify({before: [acol, arow],after: [bcol, brow], promote:promote})){
+      if(auth !== null && game.turn == move && verifyplay.verify({before: [acol, arow],after: [bcol, brow]})){
         console.log('Legit Move');
         // update board hash
         game.game[arow][acol].moved = true;
         game.game[brow][bcol] = game.game[arow][acol];
         game.game[arow][acol] = verifyplay.empty;
+
 
         // update hash of pieces
         for (var z = 0; z < game.enemies[move].pieces.length; z++){
@@ -263,7 +263,8 @@ io.sockets.on('connection', function (socket) {
               var castle = [[7,arow],[5,brow]];
             }
             break;
-          case 'promote':
+          case 'promoted':
+            game.game[brow][bcol].piece = params.promote;
             break;
           case 'pass':
             break;
@@ -281,8 +282,8 @@ io.sockets.on('connection', function (socket) {
                 socket.broadcast.to(game._id).emit('update',{before:[acol,arow],after:[bcol,brow]});
                 io.sockets.to(game._id).emit('update',{before:castle[0],after:castle[1]});
                 break;
-              case 'promote':
-                socket.broadcast.to(game._id).emit('update',{before:[acol,arow],after:[bcol,brow]});
+              case 'promoted':
+                socket.broadcast.to(game._id).emit('update',{promote:params.promote,before:[acol,arow],after:[bcol,brow]});
                 break;
               case 'pass':
                 socket.broadcast.to(game._id).emit('update',{before:[acol,arow],after:[bcol,brow]});
