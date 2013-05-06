@@ -11,9 +11,12 @@ body{
     float:left;
     width:300px;
 }
+.submit{
+    width:100%;
+}
     .onoffswitch {
         position: relative;
-        width: 103px;
+        width: 50%px;
         -webkit-user-select:none;
         -moz-user-select:none;
         -ms-user-select: none;
@@ -153,12 +156,16 @@ article{
     height:100%
 }
 
+#newgame{
+    width:100%;
+}
+
 header{
     background-color: #FFF;
     vertical-align:top;
     color:#000;
     margin:0px;
-    padding:0 20px;
+    padding: 20 2px;
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     width:100%;
     overflow:hidden;
