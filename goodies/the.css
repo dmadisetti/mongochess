@@ -12,9 +12,6 @@ body{
     width:300px;
 }
 
-.display{
-    display:block;
-}
 
 .submit{
     width:100%;
@@ -117,11 +114,22 @@ label[for=privacy] .onoffswitch-inner:after {
     max-width:1000px;
 }
 
-.message{
+.display{
+    display:block;
     border-top:1px solid black;
     margin: 0 auto;
     overflow: visible;
     max-width:1000px; 
+}
+
+.display img{
+    width:150px;
+    height:150px;
+    float:left;
+    margin:20px;
+}
+
+.message{
     display:none;   
 }
 
