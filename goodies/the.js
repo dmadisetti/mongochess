@@ -89,7 +89,8 @@
             gameplay.turn = true;
           {{/color}}
             animate(details);
-            if (details.promote !== undefined){
+            if (details.promote != undefined){
+                console.log('wtf');
                 norm0 = details.after[1] * 8 + details.after[0] + 1;
                 var piece = $('.board div:nth-child(' + norm0 + ') img');
                 piece.attr('src',details.promote);
