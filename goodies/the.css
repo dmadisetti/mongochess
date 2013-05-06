@@ -113,7 +113,7 @@ footer a,footer p{
         clear:none;
     }
 
-    footer,header{
+    footer{
         position:fixed;
     }
 
@@ -130,7 +130,7 @@ footer a,footer p{
         float:left;
         clear:both;
     }
-    footer,header{
+    footer{
         position:static;
     }
 }
