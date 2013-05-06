@@ -7,7 +7,7 @@ body{
 
 
 .inner{
-    padding-top: 50px;
+    padding-top: 20px;
     line-height: 14px;
     margin: 0 auto;
     overflow: visible;
@@ -78,6 +78,15 @@ h1{
     line-height: 0px;
     color: #8a8683;
     font-weight: 700;
+    clear:both;
+}
+
+h2{
+    font-size: 1.9em;
+    line-height: 0px;
+    color: #8a8683;
+    font-weight: 350;
+    clear:both;    
 }
 
 footer{
