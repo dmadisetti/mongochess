@@ -9,7 +9,7 @@
 	        $('.board > div').droppable({ 
 	        	accept: $('.ui-draggable-dragging')[0], 
 	        	drop: function(){ 
-	        		if (!gameplay.turn){
+	        		if (!gameplay.turn)
                         if(gameplay.events == 'promoted')    
                             alert("fuck yeah");
                         else return; 
