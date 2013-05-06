@@ -104,7 +104,7 @@ label[for=privacy] .onoffswitch-inner:after {
 
 
 .inner{
-    padding-top: 20px;
+    padding-top: 10px;
     line-height: 14px;
     margin: 0 auto;
     overflow: visible;
@@ -112,7 +112,9 @@ label[for=privacy] .onoffswitch-inner:after {
     max-width:1000px;
 }
 
-
+.parllax{
+    background-image: url("/goodies/pieces/bg.png");
+}
 
 a,a:active,a:hover,a:visited,a:link {
     text-decoration: none;
@@ -124,9 +126,13 @@ section{
     min-height:600px;
 }
 
+.message{
+    display: block;
+    background-color: #5CD9EF;
+}
+
 article{
     margin:0px;
-    min-height: 200px;
 }
 .board {
     width:750px;

@@ -42,12 +42,14 @@
 				</div>
 				<button class="submit" onclick="Javascript:create()">New Game</button>
 			</div>
-			<div class='message'></div>
 		</div>
 	</header>
 	<section>
-		<article style="background-color:#5D5D5D">
-			<div class='board'>
+		<article class="message">
+			<div class="inner"></div>
+		</article>
+		<article class="parallax">
+			<div class="board">
 				{{#game}}{{#.}}
 			    <div>{{#piece}}
 			        <img src='/goodies/pieces/{{color}}{{piece}}.png' class='{{color}}' />
