@@ -16,7 +16,7 @@ body{
 }
     .onoffswitch {
         position: relative;
-        width: 50%px;
+        width: 150px;
         -webkit-user-select:none;
         -moz-user-select:none;
         -ms-user-select: none;
@@ -165,7 +165,7 @@ header{
     vertical-align:top;
     color:#000;
     margin:0px;
-    padding: 20 2px;
+    padding: 20 0px;
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     width:100%;
     overflow:hidden;
