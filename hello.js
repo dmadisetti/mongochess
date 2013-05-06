@@ -202,6 +202,7 @@ io.sockets.on('connection', function (socket) {
   socket.on('move',function(params){
     DBCon.collection('games').findOne({_id:params.id},function(error,game){
       var auth = null;
+      var promote = params.promote || null;
       var acol = parseInt(params.acol);
       var arow = parseInt(params.arow);
       var bcol = parseInt(params.bcol);
@@ -223,7 +224,7 @@ io.sockets.on('connection', function (socket) {
       verifyplay.square = game.game;
       verifyplay.enemies = game.enemies;
 
-      if(auth !== null && game.turn == move && verifyplay.verify({before: [acol, arow],after: [bcol, brow]})){
+      if(auth !== null && game.turn == move && verifyplay.verify({before: [acol, arow],after: [bcol, brow], promote:promote})){
         console.log('Legit Move');
         // update board hash
         game.game[arow][acol].moved = true;
