@@ -7,6 +7,7 @@ body{
 
 
 .inner{
+    padding-top: 50px;
     line-height: 14px;
     margin: 0 auto;
     overflow: visible;
@@ -71,6 +72,14 @@ header{
     z-index:1;
 }
 
+h1{
+    font-size: 3.8em;
+    letter-spacing: -3px;
+    line-height: 0px;
+    color: #8a8683;
+    font-weight: 700;
+}
+
 footer{
     vertical-align:top;
     color:#FFF;
@@ -105,7 +114,6 @@ footer a,footer p{
         padding:45px;
     }
     section{
-        padding-top: 125px;
         padding-bottom: 45px;
     }
     .social{
