@@ -33,8 +33,11 @@
 	            	    });
                         if(gameplay.events == 'promoted'){
                             var message = document.getElementById("message");
-                            message.innerHTML = (make("queen"),make("bishop"),make("castle"),make("knight"));
-                            message.className += "display";
+                            message.innerHTML = make("queen")
+                            message.innerHTML += make("bishop");
+                            message.innerHTML += make("castle");
+                            message.innerHTML += make("knight");
+                            message.className += " display";
                         }else{
                             socket.emit('move', {
     		                    acol: acol,
@@ -52,7 +55,7 @@
             var img = document.createElement("img");
             img.src = "/goodies/pieces/{{color}}" +name+".png";
             img.className = "{{color}}";
-            return img;
+            return img.toString();
         }
 
 		{{/color}}
