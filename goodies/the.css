@@ -2,7 +2,14 @@ body{
     padding:0px;
     margin:0px;
 }
-
+.thetext{
+    float:left;
+    width:400px;
+}
+.thebuttons{
+    float:left;
+    width:300px;
+}
     .onoffswitch {
         position: relative;
         width: 103px;

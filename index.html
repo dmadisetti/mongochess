@@ -22,24 +22,28 @@
 
 	<header>
 		<div class='inner'> 
-			<h1>a chess app...</h1>
-			<h2>cause chess is cool right?</h2> 
-			<button class="submit" onclick="Javascript:create()">New Game</button>
-			<div class="onoffswitch">
-			    <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="privacy" checked />
-			    <label class="onoffswitch-label" for="privacy">
-			        <div class="onoffswitch-inner" id="onoffswitch-inner"></div>
-			        <div class="onoffswitch-switch"></div>
-			    </label>
+			<div class='thetext'>
+				<h1>a chess app...</h1>
+				<h2>cause chess is cool right?</h2> 
 			</div>
-			<div class="onoffswitch">
-			    <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="color" checked />
-			    <label class="onoffswitch-label" for="color">
-			        <div class="onoffswitch-inner" id="onoffswitch-inner"></div>
-			        <div class="onoffswitch-switch"></div>
-			    </label>
+			<div class="thebuttons">
+				<button class="submit" onclick="Javascript:create()">New Game</button>
+				<div class="onoffswitch">
+				    <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="privacy" checked />
+				    <label class="onoffswitch-label" for="privacy">
+				        <div class="onoffswitch-inner" id="onoffswitch-inner"></div>
+				        <div class="onoffswitch-switch"></div>
+				    </label>
+				</div>
+				<div class="onoffswitch">
+				    <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="color" checked />
+				    <label class="onoffswitch-label" for="color">
+				        <div class="onoffswitch-inner" id="onoffswitch-inner"></div>
+				        <div class="onoffswitch-switch"></div>
+				    </label>
+				</div>
+				<input type="text" id="newgame" />			
 			</div>
-			<input type="text" id="newgame" />			
 			<div class='message'></div>
 		</div>
 	</header>
