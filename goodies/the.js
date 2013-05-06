@@ -9,10 +9,7 @@
 	        $('.board > div').droppable({ 
 	        	accept: $('.ui-draggable-dragging')[0], 
 	        	drop: function(){ 
-	        		if (!gameplay.turn)
-                        if(gameplay.events == 'promoted')    
-                            alert("fuck yeah");
-                        else return; 
+	        		if (!gameplay.turn) return; 
 	        		var piece = $('.ui-draggable-dragging'); 
 	        		var aindex = piece.parent().index('.board > div'); 
 	        		var bindex = $(this).index('.board > div'); 
@@ -41,7 +38,8 @@
 		                    id: '{{id}}',
 		                    auth: '{{cookie}}'
 		                });
-	    	        }
+	    	        }else if(gameplay.events == 'promoted')    
+                            alert("fuck yeah"); 
 	        	}
 	    	});
 		{{/color}}
