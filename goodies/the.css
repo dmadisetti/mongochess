@@ -125,7 +125,7 @@ label[for=privacy] .onoffswitch-inner:after {
 .display img{
     width:150px;
     height:150px;
-    float:left;
+    clear:none;
     margin:20px;
 }
 
