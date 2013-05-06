@@ -4,9 +4,10 @@ body{
 }
 .thetext{
     float:left;
-    width:400px;
+    width:500px;
 }
 .thebuttons{
+    padding-top: 38px;
     float:left;
     width:300px;
 }
