@@ -78,7 +78,7 @@
                 color: color,
                 privacy: privacy,
                 id: name,
-                auth: cookie
+                auth: "{{cookie}}"
             });
         };
 
