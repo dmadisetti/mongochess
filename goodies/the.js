@@ -3,6 +3,7 @@
     var socket = io.connect('http://mongochess.herokuapp.com/');
 	document.addEventListener('DOMContentLoaded',function(){
         {{#color}}
+            var standby,acol,bcol,brow,bcol;
 	        $('img.{{color}}').draggable({
 	            revert: true
 	        }); 
@@ -13,7 +14,8 @@
 	        		var piece = $('.ui-draggable-dragging'); 
 	        		var aindex = piece.parent().index('.board > div'); 
 	        		var bindex = $(this).index('.board > div'); 
-	        		acol = aindex % 8; bcol = bindex % 8; 
+	        		acol = aindex % 8; 
+                    bcol = bindex % 8; 
 	        		arow = Math.floor(aindex/8);
 	            	brow = Math.floor(bindex / 8);
 	            	if (gameplay.verify({
@@ -32,6 +34,7 @@
 	        	            revert: true
 	            	    });
                         if(gameplay.events == 'promoted'){
+                            standby = img;
                             var message = document.getElementById("promotion");
                             message.className = "display";
                         }else{
@@ -47,11 +50,18 @@
 	    	        }
 	        	}
 	    	});
-        function make(name){
-            var img = document.createElement("img");
-            img.src = "/goodies/pieces/{{color}}" +name+".png";
-            img.className = "{{color}}";
-            return img.toString();
+
+        function promote(name){
+            standby.src = this.src;
+            socket.emit('move', {
+                acol: acol,
+                arow: arow,
+                bcol: bcol,
+                brow: brow,
+                promote: name,
+                id: '{{id}}',
+                auth: '{{cookie}}'
+            });
         }
 
 		{{/color}}
