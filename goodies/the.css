@@ -46,14 +46,16 @@ article{
 }
 
 header{
+    background-color: #FFF;
     vertical-align:top;
-    color:#446644;
+    color:#444488;
     margin:0px;
     padding:20px;
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     width:100%;
     overflow:hidden;
-    top:0;    
+    top:0;
+    min-height: 125px;
 }
 
 footer{
@@ -90,6 +92,7 @@ footer a,footer p{
         padding:45px;
     }
     section{
+        padding-top: 125px;
         padding-bottom: 45px;
     }
     .social{
