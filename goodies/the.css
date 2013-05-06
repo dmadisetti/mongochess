@@ -110,9 +110,14 @@ label[for=privacy] .onoffswitch-inner:after {
     -o-transition: height 1s ease;
     transition: height 1s ease;
     margin: 0 auto;
-    max-width:760;
+    max-width:775;
 }
 
+
+#promotion div{
+    clear: both;
+    color: #FFF;
+}
 
 .inner{
     padding-top: 10px;
