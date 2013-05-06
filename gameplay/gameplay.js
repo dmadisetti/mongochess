@@ -27,12 +27,11 @@ var gameplay = function gameplay (){
           if(self.events == 'castle')
             return true;
 
-          if(self.events == 'promoted'){
-            if(self.args['promoted'] != null)
+          if(self.events == 'promoted')
+            if(self.args['promoted'] != null){
               // Change her up
               return;
             }
-          }
 
           var color = self.piece.color == 'w' ? 'b' : 'w';
           
