@@ -152,7 +152,7 @@ article{
     width:12.5%;
     height:12.5%;
     float:left;
-    background-color:#AFAFD4;
+    background-color:#B6D0F3;
 }
 .board > div:nth-child(16n+2),
 .board > div:nth-child(16n+4),
@@ -163,7 +163,7 @@ article{
 .board > div:nth-child(16n-3),
 .board > div:nth-child(16n-1)
  {
-    background-color: #005F75;
+    background-color: #0062CA;
 }
 .board div img {
     width:100%;
