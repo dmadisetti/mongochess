@@ -33,7 +33,7 @@
 	            	    });
                         if(gameplay.events == 'promoted'){
                             var message = document.getElementById("message");
-                            message.html(make("queen"),make("bishop"),make("castle"),make("knight"))
+                            message.innerHTML = (make("queen"),make("bishop"),make("castle"),make("knight"));
                             message.className += "display";
                         }else{
                             socket.emit('move', {
