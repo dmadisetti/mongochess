@@ -1,9 +1,9 @@
     document.cookie = 'player={{cookie}}; expires={{expire}}; path=/';
     var gameplay = new gameplay();
     var socket = io.connect('http://mongochess.herokuapp.com/');
+    var standby,acol,bcol,brow,bcol;
 	document.addEventListener('DOMContentLoaded',function(){
         {{#color}}
-            var standby,acol,bcol,brow,bcol;
 	        $('img.{{color}}').draggable({
 	            revert: true
 	        }); 
@@ -51,7 +51,12 @@
 	        	}
 	    	});
 
-        function promote(name){
+
+		{{/color}}
+    });
+  {{#color}}
+
+        promote = function (name){
             standby.src = this.src;
             var message = document.getElementById("promotion");
             message.className = "message";
@@ -66,9 +71,6 @@
             });
         }
 
-		{{/color}}
-    });
-  {{#color}}
     socket.on('connect', function () {
         socket.emit('getTurn', '{{id}}');  
         socket.emit('getGamestate', '{{id}}'); 
