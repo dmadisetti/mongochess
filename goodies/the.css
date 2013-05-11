@@ -59,14 +59,14 @@ body{
 label[for=privacy] .onoffswitch-inner:before {
 	content:"PUBLIC";
 	padding-left: 10px;
-	background-color: #86CCE3;
+	background-color: #000;
 	color: #FFFFFF;
 }
 label[for=privacy] .onoffswitch-inner:after {
 	content:"PRIVATE";
 	padding-right: 10px;
-	background-color: #AEBBE3;
-	color: #676769;
+	background-color: #FFF;
+	color: #000;
 	text-align: right;
 }
     label[for=color] .onoffswitch-inner:before {
@@ -87,7 +87,7 @@ label[for=privacy] .onoffswitch-inner:after {
     margin: 8.5px;
     background: #FFFFFF;
     border: 2px solid #999999;
-    border-radius: 20px;
+    border-radius: 5px;
     position: absolute;
     top: 0;
     bottom: 0;
