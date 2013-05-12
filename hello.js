@@ -145,7 +145,7 @@ io.sockets.on('connection', function (socket) {
       }else{
         console.log('Found Game...');
         socket.join(game._id);
-        socket.emit('setGamestate',{game:game.game,enemies:game.enemies,history:game.history[game.history.length() - 1]});
+        socket.emit('setGamestate',{game:game.game,enemies:game.enemies,history:game.history[game.history.length - 1]});
       }
     });
   })
