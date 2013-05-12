@@ -103,7 +103,7 @@
 
         socket.on("history", function (record) {
             var newRecord = document.createElement("li");
-            newRecord.innerHTML = record.toString;
+            newRecord.innerHTML = record;
             recordBox.appendChild(newRecord);
         });
 
