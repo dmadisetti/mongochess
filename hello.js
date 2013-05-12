@@ -323,5 +323,4 @@ io.sockets.on('connection', function (socket) {
 
 
 //db.users.find().limit(10).map( function(u) { return u.name; } );
-
 });
