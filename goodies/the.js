@@ -1,6 +1,5 @@
     document.cookie = 'player={{cookie}}; expires={{expire}}; path=/';
     var recordBox = document.getElementById('history');
-    var placeholder = document.getElementById('placeholder');
     var gameplay = new gameplay();
     var socket = io.connect('http://mongochess.herokuapp.com/');
     var standby,acol,bcol,brow,bcol;
@@ -105,7 +104,7 @@
         socket.on("history", function (record) {
             var newRecord = document.createElement("li");
             newRecord.innerHTML = record.toString;
-            recordBox.insertBefore(record, placeholder);
+            recordBox.appendChild(newRecord);
         });
 
 
