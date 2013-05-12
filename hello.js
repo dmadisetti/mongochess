@@ -23,6 +23,8 @@ DBCon.open(function(err, db) {
 var app = express.createServer();
 
 app.use(express.favicon(__dirname + '/favicon.ico'));
+app.use("/goodies", express.static(__dirname + '/goodies'));
+app.use(express.cookieParser());
 
 app.get('/', function(request, response) {
   var css = '<style>.onoffswitch { position: relative; width: 103px; -webkit-user-select:none; -moz-user-select:none; -ms-user-select: none; } .onoffswitch-checkbox { display: none; } .onoffswitch-label { display: block; overflow: hidden; cursor: pointer; border: 2px solid #999999; border-radius: 20px; } .onoffswitch-inner { width: 200%; margin-left: -100%; -moz-transition: margin 0.3s ease-in 0s; -webkit-transition: margin 0.3s ease-in 0s; -o-transition: margin 0.3s ease-in 0s; transition: margin 0.3s ease-in 0s; } .onoffswitch-inner:before, .onoffswitch-inner:after { float: left; width: 50%; height: 30px; padding: 0; line-height: 30px; font-size: 14px; color: white; font-family: Trebuchet, Arial, sans-serif; font-weight: bold; -moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: border-box; } label[for=privacy] .onoffswitch-inner:before { content:"PUBLIC"; padding-left: 10px; background-color: #86CCE3; color: #FFFFFF; } label[for=privacy] .onoffswitch-inner:after { content:"PRIVATE"; padding-right: 10px; background-color: #AEBBE3; color: #676769; text-align: right; } label[for=color] .onoffswitch-inner:before { content:"BLACK"; padding-left: 10px; background-color: #000; color: #FFFFFF; } label[for=color] .onoffswitch-inner:after { content:"WHITE"; padding-right: 10px; background-color: #FFF; color: #000; text-align: right; } .onoffswitch-switch { width: 13px; margin: 8.5px; background: #FFFFFF; border: 2px solid #999999; border-radius: 20px; position: absolute; top: 0; bottom: 0; right: 69px; -moz-transition: all 0.3s ease-in 0s; -webkit-transition: all 0.3s ease-in 0s; -o-transition: all 0.3s ease-in 0s; transition: all 0.3s ease-in 0s; } .onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-inner { margin-left: 0; } .onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-switch { right: 0px; }</style>';
@@ -34,9 +36,6 @@ app.get('/', function(request, response) {
   expdate.setTime (expdate.getTime() + (24 * 60 * 60 * 1000*365));
   response.send(mustache.render(css+body,{cookie:cookie,hash:hash,expire:expdate}));
 })
-
-app.use("/goodies", express.static(__dirname + '/goodies'));
-app.use(express.cookieParser());
 
 app.get('/gameplay.js', function(request, response) {
   response.header('Content-Type', 'text/javascript');
