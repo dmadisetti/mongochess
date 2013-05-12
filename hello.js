@@ -176,7 +176,7 @@ io.sockets.on('connection', function (socket) {
         console.log('Looking for Game...');
         if (game == null){
           console.log('No Game Found...');
-          doc = {_id:id,game:{},white:'',black:'',privacy:''};
+          doc = {_id:id,game:{},white:'',black:'',privacy:'',history:[],enemies:{}};
           doc.game = template.game;
           doc.turn = 'w';
           doc.privacy = params['privacy'];
@@ -272,8 +272,9 @@ io.sockets.on('connection', function (socket) {
             break;
         }
 
+        game.history.push({state:verifyplay.events,before:[bcol,brow],after:[acol,arow],piece:game.game[brow][bcol].piece});
 
-        DBCon.collection('games').update({_id:params.id},{$set: {game:game.game,turn:omove,enemies:game.enemies}},function (error, client) {
+        DBCon.collection('games').update({_id:params.id},{$set: {game:game.game,turn:omove,enemies:game.enemies,history:game.history}},function (error, client) {
           if(!error){
             console.log('Broadcasting move to others');
 
