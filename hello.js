@@ -80,7 +80,7 @@ app.get('/game/:id', function(request, response) {
         var color,
         cookie = request.cookies.player,
         color = cookie == game.white ? "w" : cookie == game.black ? "b" : null;
-        response.send(mustache.render(template.toString(),{game:game.game,color:color,id:id.toString()}));
+        response.send(mustache.render(template.toString(),{game:game.game,color:color,id:id.toString(),history:game.history}));
       }
     });
   });

@@ -62,6 +62,14 @@
 				{{/.}}{{/game}}
 			</div>
 		<ul id='history'>
+			{{#history}}
+				{{^piece}}
+					White to move first..
+				{{/piece}}
+				{{#piece}}
+					{{status}} {{after}} {{before}} {{piece}}
+				{{/piece}}
+			{{#history}}
 		</ul>
 
 		</article>
