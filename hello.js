@@ -21,9 +21,19 @@ DBCon.open(function(err, db) {
 });
 
 var app = express.createServer();
-var io = require('socket.io').listen(app, { log: false });;
 
 app.use(express.favicon(__dirname + '/favicon.ico'));
+
+app.get('/', function(request, response) {
+  var css = '<style>.onoffswitch { position: relative; width: 103px; -webkit-user-select:none; -moz-user-select:none; -ms-user-select: none; } .onoffswitch-checkbox { display: none; } .onoffswitch-label { display: block; overflow: hidden; cursor: pointer; border: 2px solid #999999; border-radius: 20px; } .onoffswitch-inner { width: 200%; margin-left: -100%; -moz-transition: margin 0.3s ease-in 0s; -webkit-transition: margin 0.3s ease-in 0s; -o-transition: margin 0.3s ease-in 0s; transition: margin 0.3s ease-in 0s; } .onoffswitch-inner:before, .onoffswitch-inner:after { float: left; width: 50%; height: 30px; padding: 0; line-height: 30px; font-size: 14px; color: white; font-family: Trebuchet, Arial, sans-serif; font-weight: bold; -moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: border-box; } label[for=privacy] .onoffswitch-inner:before { content:"PUBLIC"; padding-left: 10px; background-color: #86CCE3; color: #FFFFFF; } label[for=privacy] .onoffswitch-inner:after { content:"PRIVATE"; padding-right: 10px; background-color: #AEBBE3; color: #676769; text-align: right; } label[for=color] .onoffswitch-inner:before { content:"BLACK"; padding-left: 10px; background-color: #000; color: #FFFFFF; } label[for=color] .onoffswitch-inner:after { content:"WHITE"; padding-right: 10px; background-color: #FFF; color: #000; text-align: right; } .onoffswitch-switch { width: 13px; margin: 8.5px; background: #FFFFFF; border: 2px solid #999999; border-radius: 20px; position: absolute; top: 0; bottom: 0; right: 69px; -moz-transition: all 0.3s ease-in 0s; -webkit-transition: all 0.3s ease-in 0s; -o-transition: all 0.3s ease-in 0s; transition: all 0.3s ease-in 0s; } .onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-inner { margin-left: 0; } .onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-switch { right: 0px; }</style>';
+  var cookie = request.cookies.player;
+  var body = '<script src="/socket.io/socket.io.js"></script><script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script><script>  var socket = io.connect("mongochess.herokuapp.com");socket.on("created", function(state){ color = state.created ? "success" : "error"; /*popup.addClass(color);*/ alert(color+":"+state.message);});create = function(){ name = document.getElementById("newgame").value; privacy = document.getElementById("privacy").checked ? "public" : "private"; color = document.getElementById("color").checked ? "black" : "white"; socket.emit("create",{color:color,privacy:privacy,id:name,auth:cookie}); }; var cookie = "{{^cookie}}{{hash}}{{/cookie}}{{cookie}}"; document.cookie = "player="+cookie+"; expires={{expire}}; path=/";</script><!-- <script type="text/javascript" src="http://code.jquery.com/jquery-latest.js" /> --> <button class="submit" onclick="Javascript:create()">New Game</button> <div class="onoffswitch"> <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="privacy" checked /> <label class="onoffswitch-label" for="privacy"> <div class="onoffswitch-inner" id="onoffswitch-inner"></div> <div class="onoffswitch-switch"></div> </label> </div> <div class="onoffswitch"> <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="color" checked /> <label class="onoffswitch-label" for="color"> <div class="onoffswitch-inner" id="onoffswitch-inner"></div> <div class="onoffswitch-switch"></div> </label> </div> <input type="text" id="newgame"/>';
+  var now = new Date().getTime();
+  var hash = CryptoJS.SHA256("New"+ now +"Game");
+  var expdate = new Date ();
+  expdate.setTime (expdate.getTime() + (24 * 60 * 60 * 1000*365));
+  response.send(mustache.render(css+body,{cookie:cookie,hash:hash,expire:expdate}));
+})
 
 app.use("/goodies", express.static(__dirname + '/goodies'));
 app.use(express.cookieParser());
@@ -49,7 +59,7 @@ app.get('/the.js', function(request, response) {
         now = new Date().getTime(),
         hash = CryptoJS.SHA256("New"+ now +"Game"),
         expdate = new Date ();
-        expdate.setTime (expdate.getTime() + (24 * 60 * 60 * 1000*365));
+        expdate.setTime(expdate.getTime() + (24 * 60 * 60 * 1000*365));
         color = cookie == game.white ? "w" : cookie == game.black ? "b" : null;
         update = color == 'w' ? 'b' : 'w';
         response.send(mustache.render(template.toString(),{update:update,cookie:cookie,hash:hash,expire:expdate,color:color,id:id}));
@@ -76,24 +86,6 @@ app.get('/game/:id', function(request, response) {
     });
   });
 });
- 
-
-var port = process.env.PORT || 5000;
-app.listen(port, function() {
-  console.log("Listening on " + port);
-});
-
-
-app.get('/', function(request, response) {
-  var css = '<style>.onoffswitch { position: relative; width: 103px; -webkit-user-select:none; -moz-user-select:none; -ms-user-select: none; } .onoffswitch-checkbox { display: none; } .onoffswitch-label { display: block; overflow: hidden; cursor: pointer; border: 2px solid #999999; border-radius: 20px; } .onoffswitch-inner { width: 200%; margin-left: -100%; -moz-transition: margin 0.3s ease-in 0s; -webkit-transition: margin 0.3s ease-in 0s; -o-transition: margin 0.3s ease-in 0s; transition: margin 0.3s ease-in 0s; } .onoffswitch-inner:before, .onoffswitch-inner:after { float: left; width: 50%; height: 30px; padding: 0; line-height: 30px; font-size: 14px; color: white; font-family: Trebuchet, Arial, sans-serif; font-weight: bold; -moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: border-box; } label[for=privacy] .onoffswitch-inner:before { content:"PUBLIC"; padding-left: 10px; background-color: #86CCE3; color: #FFFFFF; } label[for=privacy] .onoffswitch-inner:after { content:"PRIVATE"; padding-right: 10px; background-color: #AEBBE3; color: #676769; text-align: right; } label[for=color] .onoffswitch-inner:before { content:"BLACK"; padding-left: 10px; background-color: #000; color: #FFFFFF; } label[for=color] .onoffswitch-inner:after { content:"WHITE"; padding-right: 10px; background-color: #FFF; color: #000; text-align: right; } .onoffswitch-switch { width: 13px; margin: 8.5px; background: #FFFFFF; border: 2px solid #999999; border-radius: 20px; position: absolute; top: 0; bottom: 0; right: 69px; -moz-transition: all 0.3s ease-in 0s; -webkit-transition: all 0.3s ease-in 0s; -o-transition: all 0.3s ease-in 0s; transition: all 0.3s ease-in 0s; } .onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-inner { margin-left: 0; } .onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-switch { right: 0px; }</style>';
-  var cookie = request.cookies.player;
-  var body = '<script src="/socket.io/socket.io.js"></script><script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script><script>  var socket = io.connect("mongochess.herokuapp.com");socket.on("created", function(state){ color = state.created ? "success" : "error"; /*popup.addClass(color);*/ alert(color+":"+state.message);});create = function(){ name = document.getElementById("newgame").value; privacy = document.getElementById("privacy").checked ? "public" : "private"; color = document.getElementById("color").checked ? "black" : "white"; socket.emit("create",{color:color,privacy:privacy,id:name,auth:cookie}); }; var cookie = "{{^cookie}}{{hash}}{{/cookie}}{{cookie}}"; document.cookie = "player="+cookie+"; expires={{expire}}; path=/";</script><!-- <script type="text/javascript" src="http://code.jquery.com/jquery-latest.js" /> --> <button class="submit" onclick="Javascript:create()">New Game</button> <div class="onoffswitch"> <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="privacy" checked /> <label class="onoffswitch-label" for="privacy"> <div class="onoffswitch-inner" id="onoffswitch-inner"></div> <div class="onoffswitch-switch"></div> </label> </div> <div class="onoffswitch"> <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="color" checked /> <label class="onoffswitch-label" for="color"> <div class="onoffswitch-inner" id="onoffswitch-inner"></div> <div class="onoffswitch-switch"></div> </label> </div> <input type="text" id="newgame"/>';
-  var now = new Date().getTime();
-  var hash = CryptoJS.SHA256("New"+ now +"Game");
-  var expdate = new Date ();
-  expdate.setTime (expdate.getTime() + (24 * 60 * 60 * 1000*365));
-  response.send(mustache.render(css+body,{cookie:cookie,hash:hash,expire:expdate}));
-})
 
 app.get('/game/:id/opp', function(request, response) {
   var now = new Date().getTime();
@@ -128,6 +120,16 @@ app.get('/game/:id/opp', function(request, response) {
   });
 });
 
+var port = process.env.PORT || 5000;
+app.listen(port, function() {
+  console.log("Listening on " + port);
+});
+
+
+/* Socket IO crap here*/
+
+var io = require('socket.io').listen(app, { log: false });
+
 io.configure(function () { 
   io.set("transports", ["xhr-polling"]); 
   io.set("polling duration", 10); 
@@ -143,7 +145,7 @@ io.sockets.on('connection', function (socket) {
       }else{
         console.log('Found Game...');
         socket.join(game._id);
-        socket.emit('setGamestate',{game:game.game,enemies:game.enemies});
+        socket.emit('setGamestate',{game:game.game,enemies:game.enemies,history:game.history[game.history.length() - 1]});
       }
     });
   })
@@ -176,7 +178,7 @@ io.sockets.on('connection', function (socket) {
         console.log('Looking for Game...');
         if (game == null){
           console.log('No Game Found...');
-          doc = {_id:id,game:{},white:'',black:'',privacy:'',history:[],enemies:{}};
+          doc = {_id:id,game:{},white:'',black:'',privacy:'',history:['New Game'],enemies:{}};
           doc.game = clean.game;
           doc.turn = 'w';
           doc.privacy = params['privacy'];
@@ -271,7 +273,12 @@ io.sockets.on('connection', function (socket) {
             break;
         }
 
-        game.history.push({state:verifyplay.events,before:[bcol,brow],after:[acol,arow],piece:game.game[brow][bcol].piece});
+        if(game.history == ['New Game'])
+          game.history = [];
+
+        var record = {state:verifyplay.events,before:[bcol,brow],after:[acol,arow],piece:game.game[brow][bcol].piece};
+
+        game.history.push(record);
 
         DBCon.collection('games').update({_id:params.id},{$set: {game:game.game,turn:omove,enemies:game.enemies,history:game.history}},function (error, client) {
           if(!error){
@@ -292,6 +299,8 @@ io.sockets.on('connection', function (socket) {
                 socket.broadcast.to(game._id).emit('update',{before:[acol,arow],after:[bcol,brow]});
                 break;
             }
+
+            io.sockets.to(game._id).emit('history',record);
 
             console.log(verifyplay.events);
 
@@ -314,6 +323,5 @@ io.sockets.on('connection', function (socket) {
 
 
 //db.users.find().limit(10).map( function(u) { return u.name; } );
-
 
 });

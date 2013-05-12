@@ -1,4 +1,6 @@
     document.cookie = 'player={{cookie}}; expires={{expire}}; path=/';
+    var recordBox = document.getElementById('history');
+    var placeholder = document.getElementById('placeholder');
     var gameplay = new gameplay();
     var socket = io.connect('http://mongochess.herokuapp.com/');
     var standby,acol,bcol,brow,bcol;
@@ -77,7 +79,9 @@
     }); 
 
     socket.on('setGamestate', function(game){ 
-    	gameplay.square = game.game; gameplay.enemies = game.enemies; 
+    	gameplay.square = game.game; 
+        gameplay.enemies = game.enemies;
+        gameplay.history = game.history; 
     });
 
     socket.on('setTurn', function(game){ if('{{color}}' == game.turn) gameplay.turn = true; else gameplay.turn = false; }); 
@@ -95,6 +99,14 @@
                 var piece = $('.board div:nth-child(' + norm0 + ') img');
                 piece.attr('src',"/goodies/pieces/{{update}}"+details.promote+".png");
             }
+        });
+
+
+        socket.on("history", function (record) {
+            recordBox
+            var record = document.createElement("li");
+            record.innerHTML = record.toString;
+            recordBox.insertBefore(record, placeholder);
         });
 
 
