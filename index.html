@@ -63,12 +63,14 @@
 			</div>
 		<ul id='history'>
 			{{#history}}
+			<li>
 				{{^piece}}
 					White to move first..
 				{{/piece}}
 				{{#piece}}
 					{{status}} {{after}} {{before}} {{piece}}
 				{{/piece}}
+			</li>
 			{{/history}}
 		</ul>
 
