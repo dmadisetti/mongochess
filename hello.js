@@ -1,7 +1,8 @@
 var auth = require(__dirname+'/auth').auth
+,gameplay = require(__dirname+'/gameplay/gameplay').gameplay
+,clean = require(__dirname+'/goodies/default')
 ,express = require('express')
 ,mustache = require('mustache')
-,gameplay = require(__dirname+'/gameplay/gameplay').gameplay
 ,fs = require('fs')
 ,CryptoJS = require('cryptojs').Crypto
 ,mongo = require('mongodb')
@@ -170,17 +171,16 @@ io.sockets.on('connection', function (socket) {
       socket.emit({created:false,message:'Stop trying to hack the API'});
       return;
     }
-    DBCon.collection('static').findOne({_id:'template'},function(error,template){
       var doc;
       DBCon.collection('games').findOne({_id:id},function(error,game){
         console.log('Looking for Game...');
         if (game == null){
           console.log('No Game Found...');
           doc = {_id:id,game:{},white:'',black:'',privacy:'',history:[],enemies:{}};
-          doc.game = template.game;
+          doc.game = clean.game;
           doc.turn = 'w';
           doc.privacy = params['privacy'];
-          doc.enemies = template.enemies;
+          doc.enemies = clean.enemies;
           if (params['color'] == 'white'){
             doc.white = params['auth'];
           }else if(params['color'] == 'black'){
@@ -196,7 +196,6 @@ io.sockets.on('connection', function (socket) {
           socket.emit('created',{created:false,message:'Game Already Exists'});
         }
       });
-    });
 })
 
   socket.on('move',function(params){
