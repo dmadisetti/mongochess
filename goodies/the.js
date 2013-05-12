@@ -1,10 +1,10 @@
     document.cookie = 'player={{cookie}}; expires={{expire}}; path=/';
+    var recordBox = document.getElementById('history');
+    var placeholder = document.getElementById('placeholder');
     var gameplay = new gameplay();
     var socket = io.connect('http://mongochess.herokuapp.com/');
     var standby,acol,bcol,brow,bcol;
 	document.addEventListener('DOMContentLoaded',function(){
-        var recordBox = document.getElementById('history');
-        var placeholder = document.getElementById('placeholder');
         {{#color}}
 	        $('img.{{color}}').draggable({
 	            revert: true
