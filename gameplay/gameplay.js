@@ -490,13 +490,13 @@ var gameplay = function gameplay (){
       row = self.row;
 
         console.log("En Passent");
-        console.log(self.square[row - 1][col].piece);
-        console.log(self.square[row + 1][col].piece);
-      if(self.square[row - 1] && self.square[row - 1][col].piece == 'pawn'){
-        row--;
+        console.log(self.square[row][col - 1].piece);
+        console.log(self.square[row][col + 1].piece);
+      if(self.square[row][col - 1].piece == 'pawn'){
+        col--;
         console.log("ROW MINUS");
-      }else if(self.square[row + 1] && self.square[row + 1][col].piece == 'pawn'){
-        row++;
+      }else if(self.square[row][col + 1].piece == 'pawn'){
+        col++;
         console.log("ROW PLUS");
       }else{
         return;
@@ -512,7 +512,7 @@ var gameplay = function gameplay (){
 
       vertical = self.piece.color == 'w' ? -1 : 1;
 
-      col += vertical;
+      row += vertical;
 
       console.log("passing");
 
