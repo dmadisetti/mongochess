@@ -222,6 +222,7 @@ io.sockets.on('connection', function (socket) {
       var verifyplay = new gameplay()
       verifyplay.square = game.game;
       verifyplay.enemies = game.enemies;
+      verifyplay.history = game.history[game.history.length - 1];
 
       if(auth !== null && game.turn == move && verifyplay.verify({before: [acol, arow],after: [bcol, brow]})){
         console.log('Legit Move');

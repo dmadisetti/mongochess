@@ -1,70 +1,70 @@
 game = [
     [
       {
+        piece: "castle",
+        color: "b"
+      },
+      {
+        piece: "knight",
+        color: "b"
+      },
+      {
+        piece: "bishop",
+        color: "b"
+      },
+      {
         piece: "queen",
         color: "b"
       },
       {
-        piece: "",
-        color: ""
+        piece: "king",
+        color: "b"
       },
       {
-        piece: "",
-        color: ""
+        piece: "bishop",
+        color: "b"
       },
       {
-        piece: "",
-        color: ""
+        piece: "knight",
+        color: "b"
       },
       {
-        piece: "",
-        color: ""
-      },
-      {
-        piece: "",
-        color: ""
-      },
-      {
-        piece: "",
-        color: ""
-      },
-      {
-        piece: "",
+        piece: "castle",
         color: ""
       }
     ],
     [
       {
-        piece: "",
-        color: ""
+        piece: "pawn",
+        color: "b"
       },
       {
-        piece: "",
-        color: ""
+        piece: "pawn",
+        color: "b"
       },
       {
-        piece: "",
-        color: ""
+        piece: "pawn",
+        color: "b"
       },
       {
-        piece: "",
-        color: ""
+        piece: "pawn",
+        color: "b"
       },
       {
-        piece: "",
-        color: ""
+        piece: "pawn",
+        color: "b"
       },
       {
-        piece: "",
-        color: ""
+        piece: "pawn",
+        color: "b"
       },
       {
-        piece: "",
-        color: ""
+        piece: "pawn",
+        color: "b"
       },
       {
-        piece: "",
-        color: ""
+        piece: "pawn",
+        color: "b"
       }
     ],
     [
@@ -348,14 +348,75 @@ enemies = {
     },
     b: {
       king: [
-        0,
+        4,
         0
       ],
       pieces: [
         [
           0,
           0
+        ],
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          2
+        ],
+        [
+          0,
+          3
+        ],
+        [
+          0,
+          4
+        ],
+        [
+          0,
+          5
+        ],
+        [
+          0,
+          6
+        ],
+        [
+          0,
+          7
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          1,
+          1
+        ],
+        [
+          1,
+          2
+        ],
+        [
+          1,
+          3
+        ],
+        [
+          1,
+          4
+        ],
+        [
+          1,
+          5
+        ],
+        [
+          1,
+          6
+        ],
+        [
+          1,
+          7
         ]
+
       ]
     }
   };

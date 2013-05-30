@@ -35,17 +35,19 @@ var gameplay = function gameplay (){
           var eventholder = self.events;
           self.square = JSON.parse(JSON.stringify(self.square));
           self.enemies = JSON.parse(JSON.stringify(self.enemies));
-          
-          if(self.square[args.after[1]][args.after[0]].piece){
-            for (var z=0;z<self.enemies[color].pieces.length;z++){
-              console.log(self.enemies[color].pieces[z][0]+ '=='+ args.after[0] +'&&'+ self.enemies[color].pieces[z][1]+ '=='+ args.after[1]);
-              if(self.enemies[color].pieces[z][0] == args.after[0] && self.enemies[color].pieces[z][1] == args.after[1] ){
-                self.enemies[color].pieces.splice(z, 1);
-                break;
+          if(self.events == 'passing'){
+            // empty square && del enemy
+          }else{
+            if(self.square[args.after[1]][args.after[0]].piece){
+              for (var z=0;z<self.enemies[color].pieces.length;z++){
+                console.log(self.enemies[color].pieces[z][0]+ '=='+ args.after[0] +'&&'+ self.enemies[color].pieces[z][1]+ '=='+ args.after[1]);
+                if(self.enemies[color].pieces[z][0] == args.after[0] && self.enemies[color].pieces[z][1] == args.after[1] ){
+                  self.enemies[color].pieces.splice(z, 1);
+                  break;
+                }
               }
             }
-          }
-          
+          }          
           self.square[args.after[1]][args.after[0]] = self.square[self.row][self.col];
           self.square[self.row][self.col] = self.empty;
           if (self.piece.piece == 'king'){
@@ -342,6 +344,9 @@ var gameplay = function gameplay (){
         return [col,row];
       },
        kind: pawneat
+      },
+      {funct: function(){},
+      kind: enpassent
       }
     ]
   };
@@ -478,6 +483,31 @@ var gameplay = function gameplay (){
           self.movable[1] = row * 8 + col;
       }
       return;
+    }
+
+    function enpassent(funct){
+      var col = self.col,
+      row = self.row;
+
+      if(self.square[row - 1] && self.square[row - 1][col].piece == 'pawn'){
+        row--;
+      }else if(self.square[row + 1] && self.square[row + 1][col].piece == 'pawn'){
+        row++;
+      }else{
+        return;
+      }
+
+      if((self.square[row][col].color == self.piece.color) || (self.history.after != [row,col] && Math.abs(self.history.before[0] - self.history.after[0]) != 2))
+        return;
+
+      vertical = self.piece.color == 'w' ? -1 : 1;
+
+      if(!(self.square[row][col].piece)){
+        self.events = 'passing';
+        self.movable = [row,col];
+      }
+      return;
+
     }
 }
 
