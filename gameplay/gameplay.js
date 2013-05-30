@@ -489,18 +489,30 @@ var gameplay = function gameplay (){
       var col = self.col,
       row = self.row;
 
+        console.log("En Passent");
       if(self.square[row - 1] && self.square[row - 1][col].piece == 'pawn'){
         row--;
+        console.log("ROW MINUS");
       }else if(self.square[row + 1] && self.square[row + 1][col].piece == 'pawn'){
         row++;
+        console.log("ROW PLUS");
       }else{
         return;
       }
 
-      if((self.square[row][col].color == self.piece.color) || (self.history.after != [row,col] && Math.abs(self.history.before[0] - self.history.after[0]) != 2))
+      if((self.square[row][col].color == self.piece.color))
+        return;
+
+      console.log(self.history);
+
+      if((self.history.after != [row,col] && Math.abs(self.history.before[0] - self.history.after[0]) != 2))
         return;
 
       vertical = self.piece.color == 'w' ? -1 : 1;
+
+      col += vertical;
+
+      console.log("passing");
 
       if(!(self.square[row][col].piece)){
         self.events = 'passing';
