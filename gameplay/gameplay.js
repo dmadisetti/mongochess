@@ -490,6 +490,8 @@ var gameplay = function gameplay (){
       row = self.row;
 
         console.log("En Passent");
+        console.log(self.square[row - 1][col].piece);
+        console.log(self.square[row + 1][col].piece);
       if(self.square[row - 1] && self.square[row - 1][col].piece == 'pawn'){
         row--;
         console.log("ROW MINUS");
