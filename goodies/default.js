@@ -30,7 +30,7 @@ game = [
       },
       {
         piece: "castle",
-        color: ""
+        color: "b"
       }
     ],
     [
