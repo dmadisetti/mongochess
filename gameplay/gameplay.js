@@ -500,8 +500,6 @@ var gameplay = function gameplay (){
       if((self.square[row][col].color == self.piece.color))
         return;
 
-      console.log(self.history);
-
       if((self.history.after != [row,col] && Math.abs(self.history.before[1] - self.history.after[1]) != 2))
         return;
 
