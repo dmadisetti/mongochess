@@ -489,9 +489,9 @@ var gameplay = function gameplay (){
       var col = self.col,
       row = self.row;
 
-      if(self.square[row][col - 1].piece == 'pawn'){
+      if(self.square[row][col - 1] && self.square[row][col - 1].piece == 'pawn'){
         col--;
-      }else if(self.square[row][col + 1].piece == 'pawn'){
+      }else if(self.square[row][col + 1] && self.square[row][col + 1].piece == 'pawn'){
         col++;
       }else{
         return;
@@ -509,9 +509,10 @@ var gameplay = function gameplay (){
 
       row += vertical;
 
+      // Should never happen but for Hxkz
       if(!(self.square[row][col].piece)){
         self.events = 'passing';
-        self.movable = [row,col];
+        self.movable = row * 8 + col;
       }
       return;
 
