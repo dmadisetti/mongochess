@@ -4,8 +4,7 @@ var gameplay = function gameplay (){
     self.move = function (){
       console.log('In Move');
       self.piece = self.square[self.row][self.col];
-      console.log(self.piece);
-      console.log([self.row,self.col]);
+      
       moves = self.pieces[self.piece.piece];
       for (var z=0;z<moves.length;z++){
         self.movable = [];
