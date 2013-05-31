@@ -242,9 +242,11 @@ io.sockets.on('connection', function (socket) {
             if (verifyplay.side == 'left'){
               if (game.enemies[move].pieces[z][0] == 0 && game.enemies[move].pieces[z][1] == brow){
                 game.enemies[move].pieces[z] = [3,brow];
+                break;
               }
             }else if(game.enemies[move].pieces[z][0] == 7 && game.enemies[move].pieces[z][1] == brow){
               game.enemies[move].pieces[z] = [5,brow];
+              break;
             }
           }
         }
