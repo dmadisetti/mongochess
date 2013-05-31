@@ -108,7 +108,11 @@
         });
 
         socket.on("remove", function (piece) {
-        $('.board div img')[parseInt(piece.remove[0]) * 8 + parseInt(piece.remove[1])].remove();
+            alert(piece);
+            alert(piece.remove);
+            console.log(piece);
+            console.log(parseInt(piece.remove[0]) * 8 + parseInt(piece.remove[1]));
+            $('.board div img')[parseInt(piece.remove[0]) * 8 + parseInt(piece.remove[1])].remove();
         });
 
         socket.on("created", function (state) {
