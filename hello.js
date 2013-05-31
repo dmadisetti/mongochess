@@ -269,6 +269,7 @@ io.sockets.on('connection', function (socket) {
             break;
           case 'pass':
             game.game[arow][bcol] = verifyplay.empty;
+            game.enemies[omove].pieces.splice(arow,bcol);
           default:
             break;
         }
@@ -294,7 +295,7 @@ io.sockets.on('connection', function (socket) {
                 break;
               case 'pass':
                 socket.broadcast.to(game._id).emit('update',{before:[acol,arow],after:[bcol,brow]});
-                socket.broadcast.to(game._id).emit('remove',{before:[acol,arow]});
+                io.sockets.to(game._id).emit('remove',{before:[acol,arow]});
                 break;
               default:
                 socket.broadcast.to(game._id).emit('update',{before:[acol,arow],after:[bcol,brow]});
