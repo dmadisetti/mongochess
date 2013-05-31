@@ -10,6 +10,7 @@ body{
     padding-top: 50px;
     float:right;
     width:300px;
+    display:none;
 }
 
 
@@ -288,9 +289,6 @@ footer a,footer p{
 /* Woohoo! Media queries */
 
 @media (min-width: 1250px){
-    article{
-	padding:45px;
-    }
     section{
 	padding-bottom: 45px;
     }
@@ -306,9 +304,6 @@ footer a,footer p{
 }
 
 @media (max-width: 1250px){
-    article{
-	padding:25px;
-    }
     section{
 	max-width:100%;
     }
