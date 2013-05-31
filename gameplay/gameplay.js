@@ -24,11 +24,9 @@ var gameplay = function gameplay (){
         self.after = args.after[1] * 8 + args.after[0];
         if (self.move()){
 
-          if(self.events == 'castle'){
-            console.log("cool beans");
+          if(self.events == 'castle')
             return true;
 
-          }
 
           var color = self.piece.color == 'w' ? 'b' : 'w';
           
@@ -302,11 +300,14 @@ var gameplay = function gameplay (){
             all.push(self.movable);
           }
         }
+        console.log('past the nested loop');
         self.piece = pieceholder;
         self.col = col;
         self.row = row;
         all = [].concat.apply([],all);
  
+        console.log(all);
+
         for (var z=0;z<squares.length;z++){
           if(all.indexOf(squares[z]) >=0)
             return false;
@@ -427,6 +428,8 @@ var gameplay = function gameplay (){
       }else{
         return;
       }
+
+      console.log('gets here');
 
       if(funct(squares,self.piece.color)){
         self.events = 'castle';
