@@ -257,14 +257,14 @@ io.sockets.on('connection', function (socket) {
         switch(verifyplay.events){
           case 'castle':
             if (verifyplay.side == 'left'){
-              game.game[0][arow].moved = true;
-              game.game[3][brow] = game.game[0][arow];
-              game.game[0][arow] = verifyplay.empty;
+              game.game[arow][0].moved = true;
+              game.game[brow][3] = game.game[arow][0];
+              game.game[arow][0] = verifyplay.empty;
               var castle = [[0,arow],[3,brow]];
             }else{
-              game.game[7][arow].moved = true;
-              game.game[5][brow] = game.game[7][arow];
-              game.game[7][arow] = verifyplay.empty;
+              game.game[arow][7].moved = true;
+              game.game[brow][5] = game.game[brow][5];
+              game.game[arow][7] = verifyplay.empty;
               var castle = [[7,arow],[5,brow]];
             }
             break;
