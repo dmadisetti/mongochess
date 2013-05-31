@@ -298,7 +298,7 @@ io.sockets.on('connection', function (socket) {
                 break;
               case 'pass':
                 socket.broadcast.to(game._id).emit('update',{before:[acol,arow],after:[bcol,brow]});
-                io.sockets.to(game._id).emit('remove',{remove:[acol,arow]});
+                io.sockets.to(game._id).emit('remove',{before:[acol,arow],after:[bcol,brow]});
                 break;
               default:
                 socket.broadcast.to(game._id).emit('update',{before:[acol,arow],after:[bcol,brow]});
