@@ -238,6 +238,15 @@ io.sockets.on('connection', function (socket) {
             game.enemies[move].pieces[z] = [bcol,brow];
             break;
           }
+          if(verifyplay.events == 'castle'){
+            if (verifyplay.side == 'left'){
+              if (game.enemies[move].pieces[z][0] == 0 && game.enemies[move].pieces[z][1] == brow){
+                game.enemies[move].pieces[z] = [3,brow];
+              }
+            }else if(game.enemies[move].pieces[z][0] == 7 && game.enemies[move].pieces[z][1] == brow){
+              game.enemies[move].pieces[z] = [5,brow];
+            }
+          }
         }
         for (var z = 0; z < game.enemies[omove].pieces.length; z++){
           if (game.enemies[omove].pieces[z][0] == bcol && game.enemies[omove].pieces[z][1] == brow){
