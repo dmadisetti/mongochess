@@ -109,7 +109,7 @@
 
         socket.on("remove", function (piece) {
             console.log(piece);
-            $('.board div img')[parseInt(piece.remove[0]) * 8 + parseInt(piece.remove[1])].remove();
+            $('.board div img')[parseInt(piece.remove[1]) * 8 + parseInt(piece.remove[0])].remove();
         });
 
         socket.on("created", function (state) {
