@@ -244,6 +244,10 @@ io.sockets.on('connection', function (socket) {
             game.enemies[omove].pieces.splice(z,1);
             break;
           }
+          if (verifyplay.events == "pass" && game.enemies[omove].pieces[z][0] == bcol && game.enemies[omove].pieces[z][1] == arow){
+            game.enemies[omove].pieces.splice(z,1);
+            break;
+          }
         }
         
         if (game.game[brow][bcol].piece == 'king')
@@ -269,7 +273,6 @@ io.sockets.on('connection', function (socket) {
             break;
           case 'pass':
             game.game[arow][bcol] = verifyplay.empty;
-            game.enemies[omove].pieces.splice(bcol,arow);
           default:
             break;
         }
