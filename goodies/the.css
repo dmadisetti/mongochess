@@ -229,7 +229,7 @@ header{
     color:#000;
     margin:0px;
     padding: 20 0px;
-    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-family: proxima-nova,verdana,arial,helvetica,sans-serif;
     width:100%;
     overflow:hidden;
     top:0;
@@ -239,7 +239,7 @@ header{
 h1{
     margin: 1em 0;
     font-size: 3.8em;
-    letter-spacing: -3px;
+    letter-spacing: 7px;
     line-height: 0px;
     color: #8a8683;
     font-weight: 700;
