@@ -236,18 +236,26 @@ header{
     z-index:1;
 }
 
+em{
+    float:left;
+    color:#FFF;
+    font-size: 2em;
+}
+
 h1{
     font-size: 1em;
     line-height: 0px;
     color: #FFF; /*#8a8683;*/
-    clear:both;
+    clear:none;
+    float:left;
 }
 
 h2{
     font-size: 1.9em;
     line-height: 0px;
     color: #8a8683;
-    clear:both;    
+    clear:none;
+    float:left;    
 }
 
 footer{
