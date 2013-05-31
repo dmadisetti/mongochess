@@ -291,9 +291,13 @@ var gameplay = function gameplay (){
           self.col = self.enemies[color].pieces[z][0];
           self.row = self.enemies[color].pieces[z][1];
           
-          self.piece = self.square[self.row][self.col];      
+          self.piece = self.square[self.row][self.col];
+
           moves = self.pieces[self.piece.piece];
           
+          if (self.piece.piece == "king")
+            moves.pop();
+
           for (var i=0;i<moves.length;i++){
             self.movable = [];
             moves[i].kind(moves[i].funct);
