@@ -27,7 +27,7 @@ Instead of a list of all class selectors,
 you can use the generic selector below, but it's slower:
 [class*="icon-"] {
 */
-.icon-heart, .icon-facebook, .icon-twitter, .icon-google, .icon-chevron-down, .icon-chevron-up {
+.icon-heart, .icon-facebook, .icon-twitter, .icon-google, .icon-twitter-2, .icon-pawn {
 	font-family: 'icomoon';
 	speak: none;
 	font-style: normal;
@@ -49,9 +49,9 @@ you can use the generic selector below, but it's slower:
 .icon-google:before {
 	content: "\e003";
 }
-.icon-chevron-down:before {
-	content: "\f078";
+.icon-twitter-2:before {
+	content: "\e004";
 }
-.icon-chevron-up:before {
-	content: "\f077";
+.icon-pawn:before {
+	content: "\e005";
 }

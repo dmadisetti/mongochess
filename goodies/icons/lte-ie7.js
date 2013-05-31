@@ -10,8 +10,8 @@ window.onload = function() {
 			'icon-facebook' : '&#xe001;',
 			'icon-twitter' : '&#xe002;',
 			'icon-google' : '&#xe003;',
-			'icon-chevron-down' : '&#xf078;',
-			'icon-chevron-up' : '&#xf077;'
+			'icon-twitter-2' : '&#xe004;',
+			'icon-pawn' : '&#xe005;'
 		},
 		els = document.getElementsByTagName('*'),
 		i, attr, html, c, el;
