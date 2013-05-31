@@ -509,7 +509,7 @@ var gameplay = function gameplay (){
 
       // Should never happen but for Hxkz
       if(!(self.square[row][col].piece)){
-        self.events = 'passing';
+        self.events = 'pass';
         self.movable = [row * 8 + col];
       }
       return;

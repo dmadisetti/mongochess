@@ -107,6 +107,9 @@
             recordBox.appendChild(newRecord);
         });
 
+        socket.on("remove", function (piece) {
+        $('.board div')[piece[0] * 8 + piece[1]].html = "";
+        });
 
         socket.on("created", function (state) {
             color = state.created ? "success" : "error"; /*popup.addClass(color);*/
