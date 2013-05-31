@@ -221,7 +221,7 @@ article{
 }
 
 header{
-    background-color: #404040;
+    background-color: #070706;
     vertical-align:top;
     color:#000;
     margin:0px;
@@ -251,6 +251,7 @@ h2{
     font-size: 1.9em;
     line-height: 0px;
     color: #8a8683;
+    font-family: 'Allura', cursive;
     clear:none;
     float:left;    
 }
