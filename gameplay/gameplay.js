@@ -24,9 +24,11 @@ var gameplay = function gameplay (){
         self.after = args.after[1] * 8 + args.after[0];
         if (self.move()){
 
-          if(self.events == 'castle')
+          if(self.events == 'castle'){
+            console.log("cool beans");
             return true;
 
+          }
 
           var color = self.piece.color == 'w' ? 'b' : 'w';
           
