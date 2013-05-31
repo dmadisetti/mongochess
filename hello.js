@@ -268,7 +268,7 @@ io.sockets.on('connection', function (socket) {
             game.game[brow][bcol].piece = params.promote;
             break;
           case 'pass':
-            game.game[acol][arow] = verifyplay.empty;
+            game.game[arow][bcol] = verifyplay.empty;
           default:
             break;
         }
