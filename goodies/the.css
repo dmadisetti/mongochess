@@ -144,7 +144,6 @@ label[for=privacy] .onoffswitch-inner:after {
     overflow: visible;
     min-height:45px;
     max-width:1000px;
-    background-color: #404040;
 }
 
 .display{
@@ -225,7 +224,7 @@ article{
 }
 
 header{
-    background-color: #FFF;
+    background-color: #404040;
     vertical-align:top;
     color:#000;
     margin:0px;
@@ -238,8 +237,7 @@ header{
 }
 
 h1{
-    margin: 1em 0;
-    font-size: 3.8em;
+    font-size: 1em;
     line-height: 0px;
     color: #FFF; /*#8a8683;*/
     clear:both;
