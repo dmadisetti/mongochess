@@ -269,7 +269,7 @@ io.sockets.on('connection', function (socket) {
             break;
           case 'pass':
             game.game[arow][bcol] = verifyplay.empty;
-            game.enemies[omove].pieces.splice(arow,bcol);
+            game.enemies[omove].pieces.splice(bcol,arow);
           default:
             break;
         }
