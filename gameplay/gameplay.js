@@ -18,6 +18,7 @@ var gameplay = function gameplay (){
     self.verify = function (args){
         console.log('In verify');
         self.args = args;
+        self.checking = false;
         self.events = 'update';
         self.col = args.before[0];
         self.row = args.before[1];
@@ -67,12 +68,14 @@ var gameplay = function gameplay (){
     }
 
     self.check = function (color,col,row){
-      console.log('In Check');
+      self.checking = true;
       self.after = col * 8 + row;
 
       for (var z=0;z<self.enemies[color].pieces.length;z++){
         self.col = self.enemies[color].pieces[z][0];
         self.row = self.enemies[color].pieces[z][1];
+        if (self.piece.piece == "king")
+            moves.pop();
         if (self.move())
           return true;
       }
@@ -395,6 +398,9 @@ var gameplay = function gameplay (){
     }
 
     function castle(funct){
+      // prevent check acounting castling as an attack
+      if (self.checking)
+        return;
       var col = self.col,
       row = self.row;
       squares = [];
